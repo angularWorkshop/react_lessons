@@ -49,3 +49,62 @@ h1 {
   color: #475569;
   font-size: 1rem;
 }
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.field--compact {
+  margin-top: 24px;
+}
+
+.field select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font: inherit;
+  background: white;
+}
+
+.socket-shell {
+  width: min(100%, 860px);
+}
+
+.socket-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.socket-card {
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.socket-card h2 {
+  margin: 0 0 14px;
+  font-size: 1.1rem;
+}
+
+.socket-card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #334155;
+}
+
+@media (max-width: 720px) {
+  .socket-grid {
+    grid-template-columns: 1fr;
+  }
+}

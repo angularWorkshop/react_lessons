@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 7.2: WebSocket Subscription
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter version for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Manage a socket-like subscription with `useEffect`.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- connect to the selected URL through the fake socket helper
+- receive messages over time
+- reconnect when the URL changes
+- disconnect in cleanup to avoid leaks
+
+## What to finish
+
+- fix the effect dependency array so it reacts to `selectedUrl`
+- return cleanup that closes the current connection
+- keep the message feed and lifecycle log in sync with the active URL
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
