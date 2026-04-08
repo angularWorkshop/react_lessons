@@ -1,24 +1,33 @@
-# react_lessons
+# Topic 1.1: Vite + React + TypeScript Starter
 
-Base repository for EduTec React + TypeScript course exercises.
+Prepare the first reusable starter for the React course.
 
-Each exercise should branch from `main` into:
+Current lesson state:
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+- the project already runs on Vite
+- TypeScript is enabled
+- the baseline app renders successfully
+- configuration is still incomplete for the rest of the course
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+Your task:
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+1. Enable `noUncheckedIndexedAccess` in the app tsconfig.
+2. Add the `@/* -> src/*` path alias.
+3. Configure the same alias in `vite.config.ts`.
+4. Replace the inline app markup with a dedicated `AppShell` component.
+5. Import `AppShell` through the alias instead of a relative path.
 
-## Scripts
+Acceptance criteria:
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run typecheck` passes
+- `npm run build` passes
+- `npm run test` passes
+- `App` imports `AppShell` from `@/components/AppShell`
+
+Local check:
+
+```bash
+PATH="$HOME/.nvm/versions/node/v24.13.0/bin:$PATH" \
+~/.nvm/versions/node/v24.13.0/bin/node \
+~/.nvm/versions/node/v24.13.0/lib/node_modules/npm/bin/npm-cli.js run check
+```
