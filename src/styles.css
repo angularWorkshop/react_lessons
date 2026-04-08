@@ -49,3 +49,58 @@ h1 {
   color: #475569;
   font-size: 1rem;
 }
+
+.button-demo-shell {
+  width: min(100%, 720px);
+}
+
+.button-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.button {
+  border: 0;
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.button--primary {
+  background: #0f172a;
+  color: white;
+}
+
+.button--secondary {
+  background: white;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+.button--danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.button--sm {
+  padding: 10px 14px;
+  font-size: 0.875rem;
+}
+
+.button--md {
+  padding: 12px 18px;
+  font-size: 1rem;
+}
+
+.button--lg {
+  padding: 14px 20px;
+  font-size: 1.05rem;
+}

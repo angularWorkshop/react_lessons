@@ -1,24 +1,26 @@
-# react_lessons
+# Topic 4.1: Typed Button Props
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter branch for the EduTec React exercise about typed props.
 
-Each exercise should branch from `main` into:
+## Task
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a reusable `Button` component with:
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+- `variant: 'primary' | 'secondary' | 'danger'`
+- `size: 'sm' | 'md' | 'lg'`
+- inherited native `<button>` attributes
+- `...rest` forwarding to the real button element
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+## What to change
 
-## Scripts
+- type props through a dedicated interface
+- inherit native button attributes with `ComponentPropsWithoutRef<'button'>`
+- forward extra props to the HTML button
+- keep the preview page visually consistent
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+## Expected checks
+
+- the preview page renders all button variants
+- native button props such as `disabled` and `aria-label` work
+- the component source uses `ComponentPropsWithoutRef<'button'>`
+- `npm run check` passes
