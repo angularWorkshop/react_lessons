@@ -1,18 +1,23 @@
-import type { ReactElement } from 'react';
+import type { ComponentPropsWithoutRef, ReactElement } from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
   label: string;
   variant: 'primary' | 'secondary' | 'danger';
   size: 'sm' | 'md' | 'lg';
-  disabled?: boolean;
 }
 
-export function Button({ label, variant, size, disabled }: ButtonProps): ReactElement {
+export function Button({
+  label,
+  variant,
+  size,
+  type = 'button',
+  ...rest
+}: ButtonProps): ReactElement {
   return (
     <button
       className={`button button--${variant} button--${size}`}
-      type="button"
-      disabled={disabled}
+      type={type}
+      {...rest}
     >
       {label}
     </button>
