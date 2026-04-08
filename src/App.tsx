@@ -21,7 +21,7 @@ export function App(): ReactElement {
             placeholder="Type a topic"
             value={query}
             onChange={setQuery}
-            inputRef={inputRef}
+            ref={inputRef}
           />
 
           <button

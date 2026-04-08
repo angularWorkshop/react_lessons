@@ -1,6 +1,6 @@
 # Topic 8.1: Autofocus Search Input
 
-Starter version for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Forward an input ref through a reusable search component.
 - type the ref as `React.forwardRef<HTMLInputElement, Props>`
 - keep the input fully controlled by React state
 
-## What to finish
+## Solution highlights
 
-- convert the search input to `forwardRef`
-- attach the forwarded ref to the native `<input>`
-- make the focus button work through `inputRef.current?.focus()`
+- `SearchInput` is typed with `forwardRef<HTMLInputElement, SearchInputProps>`
+- the forwarded ref points to the native input element
+- the parent focuses the field with `inputRef.current?.focus()`
 
 ## Scripts
 
