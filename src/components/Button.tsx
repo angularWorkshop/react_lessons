@@ -1,16 +1,33 @@
-import type { ReactElement } from 'react';
+import type { ComponentPropsWithoutRef, ReactElement } from 'react';
 
-interface ButtonProps {
-  as?: 'button' | 'a' | 'div';
+type ButtonAsAnchorProps = {
+  as: 'a';
   label: string;
-  href?: string;
-  type?: 'button' | 'submit' | 'reset';
-}
+  href: string;
+  type?: never;
+} & Omit<ComponentPropsWithoutRef<'a'>, 'children' | 'href'>;
 
-export function Button({ as = 'button', label, href, type = 'button' }: ButtonProps): ReactElement {
+type ButtonAsNativeProps = {
+  as?: 'button';
+  label: string;
+  href?: never;
+} & Omit<ComponentPropsWithoutRef<'button'>, 'children'>;
+
+type ButtonAsDivProps = {
+  as: 'div';
+  label: string;
+  href?: never;
+  type?: never;
+} & Omit<ComponentPropsWithoutRef<'div'>, 'children'>;
+
+type ButtonProps = ButtonAsAnchorProps | ButtonAsNativeProps | ButtonAsDivProps;
+
+export function Button(props: ButtonProps): ReactElement {
+  const { as = 'button', label } = props;
+
   if (as === 'a') {
     return (
-      <a className="poly-button poly-button--link" href={href}>
+      <a className="poly-button poly-button--link" href={props.href}>
         {label}
       </a>
     );
@@ -21,7 +38,10 @@ export function Button({ as = 'button', label, href, type = 'button' }: ButtonPr
   }
 
   return (
-    <button className="poly-button poly-button--primary" type={type}>
+    <button
+      className="poly-button poly-button--primary"
+      type={props.type ?? 'button'}
+    >
       {label}
     </button>
   );
