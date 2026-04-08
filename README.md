@@ -1,24 +1,32 @@
-# react_lessons
+# Topic 1.2: ESLint, Prettier, and Pre-Commit Checks
 
-Base repository for EduTec React + TypeScript course exercises.
+Add the first real code quality workflow to the React starter repository.
 
-Each exercise should branch from `main` into:
+Current lesson state:
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+- the app itself is working
+- quality tooling is partially wired
+- a demo component still violates React Hook rules and formatting expectations
+- the pre-commit flow is not complete yet
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+Your task:
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+1. Finish the ESLint setup for TypeScript and React Hooks.
+2. Configure Prettier and make `format:check` pass.
+3. Add Husky + lint-staged so code quality checks can run before commits.
+4. Fix the demo component so hook dependencies and formatting are valid.
 
-## Scripts
+Acceptance criteria:
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run lint` passes
+- `npm run format:check` passes
+- `npm run check` passes
+- `.husky/pre-commit` runs `lint-staged`
+
+Local check:
+
+```bash
+PATH="$HOME/.nvm/versions/node/v24.13.0/bin:$PATH" \
+~/.nvm/versions/node/v24.13.0/bin/node \
+~/.nvm/versions/node/v24.13.0/lib/node_modules/npm/bin/npm-cli.js run check
+```
