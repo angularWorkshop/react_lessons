@@ -46,8 +46,9 @@ export function App(): ReactElement {
         </button>
 
         <div className="draft-list" aria-label="Draft rows">
-          {items.map((item, index) => (
-            <EditableDraftRow key={index} item={item} />
+          {items.map((item) => (
+            // Stable id keys keep row-local input state attached to the same item.
+            <EditableDraftRow key={item.id} item={item} />
           ))}
         </div>
       </div>

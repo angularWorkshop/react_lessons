@@ -1,6 +1,6 @@
 # Topic 9.1: Index Key Bug
 
-Starter version for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Reproduce and fix the classic `index as key` bug in a list with local item state
 - prepend a new item to the list
 - show why `key={index}` breaks the mapping between state and domain data
 
-## What to finish
+## Solution highlights
 
-- replace the unstable list key with a real unique item id
-- keep each row's local input state attached to the same logical item after prepend
-- leave a short comment explaining why the id key is required here
+- the list now uses a stable item id as the key
+- each row keeps its own local draft state attached to the same domain item
+- the prepend action no longer makes text jump to another row
 
 ## Scripts
 
