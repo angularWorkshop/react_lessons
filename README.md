@@ -1,6 +1,6 @@
 # Topic 8.2: usePrevious Hook
 
-Starter version for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Implement a generic `usePrevious<T>()` hook with `useRef`.
 - show the current and previous counter values in the UI
 - keep the hook generic for any value type
 
-## What to finish
+## Solution highlights
 
-- switch the hook to `useRef`
-- update the ref after render in an effect
-- return the previous value instead of the current one
+- `usePrevious<T>()` stays generic
+- the hook stores state in a ref instead of a new render-triggering value
+- the previous value updates after render through `useEffect`
 
 ## Scripts
 
