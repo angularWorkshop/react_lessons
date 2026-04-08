@@ -1,23 +1,23 @@
-# Topic 10.1: Async View Component
+# Topic 11.1: Controlled Signup Form
 
 Completed solution for the EduTec React course exercise.
 
 ## Goal
 
-Build a reusable component that renders idle, loading, success, and error states.
+Build a fully controlled registration form with typed event handlers.
 
 ## Requirements
 
-- use a discriminated union `AsyncState<T>`
-- render the correct UI branch for each state
-- show a skeleton block for loading
-- show a retry button for error
+- keep every field in React state
+- validate on blur and on submit
+- type `onChange`, `onBlur`, and `onSubmit` handlers explicitly
+- show a success summary after a valid submit
 
 ## Solution highlights
 
-- `AsyncView<T>` stays generic and works with any success payload type
-- the error branch calls the provided retry callback
-- the status switch includes an exhaustive `never` check
+- the form state lives in a single `RegistrationValues` object
+- field and form validation reuse shared helper functions
+- input, select, blur, and submit events stay strictly typed
 
 ## Scripts
 

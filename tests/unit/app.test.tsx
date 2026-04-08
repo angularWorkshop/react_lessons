@@ -5,50 +5,59 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import { App } from '../../src/App';
 
-describe('Topic 10.1 runtime', () => {
-  it('renders the async view shell and idle state', () => {
+describe('Topic 11.1 runtime', () => {
+  it('renders the controlled registration shell', () => {
     render(<App />);
 
-    expect(screen.getByRole('heading', { name: 'Async view component' })).toBeInTheDocument();
-    expect(screen.getByText('Choose a state to preview the async view.')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Controlled registration form' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    expect(screen.getByLabelText('Email')).toBeInTheDocument();
+    expect(screen.getByLabelText('Password')).toBeInTheDocument();
+    expect(screen.getByLabelText('Role')).toBeInTheDocument();
   });
 
-  it('renders loading, success, and error branches', () => {
+  it('shows validation feedback on blur and submit', () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show loading' }));
-    expect(screen.getByLabelText('Loading skeleton')).toBeInTheDocument();
+    fireEvent.blur(screen.getByLabelText('Email'));
+    expect(screen.getByText('Enter a valid email address.')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show data' }));
-    expect(screen.getByText('State Machines in UI')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Show error' }));
-    expect(screen.getByText('Failed to load recommended lessons.')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Create account' }));
+    expect(screen.getByText('Choose a role before submitting the form.')).toBeInTheDocument();
   });
 
-  it('uses the retry callback from the error branch', () => {
+  it('shows a success summary after a valid submit', () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show error' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Ada Lovelace' } });
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'ada@react.dev' } });
+    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'pass1234' } });
+    fireEvent.change(screen.getByLabelText('Role'), { target: { value: 'mentor' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Create account' }));
 
-    expect(screen.getByLabelText('Loading skeleton')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Ready to onboard' })).toBeInTheDocument();
+    expect(screen.getByText('Ada Lovelace')).toBeInTheDocument();
+    expect(screen.getByText('ada@react.dev')).toBeInTheDocument();
+    expect(screen.getByText('mentor')).toBeInTheDocument();
   });
 });
 
-describe('Topic 10.1 source checks', () => {
-  const asyncViewSource = readFileSync(
-    resolve(process.cwd(), 'src/components/AsyncView.tsx'),
-    'utf8',
-  );
+describe('Topic 11.1 source checks', () => {
+  const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
 
-  it('declares AsyncView as a generic component', () => {
-    expect(asyncViewSource).toMatch(/interface AsyncViewProps<T>/);
-    expect(asyncViewSource).toMatch(/export function AsyncView<T>\(/);
+  it('uses explicit React event types for change, blur, and submit handlers', () => {
+    expect(appSource).toMatch(/handleInputChange = \(event: ChangeEvent<HTMLInputElement>\)/);
+    expect(appSource).toMatch(/handleRoleChange = \(event: ChangeEvent<HTMLSelectElement>\)/);
+    expect(appSource).toMatch(/handleInputBlur = \(event: FocusEvent<HTMLInputElement>\)/);
+    expect(appSource).toMatch(/handleRoleBlur = \(_event: FocusEvent<HTMLSelectElement>\)/);
+    expect(appSource).toMatch(/handleSubmit = \(event: FormEvent<HTMLFormElement>\)/);
   });
 
-  it('uses an exhaustive never check for the async state switch', () => {
-    expect(asyncViewSource).toMatch(/const exhaustiveCheck: never = state;/);
+  it('keeps the form fields controlled through local state', () => {
+    expect(appSource).toMatch(/const \[values, setValues\] = useState<RegistrationValues>\(INITIAL_VALUES\)/);
+    expect(appSource).toMatch(/value={values\.name}/);
+    expect(appSource).toMatch(/value={values\.email}/);
+    expect(appSource).toMatch(/value={values\.password}/);
+    expect(appSource).toMatch(/value={values\.role}/);
   });
 });
