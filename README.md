@@ -1,24 +1,26 @@
-# react_lessons
+# Topic 5.2: Polymorphic Button
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter branch for the EduTec React exercise about discriminated union props.
 
-Each exercise should branch from `main` into:
+## Task
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a polymorphic `Button` component with:
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+- `as?: 'button' | 'a' | 'div'`
+- `href` only for anchor mode
+- `type` only for button mode
+- type-safe prop suggestions depending on `as`
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+## What to change
 
-## Scripts
+- replace the loose prop model with a discriminated union
+- forbid `href` on button mode
+- forbid `type` on anchor mode
+- keep the preview page visually unchanged
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+## Expected checks
+
+- the preview renders all supported modes
+- the component source contains discriminated union props
+- `href?: never` and `type?: never` are used to block invalid combinations
+- `npm run check` passes

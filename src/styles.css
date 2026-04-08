@@ -49,3 +49,42 @@ h1 {
   color: #475569;
   font-size: 1rem;
 }
+
+.polymorphic-shell {
+  width: min(100%, 720px);
+}
+
+.poly-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.poly-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.poly-button--primary {
+  border: 0;
+  background: #0f172a;
+  color: white;
+}
+
+.poly-button--link {
+  background: white;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.poly-button--ghost {
+  background: #eef2ff;
+  color: #4338ca;
+}
