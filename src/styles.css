@@ -49,3 +49,45 @@ h1 {
   color: #475569;
   font-size: 1rem;
 }
+
+.ref-shell {
+  width: min(100%, 720px);
+}
+
+.search-panel {
+  margin-top: 28px;
+  display: grid;
+  gap: 18px;
+}
+
+.search-field {
+  display: grid;
+  gap: 10px;
+}
+
+.search-field span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.search-field input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font: inherit;
+  background: white;
+}
+
+.focus-button {
+  justify-self: start;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  color: white;
+  background: #0f172a;
+}
