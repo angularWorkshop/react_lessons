@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 7.1: Document Title Sync
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter version for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Synchronize `document.title` with component state through `useEffect`.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- update the page title when the counter changes
+- move the effect logic into `useDocumentTitle(title: string)`
+- restore the original title when the component unmounts
+- keep the hook safe under StrictMode remounting
+
+## What to finish
+
+- add cleanup to the hook
+- make the hook preserve the previous title before overwriting it
+- keep the counter UI controlled by React state
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`

@@ -49,3 +49,48 @@ h1 {
   color: #475569;
   font-size: 1rem;
 }
+
+.title-shell {
+  width: min(100%, 680px);
+}
+
+.counter-card {
+  margin-top: 28px;
+  padding: 24px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #e0f2fe, #f8fafc);
+  border: 1px solid rgba(125, 211, 252, 0.45);
+}
+
+.counter-label {
+  display: block;
+  color: #0369a1;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.counter-value {
+  display: block;
+  margin-top: 14px;
+  font-size: clamp(3rem, 10vw, 4.5rem);
+  line-height: 1;
+}
+
+.counter-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.counter-actions button {
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  color: white;
+  background: #0f172a;
+}
