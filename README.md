@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 6.1: Shopping Cart
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter version for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a typed shopping cart with `useState`.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- keep cart state as an array of items with `id`, `name`, `price`, and `quantity`
+- support adding products, removing rows, changing quantity, and clearing the cart
+- keep updates immutable
+- compute the total amount from state on each render
+
+## What to finish
+
+- type the cart state explicitly with `useState<CartItem[]>`
+- switch cart updates to functional `setState`
+- keep the total derived from the current state
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
