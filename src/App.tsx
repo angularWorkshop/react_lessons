@@ -28,26 +28,24 @@ function formatCurrency(value: number): string {
 }
 
 export function App(): ReactElement {
-  // TODO: make the state generic: useState<CartItem[]>(...)
-  const [cart, setCart] = useState(INITIAL_CART);
+  const [cart, setCart] = useState<CartItem[]>(INITIAL_CART);
 
   const addProduct = (product: CatalogProduct): void => {
-    const existingItem = cart.find((item) => item.id === product.id);
+    setCart((currentCart) => {
+      const existingItem = currentCart.find((item) => item.id === product.id);
 
-    if (existingItem) {
-      setCart(
-        cart.map((item) =>
+      if (existingItem) {
+        return currentCart.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
-        ),
-      );
-      return;
-    }
+        );
+      }
 
-    setCart([...cart, { ...product, quantity: 1 }]);
+      return [...currentCart, { ...product, quantity: 1 }];
+    });
   };
 
   const removeItem = (itemId: string): void => {
-    setCart(cart.filter((item) => item.id !== itemId));
+    setCart((currentCart) => currentCart.filter((item) => item.id !== itemId));
   };
 
   const changeQuantity = (itemId: string, nextQuantity: number): void => {
@@ -56,8 +54,8 @@ export function App(): ReactElement {
       return;
     }
 
-    setCart(
-      cart.map((item) =>
+    setCart((currentCart) =>
+      currentCart.map((item) =>
         item.id === itemId ? { ...item, quantity: nextQuantity } : item,
       ),
     );

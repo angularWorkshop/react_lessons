@@ -1,6 +1,6 @@
 # Topic 6.1: Shopping Cart
 
-Starter version for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Build a typed shopping cart with `useState`.
 - keep updates immutable
 - compute the total amount from state on each render
 
-## What to finish
+## Solution highlights
 
-- type the cart state explicitly with `useState<CartItem[]>`
-- switch cart updates to functional `setState`
-- keep the total derived from the current state
+- cart state is typed explicitly with `useState<CartItem[]>`
+- all cart mutations use functional `setState`
+- the total stays derived from the current cart state
 
 ## Scripts
 
