@@ -49,3 +49,54 @@ h1 {
   color: #475569;
   font-size: 1rem;
 }
+
+.keys-shell {
+  width: min(100%, 760px);
+}
+
+.prepend-button {
+  margin-top: 24px;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  color: white;
+  background: #0f172a;
+}
+
+.prepend-button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.draft-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.draft-row {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.94);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.draft-row span {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.draft-row input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font: inherit;
+  background: white;
+}

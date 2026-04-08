@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 9.1: Index Key Bug
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter version for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Reproduce and fix the classic `index as key` bug in a list with local item state.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- keep each row as its own component with internal input state
+- type text into an existing row
+- prepend a new item to the list
+- show why `key={index}` breaks the mapping between state and domain data
+
+## What to finish
+
+- replace the unstable list key with a real unique item id
+- keep each row's local input state attached to the same logical item after prepend
+- leave a short comment explaining why the id key is required here
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
