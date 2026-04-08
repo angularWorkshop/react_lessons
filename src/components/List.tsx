@@ -1,20 +1,23 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
-interface ListItem {
-  id: string;
-  label: string;
+interface ListProps<T> {
+  items: T[];
+  renderItem: (item: T) => ReactNode;
+  keyExtractor?: (item: T) => string;
 }
 
-interface ListProps {
-  items: ListItem[];
-  renderItem: (item: ListItem) => ReactElement;
-}
-
-export function List({ items, renderItem }: ListProps): ReactElement {
+export function List<T>({
+  items,
+  renderItem,
+  keyExtractor,
+}: ListProps<T>): ReactElement {
   return (
     <ul className="generic-list">
       {items.map((item) => (
-        <li key={item.id} className="generic-list__item">
+        <li
+          key={keyExtractor ? keyExtractor(item) : String(item)}
+          className="generic-list__item"
+        >
           {renderItem(item)}
         </li>
       ))}

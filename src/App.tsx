@@ -26,22 +26,26 @@ export function App(): ReactElement {
           <section className="list-panel" aria-label="Users list">
             <h2>Team</h2>
             <List
-              items={USERS.map((user) => ({
-                id: user.id,
-                label: `${user.name} — ${user.role}`,
-              }))}
-              renderItem={(item) => <span>{item.label}</span>}
+              items={USERS}
+              keyExtractor={(user) => user.id}
+              renderItem={(user) => (
+                <span>
+                  {user.name} — {user.role}
+                </span>
+              )}
             />
           </section>
 
           <section className="list-panel" aria-label="Products list">
             <h2>Products</h2>
             <List
-              items={PRODUCTS.map((product) => ({
-                id: product.sku,
-                label: `${product.title} — ${product.price}`,
-              }))}
-              renderItem={(item) => <span>{item.label}</span>}
+              items={PRODUCTS}
+              keyExtractor={(product) => product.sku}
+              renderItem={(product) => (
+                <span>
+                  {product.title} — {product.price}
+                </span>
+              )}
             />
           </section>
         </div>
