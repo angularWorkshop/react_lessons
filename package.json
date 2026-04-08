@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "Base repository for EduTec React lessons",
+  "stackblitz": {
+    "startCommand": "npm run start:dev"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +14,8 @@
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "npm run typecheck && npm run test"
+    "check": "npm run typecheck && npm run test",
+    "start:dev": "node scripts/start-react-stackblitz.mjs"
   },
   "dependencies": {
     "react": "^19.2.0",
