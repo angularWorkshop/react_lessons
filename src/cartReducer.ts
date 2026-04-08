@@ -21,21 +21,16 @@ export const CATALOG: CatalogProduct[] = [
   { id: 'stickers', name: 'Sticker Pack', price: 12 },
 ];
 
-export interface CartAction {
-  type: string;
-  product?: CatalogProduct;
-  itemId?: string;
-  quantity?: number;
-}
+export type CartAction =
+  | { type: 'ADD_ITEM'; product: CatalogProduct }
+  | { type: 'REMOVE_ITEM'; itemId: string }
+  | { type: 'UPDATE_QUANTITY'; itemId: string; quantity: number }
+  | { type: 'CLEAR' };
 
 export function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
   switch (action.type) {
     case 'ADD_ITEM': {
       const product = action.product;
-
-      if (!product) {
-        return state;
-      }
 
       const existingItem = state.find((item) => item.id === product.id);
 
@@ -48,17 +43,9 @@ export function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
       return [...state, { ...product, quantity: 1 }];
     }
     case 'REMOVE_ITEM': {
-      if (!action.itemId) {
-        return state;
-      }
-
       return state.filter((item) => item.id !== action.itemId);
     }
     case 'UPDATE_QUANTITY': {
-      if (!action.itemId || typeof action.quantity !== 'number') {
-        return state;
-      }
-
       const nextQuantity = action.quantity;
 
       if (nextQuantity < 1) {
@@ -69,6 +56,8 @@ export function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
         item.id === action.itemId ? { ...item, quantity: nextQuantity } : item,
       );
     }
+    case 'CLEAR':
+      return [];
     default:
       return state;
   }
