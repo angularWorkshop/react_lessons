@@ -1,24 +1,27 @@
-# react_lessons
+# Topic 3.1: UI Kit Components
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter branch for the EduTec React exercise about basic functional components.
 
-Each exercise should branch from `main` into:
+## Task
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a tiny UI kit with separate React components:
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+- `Button`
+- `Badge`
+- `Avatar`
+- `Card`
+- `UserCard`
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+## What to change
 
-## Scripts
+- move the UI kit pieces into separate `.tsx` files
+- compose the page through `UserCard`
+- add explicit return types for the components
+- keep the visual result the same
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+## Expected checks
+
+- each component lives in its own file
+- `App` renders the page through `UserCard`
+- the components are composed instead of duplicated inline
+- `npm run check` passes
