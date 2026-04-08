@@ -1,25 +1,23 @@
-# Topic 11.2: React Hook Form + Zod
+# Topic 12.1: Cart Reducer
 
 Completed solution for the EduTec React course exercise.
 
 ## Goal
 
-Rebuild the signup flow with React Hook Form and schema-first validation.
+Refactor the shopping cart from `useState` to `useReducer`.
 
 ## Requirements
 
-- use `react-hook-form` for field registration and submit handling
-- define the form contract through a single Zod schema
-- infer the form value type through `z.infer`
-- render schema-driven validation errors in the UI
+- move cart transitions into a pure reducer
+- dispatch typed actions for add, remove, quantity updates, and clear
+- keep reducer logic immutable and side-effect free
+- cover reducer behavior with tests
 
 ## Solution highlights
 
-- one schema should define validation and TypeScript inference together
-- `zodResolver` should connect the schema to React Hook Form
-- the submit payload should stay typed all the way to the success state
-- the success card should be filled from `z.infer`-based form values
-- `startTransition` keeps the submit success state non-urgent
+- the UI dispatches actions instead of mutating cart state directly
+- the reducer remains a pure function that returns fresh arrays
+- the action model should become a discriminated union
 
 ## Scripts
 

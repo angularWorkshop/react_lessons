@@ -1,143 +1,119 @@
-import { startTransition, useState, type ReactElement } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { useReducer, type ReactElement } from 'react';
 
-const registrationSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Please enter your full name.'),
-  email: z.string().trim().email('Please enter a valid work email.'),
-  password: z
-    .string()
-    .regex(/^(?=.*\d).{8,}$/, 'Password must contain at least 8 characters.'),
-  role: z.string().min(1, 'Choose the role that matches the account.'),
-});
-
-type RegistrationValues = z.infer<typeof registrationSchema>;
-
-const DEFAULT_VALUES: RegistrationValues = {
-  name: '',
-  email: '',
-  password: '',
-  role: '',
-};
+import {
+  CATALOG,
+  INITIAL_CART,
+  cartReducer,
+  formatCurrency,
+  type CatalogProduct,
+  type CartItem,
+} from './cartReducer';
 
 export function App(): ReactElement {
-  const [submittedValues, setSubmittedValues] = useState<RegistrationValues | null>(null);
-  const registrationForm = useForm<RegistrationValues>({
-    defaultValues: DEFAULT_VALUES,
-    mode: 'onBlur',
-    resolver: zodResolver(registrationSchema),
-  });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = registrationForm;
+  const [cart, dispatch] = useReducer(cartReducer, INITIAL_CART);
 
-  const onSubmit = (values: RegistrationValues): void => {
-    startTransition(() => {
-      setSubmittedValues(values);
-    });
+  const addProduct = (product: CatalogProduct): void => {
+    dispatch({ type: 'ADD_ITEM', product });
   };
+
+  const removeItem = (itemId: string): void => {
+    dispatch({ type: 'REMOVE_ITEM', itemId });
+  };
+
+  const updateQuantity = (itemId: string, quantity: number): void => {
+    dispatch({ type: 'UPDATE_QUANTITY', itemId, quantity });
+  };
+
+  const clearCart = (): void => {
+    dispatch({ type: 'CLEAR' });
+  };
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
     <main className="app-shell">
-      <section className="form-layout">
-        <div className="intro-card">
-          <p className="eyebrow">Topic 11.2</p>
-          <h1>React Hook Form + Zod</h1>
-          <p className="description">
-            Rebuild the same signup flow with React Hook Form, schema validation, and inferred
-            types.
-          </p>
-        </div>
+      <div className="hero-card cart-shell">
+        <p className="eyebrow">Topic 12.1</p>
+        <h1>Cart reducer</h1>
+        <p className="description">
+          Move cart transitions into a pure reducer and drive the UI through typed actions.
+        </p>
 
-        <form className="panel-card" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <label className="field">
-            <span>Name</span>
-            <input
-              type="text"
-              placeholder="Ada Lovelace"
-              {...register('name', {
-                required: 'Please enter your full name.',
-                minLength: {
-                  value: 2,
-                  message: 'Please enter your full name.',
-                },
-              })}
-            />
-            {errors.name ? <small role="alert">{errors.name.message}</small> : null}
-          </label>
+        <section className="cart-section" aria-label="Catalog">
+          <div className="section-header">
+            <h2>Catalog</h2>
+            <span>Dispatch ADD_ITEM from the product list</span>
+          </div>
 
-          <label className="field">
-            <span>Email</span>
-            <input
-              type="email"
-              placeholder="ada@react.dev"
-              {...register('email', {
-                required: 'Please enter your email.',
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Email must be valid.',
-                },
-              })}
-            />
-            {errors.email ? <small role="alert">{errors.email.message}</small> : null}
-          </label>
+          <div className="catalog-grid">
+            {CATALOG.map((product) => (
+              <button
+                key={product.id}
+                className="catalog-card"
+                type="button"
+                onClick={() => addProduct(product)}
+              >
+                <strong>{product.name}</strong>
+                <span>{formatCurrency(product.price)}</span>
+              </button>
+            ))}
+          </div>
+        </section>
 
-          <label className="field">
-            <span>Password</span>
-            <input
-              type="password"
-              placeholder="8+ chars"
-              {...register('password', {
-                required: 'Please enter a password.',
-                minLength: {
-                  value: 8,
-                  message: 'Password must contain at least 8 characters.',
-                },
-              })}
-            />
-            {errors.password ? <small role="alert">{errors.password.message}</small> : null}
-          </label>
+        <section className="cart-section" aria-label="Cart items">
+          <div className="section-header">
+            <h2>Cart</h2>
+            <button className="text-action" type="button" onClick={clearCart}>
+              Clear cart
+            </button>
+          </div>
 
-          <label className="field">
-            <span>Role</span>
-            <select {...register('role')}>
-              <option value="">Select a role</option>
-              <option value="student">Student</option>
-              <option value="mentor">Mentor</option>
-              <option value="admin">Admin</option>
-            </select>
-            {errors.role ? <small role="alert">{errors.role.message}</small> : null}
-          </label>
+          <ul className="cart-list">
+            {cart.length === 0 ? (
+              <li className="empty-state">Your cart is empty.</li>
+            ) : (
+              cart.map((item: CartItem) => (
+                <li key={item.id} className="cart-item">
+                  <div>
+                    <strong>{item.name}</strong>
+                    <p>{formatCurrency(item.price)} each</p>
+                  </div>
 
-          <button className="primary-button" type="submit">
-            Save with RHF
-          </button>
-        </form>
+                  <div className="cart-controls">
+                    <button
+                      type="button"
+                      aria-label={`Decrease ${item.name}`}
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    >
+                      -
+                    </button>
+                    <span aria-label={`${item.name} quantity`}>{item.quantity}</span>
+                    <button
+                      type="button"
+                      aria-label={`Increase ${item.name}`}
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={`Remove ${item.name}`}
+                      onClick={() => removeItem(item.id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </li>
+              ))
+            )}
+          </ul>
 
-        {submittedValues ? (
-          <article className="summary-card" aria-live="polite">
-            <p className="eyebrow">Submit payload</p>
-            <h2>Form payload is typed from the schema</h2>
-            <ul className="summary-list">
-              <li>
-                <strong>Name:</strong> {submittedValues.name}
-              </li>
-              <li>
-                <strong>Email:</strong> {submittedValues.email}
-              </li>
-              <li>
-                <strong>Role:</strong> {submittedValues.role}
-              </li>
-            </ul>
-          </article>
-        ) : null}
-      </section>
+          <div className="cart-total">
+            <span>Total</span>
+            <strong>{formatCurrency(total)}</strong>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }

@@ -4,54 +4,67 @@ import { resolve } from 'node:path';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { App } from '../../src/App';
+import { CATALOG, INITIAL_CART, cartReducer } from '../../src/cartReducer';
 
-describe('Topic 11.2 runtime', () => {
-  it('renders the RHF shell', () => {
+describe('Topic 12.1 runtime', () => {
+  it('renders the cart reducer shell and initial total', () => {
     render(<App />);
 
-    expect(screen.getByRole('heading', { name: 'React Hook Form + Zod' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Save with RHF' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Cart reducer' })).toBeInTheDocument();
+    expect(screen.getByText('$240.00')).toBeInTheDocument();
   });
 
-  it('shows schema validation messages for invalid submit', async () => {
+  it('adds products through reducer actions and updates totals', () => {
     render(<App />);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'A' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'ada' } });
-    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'short' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save with RHF' }));
-
-    expect(await screen.findByText('Please enter your full name.')).toBeInTheDocument();
-    expect(screen.getByText('Please enter a valid work email.')).toBeInTheDocument();
-    expect(screen.getByText('Password must contain at least 8 characters.')).toBeInTheDocument();
-    expect(screen.getByText('Choose the role that matches the account.')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /React Mug\$18\.00/ }));
+    expect(screen.getByLabelText('React Mug quantity')).toHaveTextContent('1');
+    expect(screen.getByText('$258.00')).toBeInTheDocument();
   });
 
-  it('renders a typed payload summary after a valid submit', async () => {
+  it('updates quantity and clears the cart', () => {
     render(<App />);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Ada Lovelace' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'ada@react.dev' } });
-    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'pass1234' } });
-    fireEvent.change(screen.getByLabelText('Role'), { target: { value: 'mentor' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save with RHF' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Increase Mechanical Keyboard' }));
+    expect(screen.getByLabelText('Mechanical Keyboard quantity')).toHaveTextContent('2');
+    expect(screen.getByText('$360.00')).toBeInTheDocument();
 
-    expect(
-      await screen.findByRole('heading', { name: 'Form payload is typed from the schema' }),
-    ).toBeInTheDocument();
-    expect(screen.getByText('Ada Lovelace')).toBeInTheDocument();
-    expect(screen.getByText('ada@react.dev')).toBeInTheDocument();
-    expect(screen.getByText('mentor')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Clear cart' }));
+    expect(screen.getByText('Your cart is empty.')).toBeInTheDocument();
+    expect(screen.getByText('$0.00')).toBeInTheDocument();
   });
 });
 
-describe('Topic 11.2 source checks', () => {
-  const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
+describe('Topic 12.1 reducer', () => {
+  it('is pure and returns a new array for ADD_ITEM', () => {
+    const nextState = cartReducer(INITIAL_CART, { type: 'ADD_ITEM', product: CATALOG[0] });
 
-  it('derives form types from a Zod schema and wires zodResolver into useForm', () => {
-    expect(appSource).toMatch(/const registrationSchema = z\.object\(/);
-    expect(appSource).toMatch(/type RegistrationValues = z\.infer<typeof registrationSchema>;/);
-    expect(appSource).toMatch(/resolver: zodResolver\(registrationSchema\)/);
-    expect(appSource).toMatch(/useForm<RegistrationValues>\(/);
+    expect(nextState).not.toBe(INITIAL_CART);
+    expect(INITIAL_CART).toHaveLength(2);
+    expect(nextState.at(-1)?.id).toBe('mug');
+  });
+
+  it('clears the cart through the CLEAR action', () => {
+    expect(cartReducer(INITIAL_CART, { type: 'CLEAR' })).toEqual([]);
+  });
+});
+
+describe('Topic 12.1 source checks', () => {
+  const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
+  const reducerSource = readFileSync(resolve(process.cwd(), 'src/cartReducer.ts'), 'utf8');
+
+  it('uses useReducer instead of useState for the cart state', () => {
+    expect(appSource).toMatch(/const \[cart, dispatch\] = useReducer\(cartReducer, INITIAL_CART\)/);
+  });
+
+  it('models cart actions as a discriminated union and handles them with a switch', () => {
+    expect(reducerSource).toMatch(/type CartAction =/);
+    expect(reducerSource).toMatch(/\| \{ type: 'ADD_ITEM'; product: CatalogProduct \}/);
+    expect(reducerSource).toMatch(/\| \{ type: 'REMOVE_ITEM'; itemId: string \}/);
+    expect(reducerSource).toMatch(
+      /\| \{ type: 'UPDATE_QUANTITY'; itemId: string; quantity: number \}/,
+    );
+    expect(reducerSource).toMatch(/\| \{ type: 'CLEAR' \}/);
+    expect(reducerSource).toMatch(/switch \(action\.type\)/);
   });
 });
