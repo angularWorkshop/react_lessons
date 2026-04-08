@@ -11,6 +11,7 @@ interface RegistrationValues {
 
 type RegistrationErrors = Partial<Record<keyof RegistrationValues, string>>;
 type RegistrationTouched = Partial<Record<keyof RegistrationValues, boolean>>;
+type SubmittedRegistration = Omit<RegistrationValues, 'role'> & { role: Role };
 
 const INITIAL_VALUES: RegistrationValues = {
   name: '',
@@ -63,39 +64,75 @@ export function App(): ReactElement {
   const [values, setValues] = useState<RegistrationValues>(INITIAL_VALUES);
   const [errors, setErrors] = useState<RegistrationErrors>({});
   const [touched, setTouched] = useState<RegistrationTouched>({});
+  const [submittedRegistration, setSubmittedRegistration] = useState<SubmittedRegistration | null>(
+    null,
+  );
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.currentTarget;
     const fieldName = name as 'name' | 'email' | 'password';
 
-    setValues((currentValues) => ({
-      ...currentValues,
-      [fieldName]: value,
-    }));
+    setValues((currentValues) => {
+      const nextValues = {
+        ...currentValues,
+        [fieldName]: value,
+      };
+
+      if (touched[fieldName]) {
+        setErrors((currentErrors) => ({
+          ...currentErrors,
+          [fieldName]: validateField(fieldName, value),
+        }));
+      }
+
+      return nextValues;
+    });
   };
 
   const handleRoleChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     const { value } = event.currentTarget;
 
-    setValues((currentValues) => ({
-      ...currentValues,
-      role: value as Role | '',
-    }));
+    setValues((currentValues) => {
+      const nextRole = value as Role | '';
+
+      if (touched.role) {
+        setErrors((currentErrors) => ({
+          ...currentErrors,
+          role: validateField('role', nextRole),
+        }));
+      }
+
+      return {
+        ...currentValues,
+        role: nextRole,
+      };
+    });
   };
 
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>): void => {
     const fieldName = event.currentTarget.name as 'name' | 'email' | 'password';
+    const fieldValue = event.currentTarget.value;
 
     setTouched((currentTouched) => ({
       ...currentTouched,
       [fieldName]: true,
     }));
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      [fieldName]: validateField(fieldName, fieldValue),
+    }));
   };
 
-  const handleRoleBlur = (_event: FocusEvent<HTMLSelectElement>): void => {
+  const handleRoleBlur = (event: FocusEvent<HTMLSelectElement>): void => {
+    const roleValue = event.currentTarget.value as Role | '';
+
     setTouched((currentTouched) => ({
       ...currentTouched,
       role: true,
+    }));
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      role: validateField('role', roleValue),
     }));
   };
 
@@ -112,9 +149,16 @@ export function App(): ReactElement {
     });
     setErrors(nextErrors);
 
-    if (!hasErrors(nextErrors)) {
-      // TODO: show a success state with the submitted profile summary.
+    if (hasErrors(nextErrors)) {
+      return;
     }
+
+    setSubmittedRegistration({
+      name: values.name.trim(),
+      email: values.email.trim(),
+      password: values.password,
+      role: values.role as Role,
+    });
   };
 
   return (
@@ -197,6 +241,25 @@ export function App(): ReactElement {
             Create account
           </button>
         </form>
+
+        {submittedRegistration ? (
+          <article className="success-card" aria-live="polite">
+            <p className="eyebrow">Profile ready</p>
+            <h2>Ready to onboard</h2>
+            <p>The form is valid and the typed submit handler collected every field.</p>
+            <ul className="summary-list">
+              <li>
+                <strong>Name:</strong> {submittedRegistration.name}
+              </li>
+              <li>
+                <strong>Email:</strong> {submittedRegistration.email}
+              </li>
+              <li>
+                <strong>Role:</strong> {submittedRegistration.role}
+              </li>
+            </ul>
+          </article>
+        ) : null}
       </section>
     </main>
   );

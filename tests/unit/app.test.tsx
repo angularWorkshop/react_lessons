@@ -49,7 +49,9 @@ describe('Topic 11.1 source checks', () => {
     expect(appSource).toMatch(/handleInputChange = \(event: ChangeEvent<HTMLInputElement>\)/);
     expect(appSource).toMatch(/handleRoleChange = \(event: ChangeEvent<HTMLSelectElement>\)/);
     expect(appSource).toMatch(/handleInputBlur = \(event: FocusEvent<HTMLInputElement>\)/);
-    expect(appSource).toMatch(/handleRoleBlur = \(_event: FocusEvent<HTMLSelectElement>\)/);
+    expect(appSource).toMatch(
+      /handleRoleBlur = \((?:event|_event): FocusEvent<HTMLSelectElement>\)/,
+    );
     expect(appSource).toMatch(/handleSubmit = \(event: FormEvent<HTMLFormElement>\)/);
   });
 

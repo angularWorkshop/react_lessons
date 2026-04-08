@@ -18,6 +18,8 @@ Build a fully controlled registration form with typed event handlers.
 - the form state lives in a single `RegistrationValues` object
 - field and form validation reuse shared helper functions
 - input, select, blur, and submit events stay strictly typed
+- blur handlers surface errors immediately instead of waiting for submit
+- valid submit renders a summary card with the typed form payload
 
 ## Scripts
 
