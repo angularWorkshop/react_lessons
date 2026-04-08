@@ -1,9 +1,21 @@
 import { useReducer, type ReactElement } from 'react';
 
-import { INITIAL_STATE, machineReducer } from './machineReducer';
+import {
+  INITIAL_STATE,
+  machineReducer,
+  type ActionByStatus,
+  type AsyncState,
+} from './machineReducer';
 
 export function App(): ReactElement {
   const [state, dispatch] = useReducer(machineReducer, INITIAL_STATE);
+
+  const dispatchTransition = <S extends AsyncState>(
+    currentState: S,
+    action: ActionByStatus[S['status']],
+  ): void => {
+    dispatch(action);
+  };
 
   return (
     <main className="app-shell">
@@ -21,7 +33,7 @@ export function App(): ReactElement {
             <div className="state-panel">
               <h2>Idle</h2>
               <p>No request has started yet.</p>
-              <button type="button" onClick={() => dispatch({ type: 'START' })}>
+              <button type="button" onClick={() => dispatchTransition(state, { type: 'START' })}>
                 Start loading
               </button>
             </div>
@@ -34,20 +46,28 @@ export function App(): ReactElement {
               <div className="machine-actions">
                 <button
                   type="button"
-                  onClick={() => dispatch({ type: 'RESOLVE', data: ['React Docs', 'Reducer Patterns'] })}
+                  onClick={() =>
+                    dispatchTransition(state, {
+                      type: 'RESOLVE',
+                      data: ['React Docs', 'Reducer Patterns'],
+                    })
+                  }
                 >
                   Resolve request
                 </button>
                 <button
                   type="button"
                   onClick={() =>
-                    dispatch({
+                    dispatchTransition(state, {
                       type: 'REJECT',
                       message: 'Network timeout while loading resources.',
                     })
                   }
                 >
                   Reject request
+                </button>
+                <button type="button" onClick={() => dispatchTransition(state, { type: 'RESET' })}>
+                  Reset machine
                 </button>
               </div>
             </div>
@@ -61,7 +81,7 @@ export function App(): ReactElement {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-              <button type="button" onClick={() => dispatch({ type: 'RESET' })}>
+              <button type="button" onClick={() => dispatchTransition(state, { type: 'RESET' })}>
                 Reset machine
               </button>
             </div>
@@ -71,17 +91,9 @@ export function App(): ReactElement {
             <div className="state-panel">
               <h2>Error</h2>
               <p>{state.message}</p>
-              <div className="machine-actions">
-                <button
-                  type="button"
-                  onClick={() => dispatch({ type: 'RESOLVE', data: ['Recovered without reset'] })}
-                >
-                  Resolve anyway
-                </button>
-                <button type="button" onClick={() => dispatch({ type: 'RESET' })}>
-                  Reset machine
-                </button>
-              </div>
+              <button type="button" onClick={() => dispatchTransition(state, { type: 'RESET' })}>
+                Reset machine
+              </button>
             </div>
           ) : null}
         </article>

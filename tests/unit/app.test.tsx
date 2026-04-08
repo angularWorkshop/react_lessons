@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { App } from '../../src/App';
-import { INITIAL_STATE, machineReducer, type AsyncState } from '../../src/machineReducer';
+import { INITIAL_STATE, machineReducer, type AsyncState, type MachineAction } from '../../src/machineReducer';
 
 describe('Topic 12.2 runtime', () => {
   it('renders the reducer machine in idle state', () => {
@@ -32,9 +32,7 @@ describe('Topic 12.2 runtime', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start loading' }));
     fireEvent.click(screen.getByRole('button', { name: 'Reject request' }));
     expect(screen.getByText('Current status: error')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Resolve anyway' }));
-    expect(screen.getByText('Current status: error')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Resolve anyway' })).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Reset machine' }));
     expect(screen.getByText('Current status: idle')).toBeInTheDocument();
@@ -44,10 +42,9 @@ describe('Topic 12.2 runtime', () => {
 describe('Topic 12.2 reducer', () => {
   it('keeps invalid error -> success transitions blocked inside the reducer', () => {
     const errorState: AsyncState = { status: 'error', message: 'Request failed.' };
+    const invalidAction = { type: 'RESOLVE', data: ['React Docs'] } as MachineAction;
 
-    expect(machineReducer(errorState, { type: 'RESOLVE', data: ['React Docs'] })).toEqual(
-      errorState,
-    );
+    expect(machineReducer(errorState, invalidAction)).toEqual(errorState);
   });
 
   it('resets back to the initial state', () => {
@@ -64,7 +61,7 @@ describe('Topic 12.2 source checks', () => {
     expect(reducerSource).toMatch(/type ActionByStatus = {/);
     expect(reducerSource).toMatch(/error:\s*\{ type: 'RESET' \}/);
     expect(reducerSource).toMatch(
-      /function transition<S extends AsyncState>\(state: S, action: ActionByStatus\[S\['status'\]\]\)/,
+      /function transition<S extends AsyncState>\(\s*state: S,\s*action: ActionByStatus\[S\['status'\]\]/,
     );
   });
 });
