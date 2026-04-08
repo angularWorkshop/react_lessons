@@ -51,7 +51,7 @@ describe('Topic 6.2 source checks', () => {
 
   it('uses one shared change handler for input and select fields', () => {
     expect(appSource).toMatch(
-      /handleChange = \(event: ChangeEvent<HTMLInputElement \| HTMLSelectElement>\)/,
+      /const handleChange = \(\s*event: ChangeEvent<HTMLInputElement \| HTMLSelectElement>,?\s*\): void =>/,
     );
   });
 

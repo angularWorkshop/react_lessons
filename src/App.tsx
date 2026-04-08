@@ -15,23 +15,23 @@ const INITIAL_FORM: FormState = {
 };
 
 export function App(): ReactElement {
-  // TODO: make the state generic: useState<FormState>(INITIAL_FORM)
-  const [form, setForm] = useState(INITIAL_FORM);
+  const [form, setForm] = useState<FormState>(INITIAL_FORM);
 
-  const handleFullNameChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setForm({ ...form, fullName: event.target.value });
-  };
+  const isFormField = (name: string): name is keyof FormState => name in INITIAL_FORM;
 
-  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setForm({ ...form, email: event.target.value });
-  };
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ): void => {
+    const { name, value } = event.target;
 
-  const handleTrackChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    setForm({ ...form, track: event.target.value });
-  };
+    if (!isFormField(name)) {
+      return;
+    }
 
-  const handleCityChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setForm({ ...form, city: event.target.value });
+    setForm((currentForm) => ({
+      ...currentForm,
+      [name]: value,
+    }));
   };
 
   return (
@@ -50,7 +50,7 @@ export function App(): ReactElement {
               <input
                 name="fullName"
                 value={form.fullName}
-                onChange={handleFullNameChange}
+                onChange={handleChange}
               />
             </label>
 
@@ -60,13 +60,13 @@ export function App(): ReactElement {
                 name="email"
                 type="email"
                 value={form.email}
-                onChange={handleEmailChange}
+                onChange={handleChange}
               />
             </label>
 
             <label className="field">
               <span>Track</span>
-              <select name="track" value={form.track} onChange={handleTrackChange}>
+              <select name="track" value={form.track} onChange={handleChange}>
                 <option value="Frontend">Frontend</option>
                 <option value="Backend">Backend</option>
                 <option value="Design">Design</option>
@@ -75,7 +75,7 @@ export function App(): ReactElement {
 
             <label className="field">
               <span>City</span>
-              <input name="city" value={form.city} onChange={handleCityChange} />
+              <input name="city" value={form.city} onChange={handleChange} />
             </label>
           </form>
 

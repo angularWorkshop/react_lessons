@@ -1,6 +1,6 @@
 # Topic 6.2: Typed Form State
 
-Starter version for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Build a typed form state object with `useState`.
 - update state through computed property names
 - keep a live summary card in sync with the form
 
-## What to finish
+## Solution highlights
 
-- type the form state explicitly with `useState<FormState>`
-- replace field-specific handlers with one typed `handleChange`
-- update the object through `[name]: value`
+- the form state uses `useState<FormState>`
+- one shared `handleChange` works for both `input` and `select`
+- updates happen through computed property names
 
 ## Scripts
 
