@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 10.1: Async View Component
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter version for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a reusable component that renders idle, loading, success, and error states.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- use a discriminated union `AsyncState<T>`
+- render the correct UI branch for each state
+- show a skeleton block for loading
+- show a retry button for error
+
+## What to finish
+
+- make `AsyncView` generic instead of tying it to one concrete data shape
+- wire the retry button to the callback from props
+- add an exhaustive state check so TypeScript guards every status branch
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`

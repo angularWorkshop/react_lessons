@@ -49,3 +49,73 @@ h1 {
   color: #475569;
   font-size: 1rem;
 }
+
+.async-shell {
+  width: min(100%, 760px);
+}
+
+.async-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.async-actions button,
+.retry-button {
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  color: white;
+  background: #0f172a;
+}
+
+.async-panel {
+  margin-top: 20px;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.94);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.async-panel h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.skeleton-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #e2e8f0, #cbd5e1, #e2e8f0);
+}
+
+.lesson-list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lesson-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background: white;
+}
+
+.lesson-list span {
+  color: #64748b;
+  font-weight: 700;
+}
