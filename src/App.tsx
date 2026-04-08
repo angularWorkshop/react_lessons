@@ -1,14 +1,21 @@
-import { useState, type ReactElement } from 'react';
+import { startTransition, useState, type ReactElement } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-type Role = 'student' | 'mentor' | 'admin';
+const registrationSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, 'Please enter your full name.'),
+  email: z.string().trim().email('Please enter a valid work email.'),
+  password: z
+    .string()
+    .regex(/^(?=.*\d).{8,}$/, 'Password must contain at least 8 characters.'),
+  role: z.string().min(1, 'Choose the role that matches the account.'),
+});
 
-interface RegistrationValues {
-  name: string;
-  email: string;
-  password: string;
-  role: Role | '';
-}
+type RegistrationValues = z.infer<typeof registrationSchema>;
 
 const DEFAULT_VALUES: RegistrationValues = {
   name: '',
@@ -19,17 +26,21 @@ const DEFAULT_VALUES: RegistrationValues = {
 
 export function App(): ReactElement {
   const [submittedValues, setSubmittedValues] = useState<RegistrationValues | null>(null);
+  const registrationForm = useForm<RegistrationValues>({
+    defaultValues: DEFAULT_VALUES,
+    mode: 'onBlur',
+    resolver: zodResolver(registrationSchema),
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegistrationValues>({
-    defaultValues: DEFAULT_VALUES,
-    mode: 'onBlur',
-  });
+  } = registrationForm;
 
   const onSubmit = (values: RegistrationValues): void => {
-    setSubmittedValues(values);
+    startTransition(() => {
+      setSubmittedValues(values);
+    });
   };
 
   return (
@@ -110,9 +121,9 @@ export function App(): ReactElement {
         </form>
 
         {submittedValues ? (
-          <article className="summary-card">
+          <article className="summary-card" aria-live="polite">
             <p className="eyebrow">Submit payload</p>
-            <h2>Form payload is ready</h2>
+            <h2>Form payload is typed from the schema</h2>
             <ul className="summary-list">
               <li>
                 <strong>Name:</strong> {submittedValues.name}

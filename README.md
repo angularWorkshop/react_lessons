@@ -18,6 +18,8 @@ Rebuild the signup flow with React Hook Form and schema-first validation.
 - one schema should define validation and TypeScript inference together
 - `zodResolver` should connect the schema to React Hook Form
 - the submit payload should stay typed all the way to the success state
+- the success card should be filled from `z.infer`-based form values
+- `startTransition` keeps the submit success state non-urgent
 
 ## Scripts
 
