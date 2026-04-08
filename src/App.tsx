@@ -1,142 +1,90 @@
-import { startTransition, useState, type ReactElement } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { useReducer, type ReactElement } from 'react';
 
-const registrationSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Please enter your full name.'),
-  email: z.string().trim().email('Please enter a valid work email.'),
-  password: z
-    .string()
-    .regex(/^(?=.*\d).{8,}$/, 'Password must contain at least 8 characters.'),
-  role: z.string().min(1, 'Choose the role that matches the account.'),
-});
-
-type RegistrationValues = z.infer<typeof registrationSchema>;
-
-const DEFAULT_VALUES: RegistrationValues = {
-  name: '',
-  email: '',
-  password: '',
-  role: '',
-};
+import { INITIAL_STATE, machineReducer } from './machineReducer';
 
 export function App(): ReactElement {
-  const [submittedValues, setSubmittedValues] = useState<RegistrationValues | null>(null);
-  const registrationForm = useForm<RegistrationValues>({
-    defaultValues: DEFAULT_VALUES,
-    mode: 'onBlur',
-    resolver: zodResolver(registrationSchema),
-  });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = registrationForm;
-
-  const onSubmit = (values: RegistrationValues): void => {
-    startTransition(() => {
-      setSubmittedValues(values);
-    });
-  };
+  const [state, dispatch] = useReducer(machineReducer, INITIAL_STATE);
 
   return (
     <main className="app-shell">
-      <section className="form-layout">
-        <div className="intro-card">
-          <p className="eyebrow">Topic 11.2</p>
-          <h1>React Hook Form + Zod</h1>
-          <p className="description">
-            Rebuild the same signup flow with React Hook Form, schema validation, and inferred
-            types.
-          </p>
-        </div>
+      <section className="machine-shell">
+        <p className="eyebrow">Topic 12.2</p>
+        <h1>Reducer state machine</h1>
+        <p className="description">
+          Model async loading as explicit states and reducer transitions.
+        </p>
 
-        <form className="panel-card" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <label className="field">
-            <span>Name</span>
-            <input
-              type="text"
-              placeholder="Ada Lovelace"
-              {...register('name', {
-                required: 'Please enter your full name.',
-                minLength: {
-                  value: 2,
-                  message: 'Please enter your full name.',
-                },
-              })}
-            />
-            {errors.name ? <small role="alert">{errors.name.message}</small> : null}
-          </label>
+        <article className="machine-card">
+          <p className="status-badge">Current status: {state.status}</p>
 
-          <label className="field">
-            <span>Email</span>
-            <input
-              type="email"
-              placeholder="ada@react.dev"
-              {...register('email', {
-                required: 'Please enter your email.',
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Email must be valid.',
-                },
-              })}
-            />
-            {errors.email ? <small role="alert">{errors.email.message}</small> : null}
-          </label>
+          {state.status === 'idle' ? (
+            <div className="state-panel">
+              <h2>Idle</h2>
+              <p>No request has started yet.</p>
+              <button type="button" onClick={() => dispatch({ type: 'START' })}>
+                Start loading
+              </button>
+            </div>
+          ) : null}
 
-          <label className="field">
-            <span>Password</span>
-            <input
-              type="password"
-              placeholder="8+ chars"
-              {...register('password', {
-                required: 'Please enter a password.',
-                minLength: {
-                  value: 8,
-                  message: 'Password must contain at least 8 characters.',
-                },
-              })}
-            />
-            {errors.password ? <small role="alert">{errors.password.message}</small> : null}
-          </label>
+          {state.status === 'loading' ? (
+            <div className="state-panel">
+              <h2>Loading</h2>
+              <p>Choose whether the request resolves or fails.</p>
+              <div className="machine-actions">
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: 'RESOLVE', data: ['React Docs', 'Reducer Patterns'] })}
+                >
+                  Resolve request
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    dispatch({
+                      type: 'REJECT',
+                      message: 'Network timeout while loading resources.',
+                    })
+                  }
+                >
+                  Reject request
+                </button>
+              </div>
+            </div>
+          ) : null}
 
-          <label className="field">
-            <span>Role</span>
-            <select {...register('role')}>
-              <option value="">Select a role</option>
-              <option value="student">Student</option>
-              <option value="mentor">Mentor</option>
-              <option value="admin">Admin</option>
-            </select>
-            {errors.role ? <small role="alert">{errors.role.message}</small> : null}
-          </label>
+          {state.status === 'success' ? (
+            <div className="state-panel">
+              <h2>Success</h2>
+              <ul className="resource-list">
+                {state.data.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <button type="button" onClick={() => dispatch({ type: 'RESET' })}>
+                Reset machine
+              </button>
+            </div>
+          ) : null}
 
-          <button className="primary-button" type="submit">
-            Save with RHF
-          </button>
-        </form>
-
-        {submittedValues ? (
-          <article className="summary-card" aria-live="polite">
-            <p className="eyebrow">Submit payload</p>
-            <h2>Form payload is typed from the schema</h2>
-            <ul className="summary-list">
-              <li>
-                <strong>Name:</strong> {submittedValues.name}
-              </li>
-              <li>
-                <strong>Email:</strong> {submittedValues.email}
-              </li>
-              <li>
-                <strong>Role:</strong> {submittedValues.role}
-              </li>
-            </ul>
-          </article>
-        ) : null}
+          {state.status === 'error' ? (
+            <div className="state-panel">
+              <h2>Error</h2>
+              <p>{state.message}</p>
+              <div className="machine-actions">
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: 'RESOLVE', data: ['Recovered without reset'] })}
+                >
+                  Resolve anyway
+                </button>
+                <button type="button" onClick={() => dispatch({ type: 'RESET' })}>
+                  Reset machine
+                </button>
+              </div>
+            </div>
+          ) : null}
+        </article>
       </section>
     </main>
   );

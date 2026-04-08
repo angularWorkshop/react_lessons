@@ -4,54 +4,67 @@ import { resolve } from 'node:path';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { App } from '../../src/App';
+import { INITIAL_STATE, machineReducer, type AsyncState } from '../../src/machineReducer';
 
-describe('Topic 11.2 runtime', () => {
-  it('renders the RHF shell', () => {
+describe('Topic 12.2 runtime', () => {
+  it('renders the reducer machine in idle state', () => {
     render(<App />);
 
-    expect(screen.getByRole('heading', { name: 'React Hook Form + Zod' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Save with RHF' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Reducer state machine' })).toBeInTheDocument();
+    expect(screen.getByText('Current status: idle')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Start loading' })).toBeInTheDocument();
   });
 
-  it('shows schema validation messages for invalid submit', async () => {
+  it('moves from idle to loading to success', () => {
     render(<App />);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'A' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'ada' } });
-    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'short' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save with RHF' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Start loading' }));
+    expect(screen.getByText('Current status: loading')).toBeInTheDocument();
 
-    expect(await screen.findByText('Please enter your full name.')).toBeInTheDocument();
-    expect(screen.getByText('Please enter a valid work email.')).toBeInTheDocument();
-    expect(screen.getByText('Password must contain at least 8 characters.')).toBeInTheDocument();
-    expect(screen.getByText('Choose the role that matches the account.')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Resolve request' }));
+    expect(screen.getByText('Current status: success')).toBeInTheDocument();
+    expect(screen.getByText('React Docs')).toBeInTheDocument();
   });
 
-  it('renders a typed payload summary after a valid submit', async () => {
+  it('goes through error and requires reset before success', () => {
     render(<App />);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Ada Lovelace' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'ada@react.dev' } });
-    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'pass1234' } });
-    fireEvent.change(screen.getByLabelText('Role'), { target: { value: 'mentor' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save with RHF' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Start loading' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Reject request' }));
+    expect(screen.getByText('Current status: error')).toBeInTheDocument();
 
-    expect(
-      await screen.findByRole('heading', { name: 'Form payload is typed from the schema' }),
-    ).toBeInTheDocument();
-    expect(screen.getByText('Ada Lovelace')).toBeInTheDocument();
-    expect(screen.getByText('ada@react.dev')).toBeInTheDocument();
-    expect(screen.getByText('mentor')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Resolve anyway' }));
+    expect(screen.getByText('Current status: error')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reset machine' }));
+    expect(screen.getByText('Current status: idle')).toBeInTheDocument();
   });
 });
 
-describe('Topic 11.2 source checks', () => {
-  const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
+describe('Topic 12.2 reducer', () => {
+  it('keeps invalid error -> success transitions blocked inside the reducer', () => {
+    const errorState: AsyncState = { status: 'error', message: 'Request failed.' };
 
-  it('derives form types from a Zod schema and wires zodResolver into useForm', () => {
-    expect(appSource).toMatch(/const registrationSchema = z\.object\(/);
-    expect(appSource).toMatch(/type RegistrationValues = z\.infer<typeof registrationSchema>;/);
-    expect(appSource).toMatch(/resolver: zodResolver\(registrationSchema\)/);
-    expect(appSource).toMatch(/useForm<RegistrationValues>\(/);
+    expect(machineReducer(errorState, { type: 'RESOLVE', data: ['React Docs'] })).toEqual(
+      errorState,
+    );
+  });
+
+  it('resets back to the initial state', () => {
+    expect(machineReducer({ status: 'success', data: ['Done'] }, { type: 'RESET' })).toEqual(
+      INITIAL_STATE,
+    );
+  });
+});
+
+describe('Topic 12.2 source checks', () => {
+  const reducerSource = readFileSync(resolve(process.cwd(), 'src/machineReducer.ts'), 'utf8');
+
+  it('uses a status-to-action map for valid transitions', () => {
+    expect(reducerSource).toMatch(/type ActionByStatus = {/);
+    expect(reducerSource).toMatch(/error:\s*\{ type: 'RESET' \}/);
+    expect(reducerSource).toMatch(
+      /function transition<S extends AsyncState>\(state: S, action: ActionByStatus\[S\['status'\]\]\)/,
+    );
   });
 });

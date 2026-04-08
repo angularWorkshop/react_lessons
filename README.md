@@ -1,25 +1,23 @@
-# Topic 11.2: React Hook Form + Zod
+# Topic 12.2: Reducer State Machine
 
 Completed solution for the EduTec React course exercise.
 
 ## Goal
 
-Rebuild the signup flow with React Hook Form and schema-first validation.
+Model async loading as a reducer-driven state machine.
 
 ## Requirements
 
-- use `react-hook-form` for field registration and submit handling
-- define the form contract through a single Zod schema
-- infer the form value type through `z.infer`
-- render schema-driven validation errors in the UI
+- describe idle, loading, success, and error as explicit states
+- drive transitions through reducer actions
+- block invalid transitions such as `error -> success` without reset
+- render the current state in the UI
 
 ## Solution highlights
 
-- one schema should define validation and TypeScript inference together
-- `zodResolver` should connect the schema to React Hook Form
-- the submit payload should stay typed all the way to the success state
-- the success card should be filled from `z.infer`-based form values
-- `startTransition` keeps the submit success state non-urgent
+- keep transitions pure and centralized inside the reducer
+- make valid actions depend on the current status
+- render only the controls that match the active state
 
 ## Scripts
 
