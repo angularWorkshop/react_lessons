@@ -1,6 +1,6 @@
 # Topic 7.2: WebSocket Subscription
 
-Starter version for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Manage a socket-like subscription with `useEffect`.
 - reconnect when the URL changes
 - disconnect in cleanup to avoid leaks
 
-## What to finish
+## Solution highlights
 
-- fix the effect dependency array so it reacts to `selectedUrl`
-- return cleanup that closes the current connection
-- keep the message feed and lifecycle log in sync with the active URL
+- the effect depends on `selectedUrl`
+- cleanup disconnects the current connection before reconnect or unmount
+- lifecycle events and messages stay aligned with the active socket URL
 
 ## Scripts
 

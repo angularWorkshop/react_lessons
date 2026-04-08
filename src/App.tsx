@@ -19,8 +19,13 @@ export function App(): ReactElement {
 
     setEvents((currentEvents) => [`connect:${selectedUrl}`, ...currentEvents].slice(0, 6));
 
-    // TODO: reconnect when the URL changes and close the connection in cleanup.
-  }, []);
+    return () => {
+      connection.disconnect();
+      setEvents((currentEvents) =>
+        [`disconnect:${selectedUrl}`, ...currentEvents].slice(0, 6),
+      );
+    };
+  }, [selectedUrl]);
 
   return (
     <main className="app-shell">
