@@ -49,3 +49,48 @@ h1 {
   color: #475569;
   font-size: 1rem;
 }
+
+.modal-demo-shell {
+  width: min(100%, 760px);
+}
+
+.stack-card,
+.stack-modal {
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: 22px;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.stack-card h2 {
+  margin: 0 0 12px;
+}
+
+.stack-text {
+  margin: 0;
+  color: #334155;
+}
+
+.stack-card__footer {
+  margin-top: 14px;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.stack-modal {
+  position: relative;
+}
+
+.stack-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  background: #0f172a;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}

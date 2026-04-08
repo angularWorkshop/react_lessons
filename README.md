@@ -1,24 +1,24 @@
-# react_lessons
+# Topic 4.2: Children and Typed Callbacks
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter branch for the EduTec React exercise about `children` and typed props.
 
-Each exercise should branch from `main` into:
+## Task
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build two typed components:
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+- `Card` with `title`, optional `footer`, and `children`
+- `Modal` with `isOpen`, `onClose`, and `children`
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+## What to change
 
-## Scripts
+- type `children` as `ReactNode`
+- keep `footer` optional
+- type `onClose` as `() => void`
+- render `Modal` only when `isOpen` is `true`
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+## Expected checks
+
+- `Card` and `Modal` work together in the preview
+- `children` is typed correctly
+- the close action uses a typed callback
+- `npm run check` passes
