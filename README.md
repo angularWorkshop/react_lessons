@@ -1,24 +1,25 @@
-# react_lessons
+# Topic 5.1: Generic List Component
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter branch for the EduTec React exercise about generic props.
 
-Each exercise should branch from `main` into:
+## Task
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a reusable `List<T>` component that supports:
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+- `items: T[]`
+- `renderItem: (item: T) => ReactNode`
+- optional `keyExtractor: (item: T) => string`
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+## What to change
 
-## Scripts
+- turn the current list implementation into a generic component
+- keep it reusable for both `User[]` and `Product[]`
+- type `renderItem` through the same `T`
+- keep the runtime preview unchanged
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+## Expected checks
+
+- the page renders both data sets
+- `List<T>` is generic instead of hardcoded to one item shape
+- `renderItem` and `keyExtractor` use `T`
+- `npm run check` passes
