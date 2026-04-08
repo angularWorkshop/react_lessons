@@ -9,7 +9,9 @@ describe('Topic 1.2 runtime', () => {
   it('renders the code quality starter heading', () => {
     render(<App />);
 
-    expect(screen.getByRole('heading', { name: 'React code quality' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'React code quality' }),
+    ).toBeInTheDocument();
   });
 });
 

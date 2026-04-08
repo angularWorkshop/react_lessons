@@ -1,4 +1,6 @@
 import js from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -15,8 +17,13 @@ export default tseslint.config(
       sourceType: 'module',
       globals: globals.browser,
     },
+    plugins: {
+      'react-hooks': reactHooks,
+    },
     rules: {
       'no-console': 'off',
+      ...reactHooks.configs.recommended.rules,
     },
   },
+  eslintConfigPrettier,
 );
