@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 6.2: Typed Form State
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter version for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a typed form state object with `useState`.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- keep the whole form inside `useState<FormState>`
+- use one shared `onChange` handler for text and select fields
+- update state through computed property names
+- keep a live summary card in sync with the form
+
+## What to finish
+
+- type the form state explicitly with `useState<FormState>`
+- replace field-specific handlers with one typed `handleChange`
+- update the object through `[name]: value`
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
