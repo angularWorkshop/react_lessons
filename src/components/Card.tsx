@@ -1,9 +1,9 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 interface CardProps {
   title: string;
   footer?: string;
-  children: ReactElement;
+  children: ReactNode;
 }
 
 export function Card({ title, footer, children }: CardProps): ReactElement {

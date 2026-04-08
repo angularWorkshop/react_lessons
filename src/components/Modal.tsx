@@ -1,9 +1,9 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: string;
-  children: ReactElement;
+  onClose: () => void;
+  children: ReactNode;
 }
 
 export function Modal({ isOpen, onClose, children }: ModalProps): ReactElement | null {
@@ -13,7 +13,7 @@ export function Modal({ isOpen, onClose, children }: ModalProps): ReactElement |
 
   return (
     <section className="stack-modal" aria-label="Preview modal">
-      <button className="stack-modal__close" type="button" data-close-token={onClose}>
+      <button className="stack-modal__close" type="button" onClick={onClose}>
         Close
       </button>
       <div>{children}</div>
