@@ -1,6 +1,6 @@
 # Topic 10.1: Async View Component
 
-Starter version for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Build a reusable component that renders idle, loading, success, and error states
 - show a skeleton block for loading
 - show a retry button for error
 
-## What to finish
+## Solution highlights
 
-- make `AsyncView` generic instead of tying it to one concrete data shape
-- wire the retry button to the callback from props
-- add an exhaustive state check so TypeScript guards every status branch
+- `AsyncView<T>` stays generic and works with any success payload type
+- the error branch calls the provided retry callback
+- the status switch includes an exhaustive `never` check
 
 ## Scripts
 
