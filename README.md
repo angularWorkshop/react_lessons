@@ -1,6 +1,6 @@
 # Topic 7.1: Document Title Sync
 
-Starter version for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Synchronize `document.title` with component state through `useEffect`.
 - restore the original title when the component unmounts
 - keep the hook safe under StrictMode remounting
 
-## What to finish
+## Solution highlights
 
-- add cleanup to the hook
-- make the hook preserve the previous title before overwriting it
-- keep the counter UI controlled by React state
+- `useDocumentTitle(title: string)` owns the effect logic
+- cleanup restores the previous title on unmount
+- the counter keeps the current title derived from React state
 
 ## Scripts
 
