@@ -1,4 +1,4 @@
-import { Children, cloneElement, isValidElement, useState, type ReactElement, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, useState, type ReactElement, type ReactNode } from 'react';
 
 interface TabsRootProps {
   children: ReactNode;
@@ -8,14 +8,16 @@ interface TabsRootProps {
 interface TabsTabProps {
   value: string;
   children: ReactNode;
-  activeValue?: string;
-  onSelect?: (value: string) => void;
 }
 
 interface TabsPanelProps {
   value: string;
   children: ReactNode;
-  activeValue?: string;
+}
+
+interface TabsContextValue {
+  activeValue: string;
+  setActiveValue: (value: string) => void;
 }
 
 interface TabsComponent {
@@ -24,35 +26,53 @@ interface TabsComponent {
   Panel: (props: TabsPanelProps) => ReactElement | null;
 }
 
+const TabsContext = createContext<TabsContextValue | undefined>(undefined);
+
+function useTabsContext(): TabsContextValue {
+  const context = useContext(TabsContext);
+
+  if (!context) {
+    throw new Error('Tabs components must be used within Tabs');
+  }
+
+  return context;
+}
+
 function TabsRoot({ children, defaultValue }: TabsRootProps): ReactElement {
-  const [activeValue] = useState(defaultValue);
+  const [activeValue, setActiveValue] = useState(defaultValue);
+  const contextValue = useMemo<TabsContextValue>(
+    () => ({
+      activeValue,
+      setActiveValue,
+    }),
+    [activeValue],
+  );
 
   return (
-    <section className="tabs-shell">
-      {Children.map(children, (child) => {
-        if (!isValidElement<TabsTabProps | TabsPanelProps>(child)) {
-          return child;
-        }
-
-        return cloneElement(child, {
-          activeValue,
-        });
-      })}
-    </section>
+    <TabsContext.Provider value={contextValue}>
+      <section className="tabs-shell">{children}</section>
+    </TabsContext.Provider>
   );
 }
 
-function TabsTab({ value, children, activeValue }: TabsTabProps): ReactElement {
+function TabsTab({ value, children }: TabsTabProps): ReactElement {
+  const { activeValue, setActiveValue } = useTabsContext();
   const isActive = value === activeValue;
 
   return (
-    <button type="button" className={isActive ? 'tab-button tab-button--active' : 'tab-button'}>
+    <button
+      type="button"
+      className={isActive ? 'tab-button tab-button--active' : 'tab-button'}
+      onClick={() => setActiveValue(value)}
+    >
       {children}
     </button>
   );
 }
 
-function TabsPanel({ value, children, activeValue }: TabsPanelProps): ReactElement | null {
+function TabsPanel({ value, children }: TabsPanelProps): ReactElement | null {
+  const { activeValue } = useTabsContext();
+
   if (value !== activeValue) {
     return null;
   }
