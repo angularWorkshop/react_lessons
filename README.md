@@ -1,6 +1,6 @@
 # Capstone 2: Dashboard App
 
-Starter code for the EduTec React capstone.
+Completed solution for the EduTec React capstone.
 
 ## Goal
 
@@ -16,12 +16,14 @@ Build a typed dashboard SPA that combines the key ideas from the intermediate Re
 - section-level `ErrorBoundary`
 - light and dark theme through context
 
-## What is incomplete
+## What the solution demonstrates
 
-- the starter branch still exposes the dashboard without a real auth gate
-- the users table is not implemented as a compound component API yet
-- the edit form is missing schema-first validation through `zodResolver`
-- the section fallback does not reset the crashed area back into a working state
+- auth and theme are handled through dedicated contexts with safe hooks
+- dashboard access is protected through `RequireAuth`
+- users are loaded through TanStack Query with search, sorting, and pagination
+- the editor uses `react-hook-form` with `zodResolver`
+- the table is exposed through a compound `DataTable` API
+- each major section sits behind an `ErrorBoundary`, and the users section can recover with `Try again`
 
 ## Scripts
 

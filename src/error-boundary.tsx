@@ -2,6 +2,7 @@ import { Component, type ErrorInfo, type PropsWithChildren, type ReactElement, t
 
 interface ErrorBoundaryProps extends PropsWithChildren {
   title: string;
+  onReset?: () => void;
 }
 
 interface ErrorBoundaryState {
@@ -28,7 +29,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <p className="eyebrow">Section fallback</p>
           <h3>{this.props.title} failed</h3>
           <p>Reload the section to continue working.</p>
-          <button type="button">Try again</button>
+          <button
+            type="button"
+            onClick={() => {
+              this.setState({ hasError: false });
+              this.props.onReset?.();
+            }}
+          >
+            Try again
+          </button>
         </section>
       );
     }
