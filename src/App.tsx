@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent, type ReactElement } from 'react';
+import { useMemo, useState, useTransition, type ChangeEvent, type ReactElement } from 'react';
 
 const PRODUCTS = Array.from({ length: 50000 }, (_, index) => {
   const id = index + 1;
@@ -18,6 +18,7 @@ function filterProducts(searchQuery: string): string[] {
 export function App(): ReactElement {
   const [inputValue, setInputValue] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isPending, startTransition] = useTransition();
 
   const visibleProducts = useMemo(() => filterProducts(searchQuery), [searchQuery]);
   const resultsLabel = searchQuery ? `Results for "${searchQuery}"` : 'Trending inventory';
@@ -26,7 +27,9 @@ export function App(): ReactElement {
     const nextValue = event.target.value;
 
     setInputValue(nextValue);
-    setSearchQuery(nextValue);
+    startTransition(() => {
+      setSearchQuery(nextValue);
+    });
   }
 
   return (
@@ -49,7 +52,7 @@ export function App(): ReactElement {
         </label>
 
         <div className="results-summary">
-          <p>{resultsLabel}</p>
+          <p>{isPending ? 'Updating results...' : resultsLabel}</p>
           <strong>{visibleProducts.length} visible cards</strong>
         </div>
 

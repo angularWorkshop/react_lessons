@@ -1,6 +1,6 @@
 # Topic 19.1: startTransition Search
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Keep a large search UI responsive by moving the expensive list update into a tra
 - expose an `isPending` indicator while the list update is in flight
 - make all tests pass
 
-## What is incomplete
+## Solution highlights
 
-- the search query still updates synchronously
-- the component does not show a pending state yet
-- the implementation does not distinguish urgent input updates from low-priority list work
+- the input value stays urgent while the list update runs inside a transition
+- `isPending` exposes transition progress to the UI
+- search logic stays typed and reusable while the render path becomes more responsive
 
 ## Scripts
 
