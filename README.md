@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 14.1: Theme Context
 
-Base repository for EduTec React + TypeScript course exercises.
+Completed solution for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Model application theme with a typed context and a safe custom hook.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- create `ThemeContext` with `theme` and `toggleTheme`
+- expose a typed `useTheme()` hook
+- throw when a consumer is rendered outside the provider
+- avoid passing theme props through intermediate components
+
+## Solution highlights
+
+- context should remove prop drilling for global theme state
+- the custom hook should return a non-optional typed value
+- consumers should fail fast when used outside the provider tree
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
