@@ -6,8 +6,11 @@ interface User {
   role: 'admin' | 'editor';
 }
 
-interface AuthContextValue {
+interface AuthStateValue {
   user: User | null;
+}
+
+interface AuthActionsValue {
   login: () => void;
   logout: () => void;
 }
@@ -26,13 +29,24 @@ const DEMO_USER: User = {
   role: 'admin',
 };
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const AuthStateContext = createContext<AuthStateValue | undefined>(undefined);
+const AuthActionsContext = createContext<AuthActionsValue | undefined>(undefined);
 
-function useAuth(): AuthContextValue {
-  const context = useContext(AuthContext);
+function useAuthState(): AuthStateValue {
+  const context = useContext(AuthStateContext);
 
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+    throw new Error('useAuthState must be used within AuthProvider');
+  }
+
+  return context;
+}
+
+function useAuthActions(): AuthActionsValue {
+  const context = useContext(AuthActionsContext);
+
+  if (!context) {
+    throw new Error('useAuthActions must be used within AuthProvider');
   }
 
   return context;
@@ -41,20 +55,31 @@ function useAuth(): AuthContextValue {
 function AuthProvider({ children }: AuthProviderProps): ReactElement {
   const [user, setUser] = useState<User | null>(null);
 
-  const value = useMemo<AuthContextValue>(
+  const stateValue = useMemo<AuthStateValue>(
     () => ({
       user,
-      login: () => setUser(DEMO_USER),
-      logout: () => setUser(null),
     }),
     [user],
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const actionsValue = useMemo<AuthActionsValue>(
+    () => ({
+      login: () => setUser(DEMO_USER),
+      logout: () => setUser(null),
+    }),
+    [],
+  );
+
+  return (
+    <AuthStateContext.Provider value={stateValue}>
+      <AuthActionsContext.Provider value={actionsValue}>{children}</AuthActionsContext.Provider>
+    </AuthStateContext.Provider>
+  );
 }
 
 function AuthToolbar(): ReactElement {
-  const { user, login, logout } = useAuth();
+  const { user } = useAuthState();
+  const { login, logout } = useAuthActions();
 
   return (
     <header className="auth-toolbar">
@@ -77,11 +102,17 @@ function AuthToolbar(): ReactElement {
 }
 
 function RequireAuth({ children }: RequireAuthProps): ReactElement {
+  const { user } = useAuthState();
+
+  if (!user) {
+    return <section className="redirect-panel">Redirected to /login</section>;
+  }
+
   return <>{children}</>;
 }
 
 function AuthStatusPanel(): ReactElement {
-  const { user } = useAuth();
+  const { user } = useAuthState();
 
   return (
     <section className="status-panel">
@@ -92,7 +123,7 @@ function AuthStatusPanel(): ReactElement {
 }
 
 function PrivateDashboard(): ReactElement {
-  const { user } = useAuth();
+  const { user } = useAuthState();
 
   return (
     <section className="dashboard-panel">
