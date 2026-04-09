@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 17.1: withLogger HOC
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter code for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a typed `withLogger` higher-order component that logs props on every render.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- implement `withLogger<P>(Component)` as a generic HOC
+- keep the wrapped component props fully typed
+- assign a readable `displayName` for React DevTools
+- make all tests pass
+
+## What is incomplete
+
+- the current HOC logs props but does not preserve prop types through a generic API
+- the wrapped component does not expose a readable `displayName`
+- the implementation still behaves like a rough wrapper instead of a reusable typed utility
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
