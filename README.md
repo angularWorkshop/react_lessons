@@ -1,24 +1,30 @@
-# react_lessons
+# Topic 20.1: Component Tree Optimization
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter code for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Eliminate unnecessary re-renders in a deep component tree and verify the result with profiling tools.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- connect `why-did-you-render` in development mode
+- keep the tree wrapped in `Profiler`
+- stabilize props passed into memoized child components
+- make unrelated UI updates stop re-rendering deep leaves
+- make all tests pass
+
+## What is incomplete
+
+- the tree is memoized, but unstable object and function props still force deep re-renders
+- the profiler is mounted, but the component graph still updates more often than necessary
+- `why-did-you-render` is connected, but the render causes have not been removed yet
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
