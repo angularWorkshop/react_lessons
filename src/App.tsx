@@ -1,4 +1,13 @@
-import { useState, type FormEvent, type ReactElement, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useId,
+  useMemo,
+  useState,
+  type FormEvent,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 
 interface FormRootProps {
   children: ReactNode;
@@ -7,13 +16,9 @@ interface FormRootProps {
 
 interface FormFieldProps {
   label: string;
-  value?: string;
-  onChange?: (value: string) => void;
 }
 
-interface FormErrorProps {
-  error?: string | null;
-}
+interface FormErrorProps {}
 
 interface FormSubmitProps {
   children: ReactNode;
@@ -22,47 +27,97 @@ interface FormSubmitProps {
 interface FormComponent {
   (props: FormRootProps): ReactElement;
   Field: (props: FormFieldProps) => ReactElement;
-  Error: (props: FormErrorProps) => ReactElement | null;
+  Error: (_props: FormErrorProps) => ReactElement | null;
   Submit: (props: FormSubmitProps) => ReactElement;
 }
 
+interface FormContextValue {
+  inputId: string;
+  errorId: string;
+  email: string;
+  setEmail: (value: string) => void;
+  error: string | null;
+  isValid: boolean;
+}
+
+const FormContext = createContext<FormContextValue | undefined>(undefined);
+
+function useFormContext(): FormContextValue {
+  const context = useContext(FormContext);
+
+  if (!context) {
+    throw new Error('Form components must be used within Form');
+  }
+
+  return context;
+}
+
 function FormRoot({ children, onSubmit }: FormRootProps): ReactElement {
+  const [email, setEmail] = useState('');
+  const baseId = useId();
+  const error = email.includes('@') ? null : 'Enter a valid email';
+  const isValid = error === null;
+  const contextValue = useMemo<FormContextValue>(
+    () => ({
+      inputId: `${baseId}-email`,
+      errorId: `${baseId}-error`,
+      email,
+      setEmail,
+      error,
+      isValid,
+    }),
+    [baseId, email, error, isValid],
+  );
+
   return (
-    <form className="compound-form" onSubmit={onSubmit}>
-      {children}
-    </form>
+    <FormContext.Provider value={contextValue}>
+      <form className="compound-form" onSubmit={onSubmit}>
+        {children}
+      </form>
+    </FormContext.Provider>
   );
 }
 
-function FormField({ label, value = '', onChange }: FormFieldProps): ReactElement {
+function FormField({ label }: FormFieldProps): ReactElement {
+  const { inputId, errorId, email, setEmail, error } = useFormContext();
+
   return (
     <div className="field-block">
-      <label className="field-label" htmlFor="signup-email">
+      <label className="field-label" htmlFor={inputId}>
         {label}
       </label>
       <input
-        id="signup-email"
+        id={inputId}
         aria-label={label}
+        aria-describedby={error ? errorId : undefined}
         className="field-input"
-        value={value}
-        onChange={(event) => onChange?.(event.target.value)}
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
         placeholder="name@example.com"
       />
     </div>
   );
 }
 
-function FormError({ error }: FormErrorProps): ReactElement | null {
+function FormError(_props: FormErrorProps): ReactElement | null {
+  const { error, errorId } = useFormContext();
+
   if (!error) {
     return null;
   }
 
-  return <p className="field-error">{error}</p>;
+  return (
+    <p id={errorId} className="field-error">
+      {error}
+    </p>
+  );
 }
 
 function FormSubmit({ children }: FormSubmitProps): ReactElement {
+  const { isValid } = useFormContext();
+
   return (
-    <button type="submit" className="submit-button">
+    <button type="submit" className="submit-button" disabled={!isValid}>
       {children}
     </button>
   );
@@ -74,10 +129,7 @@ Form.Error = FormError;
 Form.Submit = FormSubmit;
 
 export function App(): ReactElement {
-  const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-
-  const error = email.includes('@') ? null : 'Enter a valid email';
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
@@ -94,8 +146,8 @@ export function App(): ReactElement {
         </p>
 
         <FormRoot onSubmit={handleSubmit}>
-          <Form.Field label="Email" value={email} onChange={setEmail} />
-          <Form.Error error={error} />
+          <Form.Field label="Email" />
+          <Form.Error />
           <Form.Submit>Create account</Form.Submit>
         </FormRoot>
 

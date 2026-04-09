@@ -1,6 +1,6 @@
 # Topic 16.2: Compound Form
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Build a typed compound form API with `Form.Field`, `Form.Error`, and `Form.Submi
 - keep a typed subcomponent API on `Form`
 - make all tests pass
 
-## What is incomplete
+## Solution highlights
 
-- form parts are still wired manually instead of sharing state through context
-- field and error are not linked through generated ids yet
-- submit state does not react to validity
+- form parts share metadata through internal context instead of manual prop wiring
+- the field and error stay linked through generated ids
+- submit state reacts to form validity without prop drilling
 
 ## Scripts
 
