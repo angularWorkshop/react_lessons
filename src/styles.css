@@ -1,7 +1,11 @@
 :root {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #0f172a;
-  background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  color: #102a43;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 28%),
+    linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  line-height: 1.5;
+  font-weight: 400;
 }
 
 * {
@@ -13,39 +17,110 @@ body {
   min-width: 320px;
 }
 
-.app-shell {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 32px;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-.hero-card {
-  width: min(100%, 560px);
+.app-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+.hero,
+.top-nav,
+.route-panel,
+.stat-card {
+  border: 1px solid rgba(148, 163, 184, 0.28);
   border-radius: 24px;
-  padding: 32px;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.hero-copy {
+  max-width: 58ch;
+  margin: 12px 0 0;
+}
+
+.hero-meta {
+  min-width: 220px;
+  font-size: 0.95rem;
 }
 
 .eyebrow {
-  margin: 0 0 12px;
-  font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  margin: 0 0 8px;
+  color: #0f766e;
   text-transform: uppercase;
-  color: #0284c7;
+  letter-spacing: 0.14em;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
-h1 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 1.05;
+.top-nav {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 20px;
 }
 
-.description {
-  margin: 0;
-  color: #475569;
-  font-size: 1rem;
+.top-nav a {
+  padding: 10px 14px;
+  border-radius: 14px;
+}
+
+.top-nav a.active {
+  background: #0f766e;
+  color: #f8fafc;
+}
+
+.route-panel {
+  padding: 24px;
+}
+
+.route-panel--heavy {
+  min-height: 280px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  padding: 18px;
+}
+
+.reports-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.reports-table th,
+.reports-table td {
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+@media (max-width: 720px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,24 +1,31 @@
-# react_lessons
+# Topic 21.1: Lazy Routes
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter code for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Split a route-based app into separate chunks and preload the heaviest route before navigation.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- use `React.lazy` for the heavy route pages
+- wrap the route tree in `Suspense` with a route-level skeleton fallback
+- preload the analytics route on link hover
+- add bundle analysis through `vite build --mode analyze`
+- make all tests pass
+
+## What is incomplete
+
+- the route pages are still imported eagerly into the initial bundle
+- there is no `Suspense` boundary around the route tree
+- hovering the analytics link does not trigger any preload
+- bundle analysis is not configured
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
