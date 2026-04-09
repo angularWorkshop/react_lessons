@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactElement } from 'react';
+import { useMemo, useRef, useState, type ReactElement } from 'react';
 
 type SortOrder = 'title' | 'price';
 
@@ -45,8 +45,10 @@ export function App(): ReactElement {
   const [themeCount, setThemeCount] = useState(0);
   const computationRunsRef = useRef(0);
 
-  computationRunsRef.current += 1;
-  const visibleProducts = getVisibleProducts(PRODUCTS, query, sortOrder);
+  const visibleProducts = useMemo(() => {
+    computationRunsRef.current += 1;
+    return getVisibleProducts(PRODUCTS, query, sortOrder);
+  }, [query, sortOrder]);
 
   return (
     <main className="app-shell">
