@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 15.1: useFetch with AbortController
 
-Base repository for EduTec React + TypeScript course exercises.
+Completed solution for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a reusable `useFetch<T>()` hook that prevents request races.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- return `data`, `loading`, and `error`
+- cancel the previous request when the URL changes
+- prevent stale slow responses from overwriting newer data
+- make all tests pass
+
+## Solution highlights
+
+- cleanup should abort the in-flight request
+- the hook API should stay generic through `useFetch<T>`
+- race conditions should be fixed in the hook, not in the component
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
