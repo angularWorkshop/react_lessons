@@ -1,6 +1,6 @@
 # Topic 17.1: withLogger HOC
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Build a typed `withLogger` higher-order component that logs props on every rende
 - assign a readable `displayName` for React DevTools
 - make all tests pass
 
-## What is incomplete
+## Solution highlights
 
-- the current HOC logs props but does not preserve prop types through a generic API
-- the wrapped component does not expose a readable `displayName`
-- the implementation still behaves like a rough wrapper instead of a reusable typed utility
+- the HOC uses a generic signature to preserve wrapped component props
+- `displayName` is derived from the wrapped component for readable DevTools output
+- runtime logging stays simple while the public typing remains reusable
 
 ## Scripts
 

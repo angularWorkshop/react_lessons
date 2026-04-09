@@ -34,11 +34,17 @@ function ProfileCard({ name, role, isOnline, viewers }: ProfileCardProps): React
   );
 }
 
-function withLogger(Component: ComponentType<any>): ComponentType<any> {
-  return function WrappedComponent(props: any): ReactElement {
+function withLogger<P extends object>(Component: ComponentType<P>): ComponentType<P> {
+  const componentName = Component.displayName || Component.name || 'Component';
+
+  function WrappedComponent(props: P): ReactElement {
     console.log('[withLogger] render', props);
     return <Component {...props} />;
-  };
+  }
+
+  WrappedComponent.displayName = `withLogger(${componentName})`;
+
+  return WrappedComponent;
 }
 
 export const LoggedProfileCard = withLogger(ProfileCard);
