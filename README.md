@@ -1,6 +1,6 @@
 # Topic 19.2: useDeferredValue
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,11 +13,11 @@ Defer a heavy list update while keeping the current input value urgent.
 - expose a stale UI state while deferred results are catching up
 - make all tests pass
 
-## What is incomplete
+## Solution highlights
 
-- the list still renders from the urgent query directly
-- stale UI is not indicated visually yet
-- the component does not demonstrate the difference between urgent input and deferred list work
+- the heavy list reads from a deferred query instead of the urgent one
+- stale UI is surfaced visually while deferred results are catching up
+- the example shows how deferring differs from simply delaying input updates
 
 ## Scripts
 

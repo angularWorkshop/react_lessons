@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent, type ReactElement } from 'react';
+import { useDeferredValue, useMemo, useState, type ChangeEvent, type ReactElement } from 'react';
 
 const CUSTOMERS = Array.from({ length: 50000 }, (_, index) => {
   const id = index + 1;
@@ -17,8 +17,10 @@ function filterCustomers(query: string): string[] {
 
 export function App(): ReactElement {
   const [query, setQuery] = useState('');
+  const deferredQuery = useDeferredValue(query);
+  const isStale = query !== deferredQuery;
 
-  const visibleCustomers = useMemo(() => filterCustomers(query), [query]);
+  const visibleCustomers = useMemo(() => filterCustomers(deferredQuery), [deferredQuery]);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>): void {
     setQuery(event.target.value);
@@ -48,7 +50,11 @@ export function App(): ReactElement {
           <strong>{visibleCustomers.length} visible cards</strong>
         </div>
 
-        <ul className="deferred-grid" aria-label="Deferred search results">
+        <ul
+          className="deferred-grid"
+          aria-label="Deferred search results"
+          style={{ opacity: isStale ? 0.45 : 1 }}
+        >
           {visibleCustomers.map((customer) => (
             <li key={customer} className="deferred-card">
               <span className="deferred-card__badge">CRM</span>
