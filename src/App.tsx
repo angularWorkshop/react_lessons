@@ -1,4 +1,4 @@
-import { memo, useRef, useState, type ReactElement } from 'react';
+import { memo, useCallback, useRef, useState, type ReactElement } from 'react';
 
 interface LessonChipProps {
   selectedId: string;
@@ -45,9 +45,9 @@ export function App(): ReactElement {
   const [selectedId, setSelectedId] = useState('hooks');
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
-  const handleSelect = (nextId: string): void => {
+  const handleSelect = useCallback((nextId: string): void => {
     setSelectedId(nextId);
-  };
+  }, []);
 
   return (
     <main className="app-shell">
