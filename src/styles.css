@@ -1,7 +1,9 @@
 :root {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #0f172a;
-  background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+  font-family: 'Instrument Sans', 'Segoe UI', sans-serif;
+  color: #132238;
+  background:
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.25), transparent 26%),
+    linear-gradient(180deg, #f8fafc 0%, #dbeafe 100%);
 }
 
 * {
@@ -13,25 +15,29 @@ body {
   min-width: 320px;
 }
 
+button,
+input {
+  font: inherit;
+}
+
 .app-shell {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
   padding: 32px;
 }
 
-.hero-card {
-  width: min(100%, 560px);
-  border-radius: 24px;
+.memo-shell {
+  width: min(100%, 920px);
+  margin: 0 auto;
   padding: 32px;
-  background: rgba(255, 255, 255, 0.88);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.86);
   border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
 }
 
 .eyebrow {
   margin: 0 0 12px;
-  font-size: 0.875rem;
+  font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -40,12 +46,79 @@ body {
 
 h1 {
   margin: 0 0 12px;
-  font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 1.05;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  line-height: 1;
 }
 
 .description {
   margin: 0;
   color: #475569;
-  font-size: 1rem;
+}
+
+.toolbar {
+  margin-top: 24px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.2fr) auto auto;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span,
+.item-list strong {
+  font-weight: 700;
+}
+
+.field input {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  padding: 13px 14px;
+}
+
+.toolbar button {
+  align-self: end;
+}
+
+button {
+  border: 0;
+  border-radius: 14px;
+  padding: 13px 16px;
+  cursor: pointer;
+  color: white;
+  background: #0f172a;
+}
+
+.stats-row {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #334155;
+  font-weight: 700;
+}
+
+.item-list {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.item-list li {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(239, 246, 255, 0.88);
+}
+
+@media (max-width: 860px) {
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
 }

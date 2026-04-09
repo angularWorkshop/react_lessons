@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 13.1: Expensive Filtering
 
-Base repository for EduTec React + TypeScript course exercises.
+Completed solution for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Optimize a large filtered catalog with `useMemo`.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- keep search and sort working on a large item list
+- avoid recomputing filtered results on unrelated renders
+- use the correct `useMemo` dependency list
+- make all tests pass
+
+## Solution highlights
+
+- the expensive filter and sort step should be memoized
+- unrelated UI state must not trigger recomputation
+- the dependency list should include only values used by the computation
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
