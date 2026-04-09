@@ -1,24 +1,29 @@
-# react_lessons
+# Topic 16.1: Compound Tabs
 
-Base repository for EduTec React + TypeScript course exercises.
+Completed solution for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a typed `Tabs` compound component with `Tabs.Tab` and `Tabs.Panel`.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- connect tabs and panels through context
+- keep a typed subcomponent API on `Tabs`
+- switch the active panel correctly
+- make all tests pass
+
+## Solution highlights
+
+- compound components should share internal state without prop drilling
+- subcomponents should stay discoverable through TypeScript
+- the panel tree should react to the active tab value
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
