@@ -1,99 +1,121 @@
 import { createContext, useContext, useMemo, useState, type ReactElement, type ReactNode } from 'react';
 
-type Theme = 'light' | 'dark';
-
-interface ThemeContextValue {
-  theme: Theme;
-  toggleTheme: () => void;
+interface User {
+  id: string;
+  name: string;
+  role: 'admin' | 'editor';
 }
 
-interface ThemeProviderProps {
+interface AuthContextValue {
+  user: User | null;
+  login: () => void;
+  logout: () => void;
+}
+
+interface AuthProviderProps {
   children: ReactNode;
 }
 
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+interface RequireAuthProps {
+  children: ReactNode;
+}
 
-export function useTheme(): ThemeContextValue {
-  const context = useContext(ThemeContext);
+const DEMO_USER: User = {
+  id: 'u-1',
+  name: 'Max',
+  role: 'admin',
+};
+
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+function useAuth(): AuthContextValue {
+  const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useTheme must be used within ThemeProvider');
+    throw new Error('useAuth must be used within AuthProvider');
   }
 
   return context;
 }
 
-function ThemeProvider({ children }: ThemeProviderProps): ReactElement {
-  const [theme, setTheme] = useState<Theme>('light');
+function AuthProvider({ children }: AuthProviderProps): ReactElement {
+  const [user, setUser] = useState<User | null>(null);
 
-  const value = useMemo<ThemeContextValue>(
+  const value = useMemo<AuthContextValue>(
     () => ({
-      theme,
-      toggleTheme: () => {
-        setTheme((current) => (current === 'light' ? 'dark' : 'light'));
-      },
+      user,
+      login: () => setUser(DEMO_USER),
+      logout: () => setUser(null),
     }),
-    [theme],
+    [user],
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-function Header(): ReactElement {
-  const { theme, toggleTheme } = useTheme();
+function AuthToolbar(): ReactElement {
+  const { user, login, logout } = useAuth();
 
   return (
-    <header className="page-header">
+    <header className="auth-toolbar">
       <div>
-        <p className="eyebrow">Topic 14.1</p>
-        <h1>Theme context workspace</h1>
+        <p className="eyebrow">Topic 14.2</p>
+        <h1>Auth context workspace</h1>
       </div>
 
-      <button type="button" className="theme-toggle" onClick={toggleTheme}>
-        Switch to {theme === 'light' ? 'dark' : 'light'}
-      </button>
+      {user ? (
+        <button type="button" className="auth-button auth-button--secondary" onClick={logout}>
+          Sign out
+        </button>
+      ) : (
+        <button type="button" className="auth-button" onClick={login}>
+          Sign in
+        </button>
+      )}
     </header>
   );
 }
 
-function ThemeCard(): ReactElement {
-  const { theme } = useTheme();
+function RequireAuth({ children }: RequireAuthProps): ReactElement {
+  return <>{children}</>;
+}
+
+function AuthStatusPanel(): ReactElement {
+  const { user } = useAuth();
 
   return (
-    <article className={theme === 'dark' ? 'preview-card preview-card--dark' : 'preview-card preview-card--light'}>
-      <p className="card-label">Current theme</p>
-      <h2>{theme === 'light' ? 'Light surface' : 'Dark surface'}</h2>
-      <p className="description">
-        Buttons and cards should react to the active theme without passing theme props through the whole tree.
-      </p>
-    </article>
+    <section className="status-panel">
+      <h2>Auth status</h2>
+      <p>{user ? `Signed in as ${user.name}` : 'Guest session'}</p>
+    </section>
   );
 }
 
-export function ThemePreviewBadge(): ReactElement {
-  const { theme } = useTheme();
-
-  return <span className="theme-badge">Theme: {theme}</span>;
-}
-
-function ThemeWorkspace(): ReactElement {
-  const { theme } = useTheme();
+function PrivateDashboard(): ReactElement {
+  const { user } = useAuth();
 
   return (
-    <section className={theme === 'dark' ? 'theme-shell theme-shell--dark' : 'theme-shell theme-shell--light'}>
-      <Header />
+    <section className="dashboard-panel">
+      <p className="card-label">Protected area</p>
+      <h2>Private dashboard</h2>
+      <p>Current role: {user?.role ?? 'guest'}</p>
+      <p className="description">
+        Guests should be redirected before this content becomes visible.
+      </p>
+    </section>
+  );
+}
 
-      <div className="content-grid">
-        <ThemeCard />
-        <div className="info-panel">
-          <h2>Context checklist</h2>
-          <ul>
-            <li>No prop drilling for global theme state</li>
-            <li>Typed custom hook for consumers</li>
-            <li>Guard against usage outside provider</li>
-          </ul>
-          <ThemePreviewBadge />
-        </div>
+function AuthWorkspace(): ReactElement {
+  return (
+    <section className="auth-shell">
+      <AuthToolbar />
+
+      <div className="auth-grid">
+        <AuthStatusPanel />
+        <RequireAuth>
+          <PrivateDashboard />
+        </RequireAuth>
       </div>
     </section>
   );
@@ -102,9 +124,9 @@ function ThemeWorkspace(): ReactElement {
 export function App(): ReactElement {
   return (
     <main className="app-shell">
-      <ThemeProvider>
-        <ThemeWorkspace />
-      </ThemeProvider>
+      <AuthProvider>
+        <AuthWorkspace />
+      </AuthProvider>
     </main>
   );
 }

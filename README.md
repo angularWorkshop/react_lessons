@@ -1,23 +1,23 @@
-# Topic 14.1: Theme Context
+# Topic 14.2: Auth Context
 
 Completed solution for the EduTec React course exercise.
 
 ## Goal
 
-Model application theme with a typed context and a safe custom hook.
+Model auth state with context and guard protected UI with `RequireAuth`.
 
 ## Requirements
 
-- create `ThemeContext` with `theme` and `toggleTheme`
-- expose a typed `useTheme()` hook
-- throw when a consumer is rendered outside the provider
-- avoid passing theme props through intermediate components
+- keep `user`, `login`, and `logout` inside auth context
+- split auth state and auth actions for better consumer performance
+- redirect guests away from protected content
+- make all tests pass
 
 ## Solution highlights
 
-- context should remove prop drilling for global theme state
-- the custom hook should return a non-optional typed value
-- consumers should fail fast when used outside the provider tree
+- auth state and auth actions should not live in the same context
+- protected UI should render only for authenticated users
+- `RequireAuth` should make the redirect behavior explicit
 
 ## Scripts
 
