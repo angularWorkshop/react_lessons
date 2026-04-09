@@ -26,6 +26,15 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     return { hasError: true };
   }
 
+  public componentDidCatch(error: Error, info: ErrorInfo): void {
+    console.error('[ErrorBoundary] captured', error.message, info.componentStack);
+  }
+
+  private handleRetry = (): void => {
+    this.setState({ hasError: false });
+    this.props.onRetry?.();
+  };
+
   public render(): ReactNode {
     if (this.state.hasError) {
       return (
@@ -35,7 +44,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           <p className="fallback-card__text">
             The route crashed during rendering. Add retry logic so the boundary can recover.
           </p>
-          <button type="button" className="fallback-card__button" onClick={() => undefined}>
+          <button type="button" className="fallback-card__button" onClick={this.handleRetry}>
             Try again
           </button>
         </section>

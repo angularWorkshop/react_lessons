@@ -1,6 +1,6 @@
 # Topic 18.1: Global Error Boundary
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -14,11 +14,11 @@ Wrap the app routes in an error boundary with a fallback UI and a working retry 
 - log the captured error to the console as a Sentry-like placeholder
 - make all tests pass
 
-## What is incomplete
+## Solution highlights
 
-- the fallback UI appears, but retry does not recover the app
-- the boundary does not log captured errors yet
-- the implementation is missing the full reset flow expected from a reusable boundary
+- the boundary catches render errors through a class-based API
+- retry resets the boundary and lets the route recover cleanly
+- `componentDidCatch` logs the error as a lightweight Sentry-style placeholder
 
 ## Scripts
 
