@@ -1,24 +1,30 @@
-# react_lessons
+# Topic 18.1: Global Error Boundary
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter code for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Wrap the app routes in an error boundary with a fallback UI and a working retry flow.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- catch rendering errors inside a global `ErrorBoundary`
+- show a readable fallback screen instead of a broken tree
+- wire the `Try again` button so the boundary can recover
+- log the captured error to the console as a Sentry-like placeholder
+- make all tests pass
+
+## What is incomplete
+
+- the fallback UI appears, but retry does not recover the app
+- the boundary does not log captured errors yet
+- the implementation is missing the full reset flow expected from a reusable boundary
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
