@@ -1,7 +1,7 @@
 :root {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: #0f172a;
-  background: linear-gradient(180deg, #ecfeff 0%, #cffafe 100%);
+  color: #111827;
+  background: linear-gradient(180deg, #fefce8 0%, #fde68a 100%);
 }
 
 * {
@@ -13,7 +13,8 @@ body {
   min-width: 320px;
 }
 
-button {
+button,
+input {
   font: inherit;
 }
 
@@ -22,14 +23,14 @@ button {
   padding: 32px;
 }
 
-.fetch-shell {
-  width: min(100%, 1040px);
+.query-shell {
+  width: min(100%, 980px);
   margin: 0 auto;
   padding: 32px;
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(14, 165, 233, 0.18);
-  box-shadow: 0 24px 64px rgba(8, 145, 178, 0.12);
+  border: 1px solid rgba(202, 138, 4, 0.2);
+  box-shadow: 0 24px 64px rgba(133, 77, 14, 0.12);
 }
 
 .eyebrow {
@@ -38,12 +39,12 @@ button {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #0891b2;
+  color: #ca8a04;
 }
 
 h1,
-h2,
-p {
+p,
+ul {
   margin: 0;
 }
 
@@ -54,51 +55,61 @@ h1 {
 
 .description {
   margin-top: 12px;
+  color: #713f12;
   max-width: 680px;
-  color: #155e75;
 }
 
-.control-row {
+.composer {
   display: flex;
   gap: 12px;
+  margin: 24px 0 18px;
   flex-wrap: wrap;
-  margin: 24px 0;
 }
 
-.action-button {
+.composer input {
+  flex: 1 1 320px;
+  min-width: 0;
+  border-radius: 16px;
+  border: 1px solid rgba(202, 138, 4, 0.24);
+  padding: 12px 14px;
+}
+
+.composer button,
+.todo-item button {
   border: none;
   border-radius: 999px;
-  padding: 12px 18px;
-  background: #0891b2;
-  color: #ecfeff;
+  padding: 12px 16px;
+  background: #ca8a04;
+  color: #fefce8;
   cursor: pointer;
 }
 
-.action-button--secondary {
-  background: #0f172a;
-}
-
-.status-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
 .status-card {
-  border-radius: 24px;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(14, 165, 233, 0.16);
+  border-radius: 20px;
+  padding: 18px;
+  background: rgba(255, 251, 235, 0.9);
+  border: 1px solid rgba(202, 138, 4, 0.16);
   display: grid;
-  gap: 10px;
+  gap: 6px;
 }
 
-.card-label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #0891b2;
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(202, 138, 4, 0.16);
 }
 
 @media (max-width: 760px) {
@@ -106,11 +117,12 @@ h1 {
     padding: 16px;
   }
 
-  .fetch-shell {
+  .query-shell {
     padding: 20px;
   }
 
-  .status-grid {
-    grid-template-columns: 1fr;
+  .todo-item {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

@@ -1,127 +1,136 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import { useState, type FormEvent, type ReactElement } from 'react';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
-interface UserProfile {
+interface TodoItem {
   id: string;
-  name: string;
-  role: string;
+  title: string;
 }
 
-interface UseFetchResult<T> {
-  data: T | null;
-  loading: boolean;
-  error: string | null;
-}
+const TODOS_QUERY_KEY = ['todos'];
+const queryClient = new QueryClient();
 
-const USER_FIXTURES: Record<string, { delay: number; value: UserProfile }> = {
-  '/api/users/slow': {
-    delay: 90,
-    value: { id: 'slow', name: 'Ada Lovelace', role: 'Mathematician' },
-  },
-  '/api/users/fast': {
-    delay: 20,
-    value: { id: 'fast', name: 'Grace Hopper', role: 'Computer Scientist' },
-  },
-};
+let todoSequence = 3;
+let todoStore: TodoItem[] = [
+  { id: 'todo-1', title: 'Refactor hooks' },
+  { id: 'todo-2', title: 'Ship type-safe forms' },
+];
 
-function fetchUserProfile(url: string, signal?: AbortSignal): Promise<UserProfile> {
-  return new Promise<UserProfile>((resolve, reject) => {
-    const fixture = USER_FIXTURES[url];
-
-    if (!fixture) {
-      reject(new Error(`Unknown URL: ${url}`));
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      resolve(fixture.value);
-    }, fixture.delay);
-
-    signal?.addEventListener(
-      'abort',
-      () => {
-        window.clearTimeout(timeoutId);
-        reject(new DOMException('The operation was aborted.', 'AbortError'));
-      },
-      { once: true },
-    );
+function wait(delay: number): Promise<void> {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, delay);
   });
 }
 
-export function useFetch<T>(url: string): UseFetchResult<T> {
-  const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+async function fetchTodos(): Promise<TodoItem[]> {
+  await wait(30);
+  return [...todoStore];
+}
 
-  useEffect(() => {
-    const controller = new AbortController();
-    setLoading(true);
-    setError(null);
+async function createTodo(title: string): Promise<TodoItem> {
+  await wait(60);
 
-    async function load(): Promise<void> {
-      try {
-        const response = await fetchUserProfile(url, controller.signal);
-        setData(response as T);
-      } catch (loadError) {
-        if (loadError instanceof DOMException && loadError.name === 'AbortError') {
-          return;
-        }
+  if (title.toLowerCase().includes('fail')) {
+    throw new Error('Server rejected the todo');
+  }
 
-        const message = loadError instanceof Error ? loadError.message : 'Unknown error';
-        setError(message);
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
+  const nextTodo: TodoItem = {
+    id: `todo-${todoSequence}`,
+    title,
+  };
+
+  todoSequence += 1;
+  todoStore = [...todoStore, nextTodo];
+
+  return nextTodo;
+}
+
+async function deleteTodo(id: string): Promise<void> {
+  await wait(40);
+  todoStore = todoStore.filter((todo) => todo.id !== id);
+}
+
+function TodosWorkspace(): ReactElement {
+  const queryClientApi = useQueryClient();
+  const [draft, setDraft] = useState('');
+
+  const todosQuery = useQuery({
+    queryKey: TODOS_QUERY_KEY,
+    queryFn: fetchTodos,
+  });
+
+  const addTodoMutation = useMutation({
+    mutationFn: createTodo,
+    onSuccess: () => {
+      setDraft('');
+      void queryClientApi.invalidateQueries({ queryKey: TODOS_QUERY_KEY });
+    },
+  });
+
+  const deleteTodoMutation = useMutation({
+    mutationFn: deleteTodo,
+  });
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+
+    const trimmedTitle = draft.trim();
+
+    if (!trimmedTitle) {
+      return;
     }
 
-    void load();
+    void addTodoMutation.mutateAsync(trimmedTitle);
+  }
 
-    return (): void => {
-      controller.abort();
-    };
-  }, [url]);
+  return (
+    <section className="query-shell">
+      <p className="eyebrow">Topic 15.2</p>
+      <h1>TanStack Query task board</h1>
+      <p className="description">
+        Move repeated fetch logic into TanStack Query and keep the task list in sync after mutations.
+      </p>
 
-  return { data, loading, error };
+      <form className="composer" onSubmit={handleSubmit}>
+        <input
+          aria-label="Todo title"
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          placeholder="Add a todo"
+        />
+        <button type="submit">Add todo</button>
+      </form>
+
+      <div className="status-card">
+        <p>Loading: {todosQuery.isLoading ? 'yes' : 'no'}</p>
+        <p>Error: {addTodoMutation.error instanceof Error ? addTodoMutation.error.message : 'none'}</p>
+      </div>
+
+      <ul className="todo-list">
+        {(todosQuery.data ?? []).map((todo) => (
+          <li key={todo.id} className="todo-item">
+            <span>{todo.title}</span>
+            <button type="button" onClick={() => deleteTodoMutation.mutate(todo.id)}>
+              Delete {todo.title}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 }
 
 export function App(): ReactElement {
-  const [url, setUrl] = useState('/api/users/slow');
-  const { data, loading, error } = useFetch<UserProfile>(url);
-
   return (
     <main className="app-shell">
-      <section className="fetch-shell">
-        <p className="eyebrow">Topic 15.1</p>
-        <h1>useFetch with request races</h1>
-        <p className="description">
-          Prevent stale requests from overwriting newer data when the URL changes quickly.
-        </p>
-
-        <div className="control-row">
-          <button type="button" className="action-button" onClick={() => setUrl('/api/users/slow')}>
-            Load slow profile
-          </button>
-          <button type="button" className="action-button action-button--secondary" onClick={() => setUrl('/api/users/fast')}>
-            Load fast profile
-          </button>
-        </div>
-
-        <div className="status-grid">
-          <article className="status-card">
-            <p className="card-label">Request state</p>
-            <p>URL: {url}</p>
-            <p>Loading: {loading ? 'yes' : 'no'}</p>
-            <p>Error: {error ?? 'none'}</p>
-          </article>
-
-          <article className="status-card">
-            <p className="card-label">Rendered data</p>
-            <h2>{data?.name ?? 'Waiting for data'}</h2>
-            <p>{data?.role ?? 'No role yet'}</p>
-          </article>
-        </div>
-      </section>
+      <QueryClientProvider client={queryClient}>
+        <TodosWorkspace />
+      </QueryClientProvider>
     </main>
   );
 }

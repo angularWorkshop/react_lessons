@@ -1,23 +1,23 @@
-# Topic 15.1: useFetch with AbortController
+# Topic 15.2: TanStack Query Mutations
 
 Completed solution for the EduTec React course exercise.
 
 ## Goal
 
-Build a reusable `useFetch<T>()` hook that prevents request races.
+Replace manual fetch state with TanStack Query and handle mutations correctly.
 
 ## Requirements
 
-- return `data`, `loading`, and `error`
-- cancel the previous request when the URL changes
-- prevent stale slow responses from overwriting newer data
-- make all tests pass
+- load todos through `useQuery`
+- add create and delete flows through `useMutation`
+- invalidate cache after mutations
+- support optimistic updates with rollback on error
 
 ## Solution highlights
 
-- cleanup should abort the in-flight request
-- the hook API should stay generic through `useFetch<T>`
-- race conditions should be fixed in the hook, not in the component
+- query cache should become the single source of truth for the list
+- optimistic updates should feel instant but still recover on failure
+- mutation side effects should live in TanStack Query handlers
 
 ## Scripts
 
