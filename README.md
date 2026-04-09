@@ -1,24 +1,33 @@
-# react_lessons
+# Capstone 2: Dashboard App
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter code for the EduTec React capstone.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a typed dashboard SPA that combines the key ideas from the intermediate React block in one project.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- auth context with sign in, sign out, and protected dashboard content
+- TanStack Query for loading users
+- filtering, sorting, and pagination in the users table
+- edit form built with React Hook Form and Zod
+- custom compound `DataTable`
+- section-level `ErrorBoundary`
+- light and dark theme through context
+
+## What is incomplete
+
+- the starter branch still exposes the dashboard without a real auth gate
+- the users table is not implemented as a compound component API yet
+- the edit form is missing schema-first validation through `zodResolver`
+- the section fallback does not reset the crashed area back into a working state
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
