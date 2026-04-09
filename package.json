@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:analyze": "vite build --mode analyze",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
     "test": "vitest run",
@@ -16,7 +17,8 @@
   },
   "dependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
@@ -26,7 +28,6 @@
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.0.4",
     "jsdom": "^27.0.1",
-    "react-router-dom": "^7.14.0",
     "rollup-plugin-visualizer": "^7.0.1",
     "typescript": "^5.9.3",
     "vite": "^7.1.7",

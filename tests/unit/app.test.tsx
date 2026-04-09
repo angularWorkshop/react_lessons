@@ -12,7 +12,7 @@ describe('Topic 21.1 runtime', () => {
 
     expect(screen.getByRole('heading', { name: 'Lazy routes workspace' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Analytics' })).toBeInTheDocument();
-    expect(screen.getByText('Bundle analysis script: not configured')).toBeInTheDocument();
+    expect(screen.getByText('Bundle analysis script: ready via npm run build:analyze')).toBeInTheDocument();
   });
 });
 

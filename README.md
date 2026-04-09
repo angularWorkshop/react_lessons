@@ -1,6 +1,6 @@
 # Topic 21.1: Lazy Routes
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -14,12 +14,12 @@ Split a route-based app into separate chunks and preload the heaviest route befo
 - add bundle analysis through `vite build --mode analyze`
 - make all tests pass
 
-## What is incomplete
+## What the solution demonstrates
 
-- the route pages are still imported eagerly into the initial bundle
-- there is no `Suspense` boundary around the route tree
-- hovering the analytics link does not trigger any preload
-- bundle analysis is not configured
+- heavy route pages are loaded through `React.lazy`
+- the route tree is wrapped in `Suspense` with a route-level skeleton fallback
+- hovering the analytics link triggers a cached preload before navigation
+- `npm run build:analyze` produces a split-build report through `rollup-plugin-visualizer`
 
 ## Scripts
 
