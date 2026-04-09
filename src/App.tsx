@@ -1,10 +1,12 @@
 import {
   Profiler,
   memo,
+  useCallback,
+  useMemo,
+  useRef,
   useState,
   type PropsWithChildren,
   type ReactElement,
-  type ReactNode,
 } from 'react';
 
 interface ThemeConfig {
@@ -137,25 +139,37 @@ const DashboardPage = memo(function DashboardPage({
 });
 
 export function App(): ReactElement {
+  const initializedRef = useRef(false);
   const [bannerVisible, setBannerVisible] = useState(false);
-  const [lastProfileSummary, setLastProfileSummary] = useState('No profiler events yet');
   const [lastInspection, setLastInspection] = useState('Nothing inspected yet');
+  const lastProfileSummaryRef = useRef('Profiler will report the current tree health');
 
-  const themeConfig: ThemeConfig = { tone: 'Performance review', surface: 'glass' };
-  const summary: MetricsSummary = { title: 'Component tree audit', delta: '+12%' };
-  const activity = [...ACTIVITY_ITEMS];
-
-  function handleInspect(targetId: string): void {
-    setLastInspection(`Inspected: ${targetId}`);
+  if (!initializedRef.current) {
+    renderCountMap.clear();
+    initializedRef.current = true;
   }
 
-  function handleProfilerRender(
+  const themeConfig = useMemo<ThemeConfig>(
+    () => ({ tone: 'Performance review', surface: 'glass' }),
+    [],
+  );
+  const summary = useMemo<MetricsSummary>(
+    () => ({ title: 'Component tree audit', delta: '+12%' }),
+    [],
+  );
+  const activity = useMemo<ActivityItem[]>(() => ACTIVITY_ITEMS, []);
+
+  const handleInspect = useCallback((targetId: string): void => {
+    setLastInspection(`Inspected: ${targetId}`);
+  }, []);
+
+  const handleProfilerRender = useCallback((
     id: string,
     phase: 'mount' | 'update' | 'nested-update',
     actualDuration: number,
-  ): void {
-    setLastProfileSummary(`${id} ${phase} ${actualDuration.toFixed(2)}ms`);
-  }
+  ): void => {
+    lastProfileSummaryRef.current = `${id} ${phase} ${actualDuration.toFixed(2)}ms`;
+  }, []);
 
   return (
     <main className="app-shell">
@@ -168,7 +182,7 @@ export function App(): ReactElement {
       {bannerVisible ? <p className="audit-banner">Audit banner enabled</p> : null}
 
       <div className="meta-bar">
-        <p>{lastProfileSummary}</p>
+        <p>{lastProfileSummaryRef.current}</p>
         <p>{lastInspection}</p>
       </div>
 

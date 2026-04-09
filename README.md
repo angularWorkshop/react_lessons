@@ -1,6 +1,6 @@
 # Topic 20.1: Component Tree Optimization
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -14,11 +14,13 @@ Eliminate unnecessary re-renders in a deep component tree and verify the result 
 - make unrelated UI updates stop re-rendering deep leaves
 - make all tests pass
 
-## What is incomplete
+## What the solution demonstrates
 
-- the tree is memoized, but unstable object and function props still force deep re-renders
-- the profiler is mounted, but the component graph still updates more often than necessary
-- `why-did-you-render` is connected, but the render causes have not been removed yet
+- `why-did-you-render` is connected through a development-only bootstrap file
+- the dashboard tree stays wrapped in `Profiler`
+- derived objects and callbacks are stabilized with `useMemo` and `useCallback`
+- unrelated banner toggles do not re-render deep memoized leaves
+- the runtime UI still exposes inspection and profiler feedback without creating a render loop
 
 ## Scripts
 
