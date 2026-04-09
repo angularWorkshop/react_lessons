@@ -13,13 +13,19 @@ interface TodoItem {
 }
 
 const TODOS_QUERY_KEY = ['todos'];
-const queryClient = new QueryClient();
 
-let todoSequence = 3;
-let todoStore: TodoItem[] = [
+const INITIAL_TODOS: TodoItem[] = [
   { id: 'todo-1', title: 'Refactor hooks' },
   { id: 'todo-2', title: 'Ship type-safe forms' },
 ];
+
+let todoSequence = 3;
+let todoStore: TodoItem[] = [...INITIAL_TODOS];
+
+function resetTodoStore(): void {
+  todoSequence = 3;
+  todoStore = [...INITIAL_TODOS];
+}
 
 function wait(delay: number): Promise<void> {
   return new Promise((resolve) => {
@@ -62,6 +68,7 @@ function TodosWorkspace(): ReactElement {
   const todosQuery = useQuery({
     queryKey: TODOS_QUERY_KEY,
     queryFn: fetchTodos,
+    initialData: INITIAL_TODOS,
   });
 
   const addTodoMutation = useMutation({
@@ -85,7 +92,7 @@ function TodosWorkspace(): ReactElement {
       return;
     }
 
-    void addTodoMutation.mutateAsync(trimmedTitle);
+    addTodoMutation.mutate(trimmedTitle);
   }
 
   return (
@@ -103,7 +110,7 @@ function TodosWorkspace(): ReactElement {
           onChange={(event) => setDraft(event.target.value)}
           placeholder="Add a todo"
         />
-        <button type="submit">Add todo</button>
+        <button type="button" onClick={() => draft.trim() && addTodoMutation.mutate(draft.trim())}>Add todo</button>
       </form>
 
       <div className="status-card">
@@ -126,6 +133,11 @@ function TodosWorkspace(): ReactElement {
 }
 
 export function App(): ReactElement {
+  const [queryClient] = useState(() => {
+    resetTodoStore();
+    return new QueryClient();
+  });
+
   return (
     <main className="app-shell">
       <QueryClientProvider client={queryClient}>

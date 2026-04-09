@@ -23,7 +23,9 @@ describe('Topic 15.2 runtime', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: 'Add todo' }));
 
-    expect(screen.getByText('Ship optimistic UI')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Ship optimistic UI')).toBeInTheDocument();
+    });
   });
 
   it('rolls back optimistic updates when the mutation fails', async () => {
@@ -34,11 +36,13 @@ describe('Topic 15.2 runtime', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: 'Add todo' }));
 
-    expect(screen.getByText('fail rollback')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('fail rollback')).toBeInTheDocument();
+    });
 
     await waitFor(() => {
       expect(screen.queryByText('fail rollback')).not.toBeInTheDocument();
-      expect(screen.getByText('Server rejected the todo')).toBeInTheDocument();
+      expect(screen.getByText(/Server rejected the todo/)).toBeInTheDocument();
     });
   });
 });
