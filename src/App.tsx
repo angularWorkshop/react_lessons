@@ -1,121 +1,105 @@
-import { createContext, useContext, useMemo, useState, type ReactElement, type ReactNode } from 'react';
+import { useState, type FormEvent, type ReactElement, type ReactNode } from 'react';
 
-interface TabsRootProps {
+interface FormRootProps {
   children: ReactNode;
-  defaultValue: string;
+  onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
 }
 
-interface TabsTabProps {
-  value: string;
+interface FormFieldProps {
+  label: string;
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+interface FormErrorProps {
+  error?: string | null;
+}
+
+interface FormSubmitProps {
   children: ReactNode;
 }
 
-interface TabsPanelProps {
-  value: string;
-  children: ReactNode;
+interface FormComponent {
+  (props: FormRootProps): ReactElement;
+  Field: (props: FormFieldProps) => ReactElement;
+  Error: (props: FormErrorProps) => ReactElement | null;
+  Submit: (props: FormSubmitProps) => ReactElement;
 }
 
-interface TabsContextValue {
-  activeValue: string;
-  setActiveValue: (value: string) => void;
+function FormRoot({ children, onSubmit }: FormRootProps): ReactElement {
+  return (
+    <form className="compound-form" onSubmit={onSubmit}>
+      {children}
+    </form>
+  );
 }
 
-interface TabsComponent {
-  (props: TabsRootProps): ReactElement;
-  Tab: (props: TabsTabProps) => ReactElement;
-  Panel: (props: TabsPanelProps) => ReactElement | null;
+function FormField({ label, value = '', onChange }: FormFieldProps): ReactElement {
+  return (
+    <div className="field-block">
+      <label className="field-label" htmlFor="signup-email">
+        {label}
+      </label>
+      <input
+        id="signup-email"
+        aria-label={label}
+        className="field-input"
+        value={value}
+        onChange={(event) => onChange?.(event.target.value)}
+        placeholder="name@example.com"
+      />
+    </div>
+  );
 }
 
-const TabsContext = createContext<TabsContextValue | undefined>(undefined);
-
-function useTabsContext(): TabsContextValue {
-  const context = useContext(TabsContext);
-
-  if (!context) {
-    throw new Error('Tabs components must be used within Tabs');
+function FormError({ error }: FormErrorProps): ReactElement | null {
+  if (!error) {
+    return null;
   }
 
-  return context;
+  return <p className="field-error">{error}</p>;
 }
 
-function TabsRoot({ children, defaultValue }: TabsRootProps): ReactElement {
-  const [activeValue, setActiveValue] = useState(defaultValue);
-  const contextValue = useMemo<TabsContextValue>(
-    () => ({
-      activeValue,
-      setActiveValue,
-    }),
-    [activeValue],
-  );
-
+function FormSubmit({ children }: FormSubmitProps): ReactElement {
   return (
-    <TabsContext.Provider value={contextValue}>
-      <section className="tabs-shell">{children}</section>
-    </TabsContext.Provider>
-  );
-}
-
-function TabsTab({ value, children }: TabsTabProps): ReactElement {
-  const { activeValue, setActiveValue } = useTabsContext();
-  const isActive = value === activeValue;
-
-  return (
-    <button
-      type="button"
-      className={isActive ? 'tab-button tab-button--active' : 'tab-button'}
-      onClick={() => setActiveValue(value)}
-    >
+    <button type="submit" className="submit-button">
       {children}
     </button>
   );
 }
 
-function TabsPanel({ value, children }: TabsPanelProps): ReactElement | null {
-  const { activeValue } = useTabsContext();
-
-  if (value !== activeValue) {
-    return null;
-  }
-
-  return <article className="tab-panel">{children}</article>;
-}
-
-const Tabs = TabsRoot as TabsComponent;
-Tabs.Tab = TabsTab;
-Tabs.Panel = TabsPanel;
+const Form = FormRoot as FormComponent;
+Form.Field = FormField;
+Form.Error = FormError;
+Form.Submit = FormSubmit;
 
 export function App(): ReactElement {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const error = email.includes('@') ? null : 'Enter a valid email';
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    setSubmitted(true);
+  }
+
   return (
     <main className="app-shell">
-      <section className="compound-demo">
-        <p className="eyebrow">Topic 16.1</p>
-        <h1>Compound tabs workspace</h1>
+      <section className="form-demo">
+        <p className="eyebrow">Topic 16.2</p>
+        <h1>Compound form workspace</h1>
         <p className="description">
-          Build a typed compound component API without leaking tab state through props.
+          Connect fields, errors, and submit state through a typed compound form API.
         </p>
 
-        <Tabs defaultValue="overview">
-          <div className="tab-list" role="tablist" aria-label="Course sections">
-            <Tabs.Tab value="overview">Overview</Tabs.Tab>
-            <Tabs.Tab value="syllabus">Syllabus</Tabs.Tab>
-            <Tabs.Tab value="faq">FAQ</Tabs.Tab>
-          </div>
+        <FormRoot onSubmit={handleSubmit}>
+          <Form.Field label="Email" value={email} onChange={setEmail} />
+          <Form.Error error={error} />
+          <Form.Submit>Create account</Form.Submit>
+        </FormRoot>
 
-          <Tabs.Panel value="overview">
-            <h2>Overview</h2>
-            <p>React patterns, performance, and architecture for real applications.</p>
-          </Tabs.Panel>
-
-          <Tabs.Panel value="syllabus">
-            <h2>Syllabus</h2>
-            <p>Hooks, data fetching, component patterns, routing, and testing.</p>
-          </Tabs.Panel>
-
-          <Tabs.Panel value="faq">
-            <h2>FAQ</h2>
-            <p>How context, compounds, and reusable APIs fit together in one design system.</p>
-          </Tabs.Panel>
-        </Tabs>
+        <p className="submission-state">Submitted: {submitted ? 'yes' : 'no'}</p>
       </section>
     </main>
   );

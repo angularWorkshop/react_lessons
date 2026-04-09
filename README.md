@@ -1,23 +1,23 @@
-# Topic 16.1: Compound Tabs
+# Topic 16.2: Compound Form
 
-Completed solution for the EduTec React course exercise.
+Starter code for the EduTec React course exercise.
 
 ## Goal
 
-Build a typed `Tabs` compound component with `Tabs.Tab` and `Tabs.Panel`.
+Build a typed compound form API with `Form.Field`, `Form.Error`, and `Form.Submit`.
 
 ## Requirements
 
-- connect tabs and panels through context
-- keep a typed subcomponent API on `Tabs`
-- switch the active panel correctly
+- connect field ids and errors through context
+- disable submit while the form is invalid
+- keep a typed subcomponent API on `Form`
 - make all tests pass
 
-## Solution highlights
+## What is incomplete
 
-- compound components should share internal state without prop drilling
-- subcomponents should stay discoverable through TypeScript
-- the panel tree should react to the active tab value
+- form parts are still wired manually instead of sharing state through context
+- field and error are not linked through generated ids yet
+- submit state does not react to validity
 
 ## Scripts
 
