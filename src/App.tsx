@@ -53,22 +53,33 @@ export function useFetch<T>(url: string): UseFetchResult<T> {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     setLoading(true);
     setError(null);
 
     async function load(): Promise<void> {
       try {
-        const response = await fetchUserProfile(url);
+        const response = await fetchUserProfile(url, controller.signal);
         setData(response as T);
       } catch (loadError) {
+        if (loadError instanceof DOMException && loadError.name === 'AbortError') {
+          return;
+        }
+
         const message = loadError instanceof Error ? loadError.message : 'Unknown error';
         setError(message);
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     }
 
     void load();
+
+    return (): void => {
+      controller.abort();
+    };
   }, [url]);
 
   return { data, loading, error };
