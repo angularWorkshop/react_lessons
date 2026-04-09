@@ -11,26 +11,16 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-interface HeaderProps {
-  theme: Theme;
-  onToggleTheme: () => void;
-}
-
-interface ThemeCardProps {
-  theme: Theme;
-}
-
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function useTheme(): ThemeContextValue {
   const context = useContext(ThemeContext);
 
-  return (
-    context ?? {
-      theme: 'light',
-      toggleTheme: () => undefined,
-    }
-  );
+  if (!context) {
+    throw new Error('useTheme must be used within ThemeProvider');
+  }
+
+  return context;
 }
 
 function ThemeProvider({ children }: ThemeProviderProps): ReactElement {
@@ -49,7 +39,9 @@ function ThemeProvider({ children }: ThemeProviderProps): ReactElement {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
-function Header({ theme, onToggleTheme }: HeaderProps): ReactElement {
+function Header(): ReactElement {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <header className="page-header">
       <div>
@@ -57,14 +49,16 @@ function Header({ theme, onToggleTheme }: HeaderProps): ReactElement {
         <h1>Theme context workspace</h1>
       </div>
 
-      <button type="button" className="theme-toggle" onClick={onToggleTheme}>
+      <button type="button" className="theme-toggle" onClick={toggleTheme}>
         Switch to {theme === 'light' ? 'dark' : 'light'}
       </button>
     </header>
   );
 }
 
-function ThemeCard({ theme }: ThemeCardProps): ReactElement {
+function ThemeCard(): ReactElement {
+  const { theme } = useTheme();
+
   return (
     <article className={theme === 'dark' ? 'preview-card preview-card--dark' : 'preview-card preview-card--light'}>
       <p className="card-label">Current theme</p>
@@ -83,14 +77,14 @@ export function ThemePreviewBadge(): ReactElement {
 }
 
 function ThemeWorkspace(): ReactElement {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <section className={theme === 'dark' ? 'theme-shell theme-shell--dark' : 'theme-shell theme-shell--light'}>
-      <Header theme={theme} onToggleTheme={toggleTheme} />
+      <Header />
 
       <div className="content-grid">
-        <ThemeCard theme={theme} />
+        <ThemeCard />
         <div className="info-panel">
           <h2>Context checklist</h2>
           <ul>
