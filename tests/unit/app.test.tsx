@@ -1,61 +1,96 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
-import { App } from '../../src/App';
+import { Button } from '../../src/components/button';
+import { SignupForm } from '../../src/components/signup-form';
 
-describe('Topic 18.1 runtime', () => {
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+// ─── Button tests ──────────────────────────────────────────
 
-  beforeEach(() => {
-    consoleErrorSpy.mockClear();
+describe('Button', () => {
+  it('renders with the provided label', () => {
+    // TODO: render a Button and check that the label text is visible
+    expect('implement').toBe('this test');
   });
 
-  it('renders the route shell before any crash', () => {
-    render(<App />);
-
-    expect(screen.getByRole('heading', { name: 'Error boundary workspace' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Broken route' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Team health' })).toBeInTheDocument();
+  it('calls onClick when clicked', async () => {
+    // TODO: render a Button with a vi.fn() handler
+    // click it with userEvent and verify the handler was called once
+    expect('implement').toBe('this test');
   });
 
-  it('shows fallback UI when the broken route throws and recovers after retry', () => {
-    render(<App />);
-
-    fireEvent.click(screen.getByRole('button', { name: 'Broken route' }));
-
-    expect(screen.getByRole('heading', { name: 'Something went wrong' })).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
-
-    expect(screen.getByRole('heading', { name: 'Recovery complete' })).toBeInTheDocument();
+  it('does not call onClick when disabled', async () => {
+    // TODO: render a disabled Button with a vi.fn() handler
+    // click it with userEvent and verify the handler was NOT called
+    expect('implement').toBe('this test');
   });
 
-  it('logs the captured error through componentDidCatch', () => {
-    render(<App />);
-
-    fireEvent.click(screen.getByRole('button', { name: 'Broken route' }));
-
-    expect(
-      consoleErrorSpy.mock.calls.some(
-        ([firstArg]) => typeof firstArg === 'string' && firstArg.includes('[ErrorBoundary] captured'),
-      ),
-    ).toBe(true);
+  it('is marked as disabled in the DOM', () => {
+    // TODO: render a disabled Button and check that the button element is disabled
+    expect('implement').toBe('this test');
   });
 });
 
-describe('Topic 18.1 source checks', () => {
-  const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
+// ─── SignupForm tests ──────────────────────────────────────
 
-  it('uses a class-based error boundary with getDerivedStateFromError', () => {
-    expect(appSource).toMatch(/class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState>/);
-    expect(appSource).toMatch(/public static getDerivedStateFromError\(\): ErrorBoundaryState/);
+describe('SignupForm', () => {
+  it('renders the form with name and email fields', () => {
+    // TODO: render the form and verify both labeled inputs exist
+    // use getByLabelText
+    expect('implement').toBe('this test');
   });
 
-  it('implements componentDidCatch and a retry handler', () => {
-    expect(appSource).toMatch(/public componentDidCatch\(error: Error, info: ErrorInfo\): void/);
-    expect(appSource).toMatch(/private handleRetry = \(\): void =>/);
+  it('shows validation errors for empty fields', async () => {
+    // TODO: render the form, click submit without filling in fields
+    // verify that both error messages appear (role="alert")
+    expect('implement').toBe('this test');
+  });
+
+  it('shows a name error when name is too short', async () => {
+    // TODO: type a single character into name, valid email, submit
+    // verify the name error message appears
+    expect('implement').toBe('this test');
+  });
+
+  it('shows an email error when email has no @', async () => {
+    // TODO: type a valid name, invalid email (no @), submit
+    // verify the email error message appears
+    expect('implement').toBe('this test');
+  });
+
+  it('calls onSubmit with correct data on valid submission', async () => {
+    // TODO: fill in valid name and email, submit
+    // verify onSubmit was called with { name, email }
+    expect('implement').toBe('this test');
+  });
+
+  it('shows a success message after valid submission', async () => {
+    // TODO: fill in valid data, submit
+    // verify the success message with the user name is shown (role="status")
+    expect('implement').toBe('this test');
+  });
+});
+
+// ─── Source checks ─────────────────────────────────────────
+
+describe('Topic 25.1 — test quality checks', () => {
+  const testSource = readFileSync(resolve(process.cwd(), 'tests/unit/app.test.tsx'), 'utf8');
+
+  it('uses userEvent for interactions', () => {
+    expect(testSource).toMatch(/userEvent\.(click|type|clear)/);
+  });
+
+  it('does not rely on test IDs for queries', () => {
+    // Should not use getBy + TestId as a query strategy
+    const lines = testSource.split('\n');
+    const codeLines = lines.filter((l) => !l.trimStart().startsWith('//') && !l.includes('test IDs'));
+    const codeOnly = codeLines.join('\n');
+    expect(codeOnly).not.toMatch(/getByTestId\(/);
+  });
+
+  it('uses vi.fn() for callback mocking', () => {
+    expect(testSource).toMatch(/vi\.fn\(\)/);
   });
 });
