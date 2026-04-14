@@ -1,6 +1,6 @@
 # Topic 30.2: Dark Theme with CSS Custom Properties
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 

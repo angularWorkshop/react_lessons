@@ -8,7 +8,7 @@ export function useTheme(): { theme: Theme; toggleTheme: () => void } {
   const toggleTheme = useCallback(() => {
     setTheme((prev) => {
       const next = prev === 'light' ? 'dark' : 'light';
-      // TODO: apply the theme to the HTML element so CSS picks it up
+      document.documentElement.setAttribute('data-theme', next);
       return next;
     });
   }, []);
