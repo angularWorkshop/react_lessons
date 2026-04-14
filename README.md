@@ -1,6 +1,6 @@
 # Topic 22.1: Hooks Library
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -14,11 +14,12 @@ Design a reusable hooks library instead of scattering browser-specific logic acr
 - keep each hook in a dedicated file
 - make all tests pass
 
-## What is incomplete
+## What the solution demonstrates
 
-- `useLocalStorage` does not read from or write to `localStorage`
-- `useMediaQuery` does not subscribe to browser media query updates
-- `useClickOutside` does not attach a document-level listener
+- `useLocalStorage<T>` keeps generic state in sync with `localStorage`
+- `useMediaQuery` reacts to browser media query changes through `matchMedia`
+- `useClickOutside` handles document-level pointer events with cleanup
+- each hook stays reusable and isolated from component-specific UI concerns
 
 ## Scripts
 
