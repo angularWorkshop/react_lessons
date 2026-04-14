@@ -1,24 +1,18 @@
-# Topic 18.1: Global Error Boundary
+# Topic 26.1: Hook Tests — useLocalStorage & useInfiniteScroll
 
-Starter code for the EduTec React course exercise.
+Lesson branch for the EduTec React course exercise.
 
 ## Goal
 
-Wrap the app routes in an error boundary with a fallback UI and a working retry flow.
+Write tests for custom hooks using renderHook, act, and IntersectionObserver mocking.
 
 ## Requirements
 
-- catch rendering errors inside a global `ErrorBoundary`
-- show a readable fallback screen instead of a broken tree
-- wire the `Try again` button so the boundary can recover
-- log the captured error to the console as a Sentry-like placeholder
-- make all tests pass
-
-## What is incomplete
-
-- the fallback UI appears, but retry does not recover the app
-- the boundary does not log captured errors yet
-- the implementation is missing the full reset flow expected from a reusable boundary
+- test `useLocalStorage`: init, read, update, updater function, remove
+- test `useInfiniteScroll`: initial state, loading on observe, hasMore, reset
+- mock `IntersectionObserver` globally for the test environment
+- wrap state updates in `act()`
+- use `renderHook` from `@testing-library/react`
 
 ## Scripts
 
