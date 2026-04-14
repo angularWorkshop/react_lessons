@@ -1,6 +1,6 @@
 # Topic 30.1: CSS Modules UI Kit
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 

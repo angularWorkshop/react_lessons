@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-// TODO: import the CSS Module (Card.module.css) as `styles`
+import styles from './Card.module.css';
 
 interface CardProps {
   title: string;
@@ -9,14 +9,10 @@ interface CardProps {
 }
 
 export function Card({ title, children, elevated = false }: CardProps): ReactElement {
-  // TODO: use CSS Modules for className
-  // - if elevated is true, use styles.elevated (which composes from styles.card)
-  // - if elevated is false, use styles.card
-
   return (
-    <div>
-      <h3>{title}</h3>
-      <p>{children}</p>
+    <div className={elevated ? styles.elevated : styles.card}>
+      <h3 className={styles.header}>{title}</h3>
+      <p className={styles.body}>{children}</p>
     </div>
   );
 }

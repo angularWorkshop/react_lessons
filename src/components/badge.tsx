@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-// TODO: import the CSS Module (Badge.module.css) as `styles`
+import styles from './Badge.module.css';
 
 export type BadgeColor = 'info' | 'success' | 'warning';
 
@@ -10,7 +10,5 @@ interface BadgeProps {
 }
 
 export function Badge({ text, color = 'info' }: BadgeProps): ReactElement {
-  // TODO: use CSS Modules — styles[color] gives the right class
-
-  return <span>{text}</span>;
+  return <span className={styles[color]}>{text}</span>;
 }

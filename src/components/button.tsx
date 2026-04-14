@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react';
 
-// TODO: import the CSS Module (Button.module.css) as `styles`
-// TODO: import clsx
+import clsx from 'clsx';
+
+import styles from './Button.module.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger';
 
@@ -20,13 +21,13 @@ export function Button({
   disabled = false,
   onClick,
 }: ButtonProps): ReactElement {
-  // TODO: build className using CSS Modules + the clsx library
-  // - styles[variant] picks the right variant class
-  // - styles.fullWidth is added conditionally when fullWidth is true
-  // - combine them with the clsx helper
-
   return (
-    <button type="button" disabled={disabled} onClick={onClick}>
+    <button
+      type="button"
+      className={clsx(styles[variant], fullWidth && styles.fullWidth)}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {label}
     </button>
   );
