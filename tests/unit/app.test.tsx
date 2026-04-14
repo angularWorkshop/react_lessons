@@ -33,10 +33,10 @@ describe('Topic 27.1 runtime', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Request invite' }));
 
     await waitFor(() => {
-      expect(screen.getByText('taylor@signalforge.dev')).toBeInTheDocument();
+      expect(screen.getByText('Invite request sent for taylor@signalforge.dev.')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Invite request sent for taylor@signalforge.dev.')).toBeInTheDocument();
+    expect(screen.getByText('taylor@signalforge.dev')).toBeInTheDocument();
   });
 
   it('disables the submit button and swaps the label during the pending request', async () => {

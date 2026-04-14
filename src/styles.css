@@ -152,6 +152,15 @@ button {
   box-shadow: 0 16px 30px rgba(23, 32, 51, 0.18);
 }
 
+.submit-button:disabled {
+  cursor: wait;
+}
+
+.submit-button--pending {
+  background: linear-gradient(135deg, #d66a27, #f18f48);
+  box-shadow: 0 16px 30px rgba(214, 106, 39, 0.22);
+}
+
 .feedback {
   margin-top: 16px;
   padding: 12px 14px;

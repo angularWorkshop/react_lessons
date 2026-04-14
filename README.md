@@ -1,6 +1,6 @@
 # Topic 27.1: useActionState Waitlist
 
-Starter code for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 
@@ -13,12 +13,6 @@ Build a waitlist form with React 19 Actions, including pending submit feedback a
 - implement `useOptimistic` so new requests appear immediately in the queue
 - keep the action state fully typed and return readable success or error messages
 - make all tests pass
-
-## What is incomplete
-
-- the submit button does not read pending state from the form yet
-- new invites appear only after the async action resolves
-- the optimistic preview and rollback path are still missing
 
 ## Scripts
 

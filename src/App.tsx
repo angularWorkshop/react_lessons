@@ -1,4 +1,12 @@
-import { useActionState, useEffect, useRef, useState, type ReactElement } from 'react';
+import {
+  useActionState,
+  useEffect,
+  useOptimistic,
+  useRef,
+  useState,
+  type ReactElement,
+} from 'react';
+import { useFormStatus } from 'react-dom';
 
 type InviteStatus = 'confirmed' | 'sending';
 
@@ -58,7 +66,7 @@ function isValidEmail(email: string): boolean {
 
 function createInviteRecord(values: WaitlistValues, status: InviteStatus): InviteRecord {
   return {
-    id: `invite-${values.email}`,
+    id: `${status}-${values.email}`,
     name: values.name,
     email: values.email,
     status,
@@ -67,9 +75,15 @@ function createInviteRecord(values: WaitlistValues, status: InviteStatus): Invit
 }
 
 function SubmitButton(): ReactElement {
+  const { pending } = useFormStatus();
+
   return (
-    <button type="submit" className="submit-button">
-      Request invite
+    <button
+      type="submit"
+      className={pending ? 'submit-button submit-button--pending' : 'submit-button'}
+      disabled={pending}
+    >
+      {pending ? 'Sending request…' : 'Request invite'}
     </button>
   );
 }
@@ -77,9 +91,13 @@ function SubmitButton(): ReactElement {
 export function App(): ReactElement {
   const formRef = useRef<HTMLFormElement>(null);
   const [invites, setInvites] = useState<InviteRecord[]>(INITIAL_INVITES);
-
-  // TODO: replace this placeholder with useOptimistic so the new request shows up instantly.
-  const optimisticInvites = invites;
+  const [optimisticInvites, addOptimisticInvite] = useOptimistic(
+    invites,
+    (currentInvites: InviteRecord[], optimisticInvite: InviteRecord) => [
+      optimisticInvite,
+      ...currentInvites,
+    ],
+  );
 
   const [formState, formAction] = useActionState<WaitlistActionState, FormData>(
     async (_previousState, formData) => {
@@ -109,7 +127,8 @@ export function App(): ReactElement {
         } satisfies WaitlistActionState;
       }
 
-      // TODO: call addOptimisticInvite(...) before awaiting the server request.
+      const optimisticInvite = createInviteRecord(values, 'sending');
+      addOptimisticInvite(optimisticInvite);
       await sleep(180);
 
       if (values.email.endsWith('@blocked.dev')) {
