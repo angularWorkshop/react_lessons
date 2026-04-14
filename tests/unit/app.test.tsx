@@ -1,17 +1,39 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 
 import { useLocalStorage } from '../../src/hooks/use-local-storage';
 import { useInfiniteScroll } from '../../src/hooks/use-infinite-scroll';
 
 // ─── IntersectionObserver mock ─────────────────────────────
-// TODO: mock IntersectionObserver globally before all tests
-// The mock should:
-// - store the callback so tests can trigger it manually
-// - implement observe(), unobserve(), disconnect() as vi.fn()
-// - be assigned to globalThis.IntersectionObserver
+
+let observerCallback: IntersectionObserverCallback;
+
+const mockObserve = vi.fn();
+const mockUnobserve = vi.fn();
+const mockDisconnect = vi.fn();
+
+beforeAll(() => {
+  globalThis.IntersectionObserver = vi.fn((callback: IntersectionObserverCallback) => {
+    observerCallback = callback;
+    return {
+      observe: mockObserve,
+      unobserve: mockUnobserve,
+      disconnect: mockDisconnect,
+      root: null,
+      rootMargin: '',
+      thresholds: [],
+      takeRecords: () => [],
+    };
+  }) as unknown as typeof IntersectionObserver;
+});
+
+afterEach(() => {
+  mockObserve.mockClear();
+  mockUnobserve.mockClear();
+  mockDisconnect.mockClear();
+});
 
 // ─── useLocalStorage tests ─────────────────────────────────
 
@@ -21,36 +43,50 @@ beforeEach(() => {
 
 describe('useLocalStorage', () => {
   it('returns the initial value when localStorage is empty', () => {
-    // TODO: renderHook with useLocalStorage('key', 'default')
-    // check that result.current[0] is 'default'
-    expect('implement').toBe('this test');
+    const { result } = renderHook(() => useLocalStorage('key', 'default'));
+    expect(result.current[0]).toBe('default');
   });
 
   it('reads an existing value from localStorage', () => {
-    // TODO: set localStorage.setItem('key', JSON.stringify('saved'))
-    // renderHook and check that result.current[0] is 'saved'
-    expect('implement').toBe('this test');
+    localStorage.setItem('key', JSON.stringify('saved'));
+    const { result } = renderHook(() => useLocalStorage('key', 'default'));
+    expect(result.current[0]).toBe('saved');
   });
 
   it('updates value and syncs to localStorage', () => {
-    // TODO: renderHook, call setValue inside act()
-    // check that result.current[0] is updated
-    // check that localStorage.getItem('key') has the new value
-    expect('implement').toBe('this test');
+    const { result } = renderHook(() => useLocalStorage('key', 'init'));
+
+    act(() => {
+      result.current[1]('updated');
+    });
+
+    expect(result.current[0]).toBe('updated');
+    expect(JSON.parse(localStorage.getItem('key')!)).toBe('updated');
   });
 
   it('supports updater function in setValue', () => {
-    // TODO: renderHook with initial value 1
-    // call setValue((prev) => prev + 10) inside act()
-    // check that result.current[0] is 11
-    expect('implement').toBe('this test');
+    const { result } = renderHook(() => useLocalStorage('counter', 1));
+
+    act(() => {
+      result.current[1]((prev) => prev + 10);
+    });
+
+    expect(result.current[0]).toBe(11);
   });
 
   it('removes value from localStorage on removeValue', () => {
-    // TODO: renderHook, set a value, then call removeValue inside act()
-    // check that result.current[0] is back to initialValue
-    // check that localStorage.getItem('key') is null
-    expect('implement').toBe('this test');
+    const { result } = renderHook(() => useLocalStorage('key', 'init'));
+
+    act(() => {
+      result.current[1]('something');
+    });
+
+    act(() => {
+      result.current[2]();
+    });
+
+    expect(result.current[0]).toBe('init');
+    expect(localStorage.getItem('key')).toBeNull();
   });
 });
 
@@ -58,28 +94,90 @@ describe('useLocalStorage', () => {
 
 describe('useInfiniteScroll', () => {
   it('starts with empty items and hasMore true', () => {
-    // TODO: renderHook with a mock fetchPage
-    // check items is [], hasMore is true, loading is false
-    expect('implement').toBe('this test');
+    const fetchPage = vi.fn();
+    const { result } = renderHook(() =>
+      useInfiniteScroll({ fetchPage, pageSize: 10 }),
+    );
+
+    expect(result.current.items).toEqual([]);
+    expect(result.current.hasMore).toBe(true);
+    expect(result.current.loading).toBe(false);
   });
 
   it('loads items when the sentinel is observed', async () => {
-    // TODO: renderHook, call sentinelRef with a DOM node
-    // trigger the IntersectionObserver callback with isIntersecting: true
-    // wait for loading to finish, check that items are populated
-    expect('implement').toBe('this test');
+    const fetchPage = vi.fn().mockResolvedValue(['a', 'b', 'c']);
+    const { result } = renderHook(() =>
+      useInfiniteScroll({ fetchPage, pageSize: 3 }),
+    );
+
+    const sentinel = document.createElement('div');
+    act(() => {
+      result.current.sentinelRef(sentinel);
+    });
+
+    act(() => {
+      observerCallback(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+    });
+
+    await waitFor(() => {
+      expect(result.current.items).toEqual(['a', 'b', 'c']);
+    });
   });
 
   it('sets hasMore to false when page returns fewer items than pageSize', async () => {
-    // TODO: mock fetchPage to return fewer items than pageSize
-    // trigger loading, check that hasMore becomes false
-    expect('implement').toBe('this test');
+    const fetchPage = vi.fn().mockResolvedValue(['only-one']);
+    const { result } = renderHook(() =>
+      useInfiniteScroll({ fetchPage, pageSize: 10 }),
+    );
+
+    const sentinel = document.createElement('div');
+    act(() => {
+      result.current.sentinelRef(sentinel);
+    });
+
+    act(() => {
+      observerCallback(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+    });
+
+    await waitFor(() => {
+      expect(result.current.hasMore).toBe(false);
+    });
   });
 
   it('resets state when reset() is called', async () => {
-    // TODO: load some items, then call reset() inside act()
-    // check that items is [], hasMore is true, page is back to 0
-    expect('implement').toBe('this test');
+    const fetchPage = vi.fn().mockResolvedValue(['a', 'b']);
+    const { result } = renderHook(() =>
+      useInfiniteScroll({ fetchPage, pageSize: 2 }),
+    );
+
+    const sentinel = document.createElement('div');
+    act(() => {
+      result.current.sentinelRef(sentinel);
+    });
+
+    act(() => {
+      observerCallback(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+    });
+
+    await waitFor(() => {
+      expect(result.current.items.length).toBeGreaterThan(0);
+    });
+
+    act(() => {
+      result.current.reset();
+    });
+
+    expect(result.current.items).toEqual([]);
+    expect(result.current.hasMore).toBe(true);
   });
 });
 

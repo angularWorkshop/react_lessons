@@ -1,6 +1,6 @@
 # Topic 26.1: Hook Tests — useLocalStorage & useInfiniteScroll
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 
