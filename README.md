@@ -1,24 +1,30 @@
-# react_lessons
+# Topic 22.1: Hooks Library
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter code for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Design a reusable hooks library instead of scattering browser-specific logic across components.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- implement `useLocalStorage<T>(key, defaultValue)`
+- implement `useMediaQuery(query: string): boolean`
+- implement `useClickOutside(ref, handler)`
+- keep each hook in a dedicated file
+- make all tests pass
+
+## What is incomplete
+
+- `useLocalStorage` does not read from or write to `localStorage`
+- `useMediaQuery` does not subscribe to browser media query updates
+- `useClickOutside` does not attach a document-level listener
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
