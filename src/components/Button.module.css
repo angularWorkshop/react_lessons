@@ -1,0 +1,44 @@
+.base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.base:hover {
+  opacity: 0.85;
+}
+
+.base:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary {
+  composes: base;
+  background: #2563eb;
+  color: #fff;
+}
+
+.secondary {
+  composes: base;
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.danger {
+  composes: base;
+  background: #dc2626;
+  color: #fff;
+}
+
+.fullWidth {
+  width: 100%;
+}
