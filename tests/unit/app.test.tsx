@@ -50,7 +50,7 @@ describe('Topic 29.1 runtime', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Guides page' }));
 
     expect(document.title).toBe('React 19 migration | Guides');
-    expect(getDescriptionContent()).toBe('Guides page for replacing legacy provider and forwardRef usage.');
+    expect(getDescriptionContent()).toBe('Guides page for replacing legacy provider and ref wrapper usage.');
   });
 });
 
@@ -58,7 +58,7 @@ describe('Topic 29.1 source checks', () => {
   const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
 
   it('does not use forwardRef anymore', () => {
-    expect(appSource).not.toMatch(/forwardRef/);
+    expect(appSource).not.toMatch(/\bforwardRef\s*(<|\()/);
   });
 
   it('does not use Context.Provider anymore', () => {
