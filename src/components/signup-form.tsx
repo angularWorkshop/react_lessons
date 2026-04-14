@@ -67,7 +67,7 @@ export function SignupForm({ onSubmit }: SignupFormProps): ReactElement {
         <label htmlFor="signup-email">Email</label>
         <input
           id="signup-email"
-          type="email"
+          type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
