@@ -1,6 +1,6 @@
 # Topic 25.1: RTL — Button & Form Tests
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 

@@ -11,25 +11,29 @@ import { SignupForm } from '../../src/components/signup-form';
 
 describe('Button', () => {
   it('renders with the provided label', () => {
-    // TODO: render a Button and check that the label text is visible
-    expect('implement').toBe('this test');
+    render(<Button label="Save" onClick={() => undefined} />);
+    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
   });
 
   it('calls onClick when clicked', async () => {
-    // TODO: render a Button with a vi.fn() handler
-    // click it with userEvent and verify the handler was called once
-    expect('implement').toBe('this test');
+    const handleClick = vi.fn();
+    render(<Button label="Go" onClick={handleClick} />);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Go' }));
+    expect(handleClick).toHaveBeenCalledOnce();
   });
 
   it('does not call onClick when disabled', async () => {
-    // TODO: render a disabled Button with a vi.fn() handler
-    // click it with userEvent and verify the handler was NOT called
-    expect('implement').toBe('this test');
+    const handleClick = vi.fn();
+    render(<Button label="Nope" onClick={handleClick} disabled />);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Nope' }));
+    expect(handleClick).not.toHaveBeenCalled();
   });
 
   it('is marked as disabled in the DOM', () => {
-    // TODO: render a disabled Button and check that the button element is disabled
-    expect('implement').toBe('this test');
+    render(<Button label="Off" onClick={() => undefined} disabled />);
+    expect(screen.getByRole('button', { name: 'Off' })).toBeDisabled();
   });
 });
 
@@ -37,39 +41,59 @@ describe('Button', () => {
 
 describe('SignupForm', () => {
   it('renders the form with name and email fields', () => {
-    // TODO: render the form and verify both labeled inputs exist
-    // use getByLabelText
-    expect('implement').toBe('this test');
+    render(<SignupForm onSubmit={() => undefined} />);
+    expect(screen.getByLabelText('Name')).toBeInTheDocument();
+    expect(screen.getByLabelText('Email')).toBeInTheDocument();
   });
 
   it('shows validation errors for empty fields', async () => {
-    // TODO: render the form, click submit without filling in fields
-    // verify that both error messages appear (role="alert")
-    expect('implement').toBe('this test');
+    render(<SignupForm onSubmit={() => undefined} />);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Sign up' }));
+
+    const alerts = screen.getAllByRole('alert');
+    expect(alerts).toHaveLength(2);
   });
 
   it('shows a name error when name is too short', async () => {
-    // TODO: type a single character into name, valid email, submit
-    // verify the name error message appears
-    expect('implement').toBe('this test');
+    render(<SignupForm onSubmit={() => undefined} />);
+
+    await userEvent.type(screen.getByLabelText('Name'), 'A');
+    await userEvent.type(screen.getByLabelText('Email'), 'test@mail.com');
+    await userEvent.click(screen.getByRole('button', { name: 'Sign up' }));
+
+    expect(screen.getByText('Name must be at least 2 characters')).toBeInTheDocument();
   });
 
   it('shows an email error when email has no @', async () => {
-    // TODO: type a valid name, invalid email (no @), submit
-    // verify the email error message appears
-    expect('implement').toBe('this test');
+    render(<SignupForm onSubmit={() => undefined} />);
+
+    await userEvent.type(screen.getByLabelText('Name'), 'Alice');
+    await userEvent.type(screen.getByLabelText('Email'), 'invalid');
+    await userEvent.click(screen.getByRole('button', { name: 'Sign up' }));
+
+    expect(screen.getByText('Please enter a valid email')).toBeInTheDocument();
   });
 
   it('calls onSubmit with correct data on valid submission', async () => {
-    // TODO: fill in valid name and email, submit
-    // verify onSubmit was called with { name, email }
-    expect('implement').toBe('this test');
+    const handleSubmit = vi.fn();
+    render(<SignupForm onSubmit={handleSubmit} />);
+
+    await userEvent.type(screen.getByLabelText('Name'), 'Alice');
+    await userEvent.type(screen.getByLabelText('Email'), 'alice@test.com');
+    await userEvent.click(screen.getByRole('button', { name: 'Sign up' }));
+
+    expect(handleSubmit).toHaveBeenCalledWith({ name: 'Alice', email: 'alice@test.com' });
   });
 
   it('shows a success message after valid submission', async () => {
-    // TODO: fill in valid data, submit
-    // verify the success message with the user name is shown (role="status")
-    expect('implement').toBe('this test');
+    render(<SignupForm onSubmit={() => undefined} />);
+
+    await userEvent.type(screen.getByLabelText('Name'), 'Alice');
+    await userEvent.type(screen.getByLabelText('Email'), 'alice@test.com');
+    await userEvent.click(screen.getByRole('button', { name: 'Sign up' }));
+
+    expect(screen.getByRole('status')).toHaveTextContent('Thanks for signing up, Alice!');
   });
 });
 
