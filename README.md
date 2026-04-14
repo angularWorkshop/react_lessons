@@ -1,24 +1,18 @@
-# Topic 18.1: Global Error Boundary
+# Topic 24.1: Zustand Cart
 
-Starter code for the EduTec React course exercise.
+Lesson branch for the EduTec React course exercise.
 
 ## Goal
 
-Wrap the app routes in an error boundary with a fallback UI and a working retry flow.
+Build a shopping cart powered by Zustand with persist, devtools, and proper selectors.
 
 ## Requirements
 
-- catch rendering errors inside a global `ErrorBoundary`
-- show a readable fallback screen instead of a broken tree
-- wire the `Try again` button so the boundary can recover
-- log the captured error to the console as a Sentry-like placeholder
-- make all tests pass
-
-## What is incomplete
-
-- the fallback UI appears, but retry does not recover the app
-- the boundary does not log captured errors yet
-- the implementation is missing the full reset flow expected from a reusable boundary
+- implement all cart actions: `addItem`, `removeItem`, `updateQuantity`, `clearCart`
+- implement computed helpers: `totalItems`, `totalPrice`
+- wrap the store with `devtools` middleware
+- wrap the store with `persist` middleware (localStorage key: `"cart-storage"`)
+- components should use selectors to subscribe only to needed state
 
 ## Scripts
 

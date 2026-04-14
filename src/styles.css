@@ -2,8 +2,8 @@
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #0f172a;
   background:
-    radial-gradient(circle at top right, rgba(248, 113, 113, 0.18), transparent 28%),
-    linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+    radial-gradient(circle at top right, rgba(99, 102, 241, 0.18), transparent 28%),
+    linear-gradient(180deg, #eef2ff 0%, #e0e7ff 100%);
 }
 
 * {
@@ -30,28 +30,22 @@ button {
   padding: 32px;
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(251, 146, 60, 0.2);
-  box-shadow: 0 24px 64px rgba(154, 52, 18, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 24px 64px rgba(49, 46, 129, 0.12);
 }
 
-.workspace__eyebrow,
-.route-card__eyebrow,
-.fallback-card__eyebrow {
+.workspace__eyebrow {
   margin: 0;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #c2410c;
+  color: #4338ca;
 }
 
 .workspace h1,
 .workspace h2,
-.workspace p,
-.route-card h2,
-.route-card p,
-.fallback-card h2,
-.fallback-card p {
+.workspace p {
   margin: 0;
 }
 
@@ -64,63 +58,115 @@ button {
 .workspace__description {
   margin-top: 12px;
   max-width: 680px;
-  color: #7c2d12;
+  color: #3730a3;
 }
 
-.route-nav {
+.store-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.product-list h2,
+.cart-summary h2 {
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+}
+
+.product-list__items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
+  flex-direction: column;
   gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 24px;
 }
 
-.route-nav button,
-.fallback-card__button {
+.product-list__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #111827 0%, #1e293b 100%);
+  color: #f8fafc;
+}
+
+.product-list__name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.product-list__price {
+  font-variant-numeric: tabular-nums;
+}
+
+.product-list__item button {
   border: none;
   border-radius: 999px;
-  padding: 12px 18px;
-  background: #111827;
+  padding: 8px 16px;
+  background: #6366f1;
   color: #f8fafc;
   cursor: pointer;
+  font-weight: 600;
 }
 
-.route-card,
-.fallback-card {
-  margin-top: 28px;
-  border-radius: 24px;
-  padding: 28px;
+.cart-summary {
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  background: rgba(238, 242, 255, 0.6);
 }
 
-.route-card {
-  background: linear-gradient(145deg, #111827 0%, #1f2937 100%);
-  color: #f8fafc;
+.cart-summary__count,
+.cart-summary__total {
+  font-size: 1.05rem;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
 }
 
-.route-card--secondary {
-  background: linear-gradient(145deg, #431407 0%, #7c2d12 100%);
+.cart-summary__total {
+  font-weight: 700;
+  color: #4338ca;
 }
 
-.route-card--success {
-  background: linear-gradient(145deg, #14532d 0%, #166534 100%);
-}
-
-.route-card h2,
-.fallback-card h2 {
+.cart-summary__empty {
   margin-top: 16px;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  line-height: 1.02;
+  color: #64748b;
+  font-style: italic;
 }
 
-.route-card__text,
-.fallback-card__text {
-  margin-top: 12px;
-  max-width: 600px;
+.cart-summary__list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.fallback-card {
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  background: linear-gradient(145deg, #fff1f2 0%, #ffe4e6 100%);
-  color: #881337;
+.cart-summary__item {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.95rem;
+}
+
+.cart-summary__clear {
+  margin-top: 16px;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 999px;
+  padding: 10px 18px;
+  background: #fff;
+  color: #4338ca;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cart-summary__clear:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 @media (max-width: 760px) {
@@ -128,9 +174,11 @@ button {
     padding: 16px;
   }
 
-  .workspace,
-  .route-card,
-  .fallback-card {
+  .workspace {
     padding: 20px;
+  }
+
+  .store-layout {
+    grid-template-columns: 1fr;
   }
 }
