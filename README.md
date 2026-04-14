@@ -1,6 +1,6 @@
 # Topic 23.1: FSD Refactor
 
-Starter code for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 
@@ -8,11 +8,11 @@ Refactor a working dashboard into a cleaner Feature-Sliced Design structure.
 
 ## Requirements
 
-- move the app into `app/pages/widgets/features/entities/shared`
+- keep the app split into `pages/widgets/features/entities`
 - expose slice public APIs through `index.ts`
-- stop importing internal `ui/model/lib` files across slices
-- configure ESLint so invalid imports fail the check
-- make all tests pass
+- route cross-slice imports through those public APIs
+- let ESLint catch deep imports into another slice's internal segments
+- keep the runtime behavior unchanged while making the checks pass
 
 ## Scripts
 
@@ -23,3 +23,11 @@ Refactor a working dashboard into a cleaner Feature-Sliced Design structure.
 - `npm run typecheck`
 - `npm run test`
 - `npm run check`
+
+## What changed in the answer
+
+- `App` imports the page from `src/pages/dashboard-page`
+- widgets import features and entities through slice roots
+- the search feature re-exports its model and UI from a public API
+- the user entity re-exports its types, data, and table from a public API
+- ESLint blocks deep imports so the structure does not quietly drift back

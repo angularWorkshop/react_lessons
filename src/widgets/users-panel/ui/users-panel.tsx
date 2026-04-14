@@ -1,8 +1,7 @@
 import type { ReactElement } from 'react';
 
-import type { User } from '../../../entities/user/model/types';
-import { UserTable } from '../../../entities/user/ui/user-table';
-import { UserSearch } from '../../../features/user-search/ui/user-search';
+import { UserTable, type User } from '../../../entities/user';
+import { UserSearch } from '../../../features/user-search';
 
 interface UsersPanelProps {
   users: User[];

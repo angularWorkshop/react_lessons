@@ -1,9 +1,8 @@
 import type { ReactElement } from 'react';
 
-import { users } from '../../../entities/user/model/types';
-import { useUserSearch } from '../../../features/user-search/model/use-user-search';
-import { OverviewPanel } from '../../../widgets/overview-panel/ui/overview-panel';
-import { UsersPanel } from '../../../widgets/users-panel/ui/users-panel';
+import { users, useUserSearch } from '../../../features/user-search';
+import { OverviewPanel } from '../../../widgets/overview-panel';
+import { UsersPanel } from '../../../widgets/users-panel';
 
 export function DashboardPage(): ReactElement {
   const { query, setQuery, filteredUsers } = useUserSearch(users);
@@ -14,7 +13,8 @@ export function DashboardPage(): ReactElement {
         <p className="eyebrow">Topic 23.1</p>
         <h1>FSD refactor workspace</h1>
         <p>
-          The dashboard works, but its imports still reach straight into internal folders instead of using public APIs.
+          The dashboard still works, but now each slice talks through a public API instead of poking around in its
+          neighbors&apos; private folders.
         </p>
       </header>
 

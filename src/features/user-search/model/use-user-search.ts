@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import type { User } from '../../../entities/user/model/types';
+import type { User } from '../../../entities/user';
 
 export function useUserSearch(users: User[]) {
   const [query, setQuery] = useState('');
