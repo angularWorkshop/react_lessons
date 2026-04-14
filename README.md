@@ -1,24 +1,30 @@
-# react_lessons
+# Topic 22.2: useInfiniteScroll
 
-Base repository for EduTec React + TypeScript course exercises.
+Starter code for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a generic infinite scroll hook that loads the next page through `IntersectionObserver`.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- implement `useInfiniteScroll<T>(fetcher)`
+- use `IntersectionObserver` for the sentinel element
+- expose `items`, `loading`, `hasMore`, `error`, and `sentinelRef`
+- append new items instead of replacing the whole list
+- make all tests pass
+
+## What is incomplete
+
+- the hook only loads the first page
+- there is no observer-driven next-page loading
+- observer cleanup is missing
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
