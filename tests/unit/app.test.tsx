@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import type { ReactElement } from 'react';
 
 import { App } from '../../src/App';
@@ -78,7 +78,9 @@ describe('Topic 22.2 runtime', () => {
     expect(await screen.findByText('page-1-item')).toBeInTheDocument();
     expect(fetcher).toHaveBeenCalledTimes(1);
 
-    IntersectionObserverMock.instances[0]?.trigger(true);
+    act(() => {
+      IntersectionObserverMock.instances[0]?.trigger(true);
+    });
 
     expect(await screen.findByText('page-2-item')).toBeInTheDocument();
     await waitFor(() => {

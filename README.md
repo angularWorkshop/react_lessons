@@ -1,6 +1,6 @@
 # Topic 22.2: useInfiniteScroll
 
-Starter code for the EduTec React course exercise.
+Completed solution for the EduTec React course exercise.
 
 ## Goal
 
@@ -14,11 +14,12 @@ Build a generic infinite scroll hook that loads the next page through `Intersect
 - append new items instead of replacing the whole list
 - make all tests pass
 
-## What is incomplete
+## What the solution demonstrates
 
-- the hook only loads the first page
-- there is no observer-driven next-page loading
-- observer cleanup is missing
+- `useInfiniteScroll<T>` stays generic and works with any page item shape
+- the hook loads the first page and appends next pages instead of replacing the list
+- `IntersectionObserver` watches the sentinel element and triggers the next fetch
+- observer cleanup is handled through `disconnect()` on unmount
 
 ## Scripts
 
