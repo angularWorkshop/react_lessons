@@ -1,10 +1,10 @@
 import {
   createContext,
-  forwardRef,
   useContext,
   useRef,
   useState,
   type ReactElement,
+  type Ref,
 } from 'react';
 
 type PageKey = 'catalog' | 'guides';
@@ -13,6 +13,7 @@ type AccentTone = 'indigo' | 'teal';
 interface SearchInputProps {
   label: string;
   placeholder: string;
+  ref?: Ref<HTMLInputElement>;
 }
 
 const AccentContext = createContext<AccentTone>('indigo');
@@ -21,10 +22,7 @@ function useAccentTone(): AccentTone {
   return useContext(AccentContext);
 }
 
-const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function SearchInput(
-  { label, placeholder }: SearchInputProps,
-  ref,
-): ReactElement {
+function SearchInput({ label, placeholder, ref }: SearchInputProps): ReactElement {
   const accentTone = useAccentTone();
 
   return (
@@ -39,24 +37,29 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
       />
     </label>
   );
-});
+}
 
 function CatalogPage(): ReactElement {
   const accentTone = useAccentTone();
 
   return (
-    <article className={`page-card page-card--${accentTone}`}>
-      <p className="page-card__eyebrow">Catalog</p>
-      <h2>Catalog migration board</h2>
-      <p className="page-card__text">
-        Replace the old component contracts without breaking the command palette input focus flow.
-      </p>
-      <ul className="page-card__list">
-        <li>Remove legacy wrapper components around form controls.</li>
-        <li>Keep the focus shortcut working from the shell toolbar.</li>
-        <li>Prepare metadata so each page can describe itself.</li>
-      </ul>
-    </article>
+    <>
+      <title>React 19 migration | Catalog</title>
+      <meta name="description" content="Catalog migration preview with ref-as-prop and contextual styling." />
+
+      <article className={`page-card page-card--${accentTone}`}>
+        <p className="page-card__eyebrow">Catalog</p>
+        <h2>Catalog migration board</h2>
+        <p className="page-card__text">
+          Replace the old component contracts without breaking the command palette input focus flow.
+        </p>
+        <ul className="page-card__list">
+          <li>Remove legacy wrapper components around form controls.</li>
+          <li>Keep the focus shortcut working from the shell toolbar.</li>
+          <li>Prepare metadata so each page can describe itself.</li>
+        </ul>
+      </article>
+    </>
   );
 }
 
@@ -64,18 +67,23 @@ function GuidesPage(): ReactElement {
   const accentTone = useAccentTone();
 
   return (
-    <article className={`page-card page-card--${accentTone}`}>
-      <p className="page-card__eyebrow">Guides</p>
-      <h2>Guides upgrade checklist</h2>
-      <p className="page-card__text">
-        Document the migration path for ref-as-prop, provider shorthand, and page-level metadata.
-      </p>
-      <ul className="page-card__list">
-        <li>Refactor reusable inputs to accept ref directly.</li>
-        <li>Move away from explicit Provider wrappers.</li>
-        <li>Make every screen own its title and description.</li>
-      </ul>
-    </article>
+    <>
+      <title>React 19 migration | Guides</title>
+      <meta name="description" content="Guides page for replacing legacy provider and ref wrapper usage." />
+
+      <article className={`page-card page-card--${accentTone}`}>
+        <p className="page-card__eyebrow">Guides</p>
+        <h2>Guides upgrade checklist</h2>
+        <p className="page-card__text">
+          Document the migration path for ref-as-prop, provider shorthand, and page-level metadata.
+        </p>
+        <ul className="page-card__list">
+          <li>Refactor reusable inputs to accept ref directly.</li>
+          <li>Move away from explicit Provider wrappers.</li>
+          <li>Make every screen own its title and description.</li>
+        </ul>
+      </article>
+    </>
   );
 }
 
@@ -98,13 +106,13 @@ export function App(): ReactElement {
           and page metadata declared next to the page content.
         </p>
 
-        <AccentContext.Provider value={accentTone}>
+        <AccentContext value={accentTone}>
           <div className="toolbar">
             <div className="toolbar__nav" aria-label="Page switcher">
-              <button type="button" onClick={() => setPage('catalog')}>
+              <button type="button" aria-pressed={page === 'catalog'} onClick={() => setPage('catalog')}>
                 Catalog page
               </button>
-              <button type="button" onClick={() => setPage('guides')}>
+              <button type="button" aria-pressed={page === 'guides'} onClick={() => setPage('guides')}>
                 Guides page
               </button>
             </div>
@@ -121,7 +129,7 @@ export function App(): ReactElement {
           />
 
           {page === 'catalog' ? <CatalogPage /> : <GuidesPage />}
-        </AccentContext.Provider>
+        </AccentContext>
       </section>
     </main>
   );
