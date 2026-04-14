@@ -106,7 +106,7 @@ describe('Topic 24.1 — UI integration', () => {
     fireEvent.click(screen.getAllByRole('button', { name: 'Add to cart' })[0]!);
 
     expect(screen.queryByText('Your cart is empty')).not.toBeInTheDocument();
-    expect(screen.getByText(/React Handbook/)).toBeInTheDocument();
+    expect(screen.getByText(/React Handbook × 1/)).toBeInTheDocument();
     expect(screen.getByText('Items: 1')).toBeInTheDocument();
   });
 });

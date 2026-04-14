@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
 // ── Types ──────────────────────────────────────────────────
 
@@ -20,41 +21,70 @@ export interface CartState {
 }
 
 // ── Store ──────────────────────────────────────────────────
-// TODO: wrap with devtools and persist middleware
-// The store should:
-// 1. Use `devtools` middleware so actions appear in Redux DevTools
-// 2. Use `persist` middleware to save cart to localStorage (key: "cart-storage")
-// 3. Implement all actions: addItem, removeItem, updateQuantity, clearCart
-// 4. Implement computed helpers: totalItems, totalPrice
 
-export const useCartStore = create<CartState>()((set, get) => ({
-  items: [],
+export const useCartStore = create<CartState>()(
+  devtools(
+    persist(
+      (set, get) => ({
+        items: [],
 
-  addItem: (_item) => {
-    // TODO: if item already exists, increment its quantity by 1
-    // otherwise add it with quantity 1
-  },
+        addItem: (item) => {
+          set(
+            (state) => {
+              const existing = state.items.find((i) => i.id === item.id);
+              if (existing) {
+                return {
+                  items: state.items.map((i) =>
+                    i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
+                  ),
+                };
+              }
+              return { items: [...state.items, { ...item, quantity: 1 }] };
+            },
+            false,
+            'addItem',
+          );
+        },
 
-  removeItem: (_id) => {
-    // TODO: remove item by id from the items array
-  },
+        removeItem: (id) => {
+          set(
+            (state) => ({ items: state.items.filter((i) => i.id !== id) }),
+            false,
+            'removeItem',
+          );
+        },
 
-  updateQuantity: (_id, _quantity) => {
-    // TODO: set quantity for item with given id
-    // if quantity <= 0, remove the item instead
-  },
+        updateQuantity: (id, quantity) => {
+          if (quantity <= 0) {
+            set(
+              (state) => ({ items: state.items.filter((i) => i.id !== id) }),
+              false,
+              'updateQuantity/remove',
+            );
+          } else {
+            set(
+              (state) => ({
+                items: state.items.map((i) => (i.id === id ? { ...i, quantity } : i)),
+              }),
+              false,
+              'updateQuantity',
+            );
+          }
+        },
 
-  clearCart: () => {
-    // TODO: reset items to empty array
-  },
+        clearCart: () => {
+          set({ items: [] }, false, 'clearCart');
+        },
 
-  totalItems: () => {
-    // TODO: return sum of all item quantities
-    return 0;
-  },
+        totalItems: () => {
+          return get().items.reduce((sum, i) => sum + i.quantity, 0);
+        },
 
-  totalPrice: () => {
-    // TODO: return sum of (price * quantity) for each item
-    return 0;
-  },
-}));
+        totalPrice: () => {
+          return get().items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+        },
+      }),
+      { name: 'cart-storage' },
+    ),
+  ),
+);

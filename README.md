@@ -1,6 +1,6 @@
 # Topic 24.1: Zustand Cart
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 
