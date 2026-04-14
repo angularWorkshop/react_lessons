@@ -2,60 +2,71 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { App } from '../../src/App';
 
-describe('Topic 18.1 runtime', () => {
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-  beforeEach(() => {
-    consoleErrorSpy.mockClear();
+describe('Topic 30.2 — Dark theme', () => {
+  afterEach(() => {
+    document.documentElement.removeAttribute('data-theme');
   });
 
-  it('renders the route shell before any crash', () => {
+  it('renders the app with theme toggle', () => {
     render(<App />);
 
-    expect(screen.getByRole('heading', { name: 'Error boundary workspace' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Broken route' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Team health' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Dark theme with CSS variables' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /dark mode/i })).toBeInTheDocument();
   });
 
-  it('shows fallback UI when the broken route throws and recovers after retry', () => {
+  it('sets data-theme="dark" on documentElement when toggled', () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Broken route' }));
+    fireEvent.click(screen.getByRole('button', { name: /dark mode/i }));
 
-    expect(screen.getByRole('heading', { name: 'Something went wrong' })).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
-
-    expect(screen.getByRole('heading', { name: 'Recovery complete' })).toBeInTheDocument();
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+    expect(screen.getByRole('button', { name: /light mode/i })).toBeInTheDocument();
   });
 
-  it('logs the captured error through componentDidCatch', () => {
+  it('toggles back to light when clicked again', () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Broken route' }));
+    fireEvent.click(screen.getByRole('button', { name: /dark mode/i }));
+    fireEvent.click(screen.getByRole('button', { name: /light mode/i }));
 
-    expect(
-      consoleErrorSpy.mock.calls.some(
-        ([firstArg]) => typeof firstArg === 'string' && firstArg.includes('[ErrorBoundary] captured'),
-      ),
-    ).toBe(true);
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    expect(screen.getByRole('button', { name: /dark mode/i })).toBeInTheDocument();
+  });
+
+  it('renders info cards with themed content', () => {
+    render(<App />);
+
+    expect(screen.getByRole('heading', { name: 'CSS Custom Properties' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'No component changes' })).toBeInTheDocument();
   });
 });
 
-describe('Topic 18.1 source checks', () => {
-  const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
+describe('Topic 30.2 — source checks', () => {
+  const stylesSource = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
+  const hookSource = readFileSync(resolve(process.cwd(), 'src/hooks/use-theme.ts'), 'utf8');
+  const cardCss = readFileSync(resolve(process.cwd(), 'src/components/InfoCard.module.css'), 'utf8');
 
-  it('uses a class-based error boundary with getDerivedStateFromError', () => {
-    expect(appSource).toMatch(/class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState>/);
-    expect(appSource).toMatch(/public static getDerivedStateFromError\(\): ErrorBoundaryState/);
+  it('defines CSS custom properties on :root', () => {
+    expect(stylesSource).toMatch(/--color-bg:/);
+    expect(stylesSource).toMatch(/--color-surface:/);
+    expect(stylesSource).toMatch(/--color-text:/);
+    expect(stylesSource).toMatch(/--color-border:/);
   });
 
-  it('implements componentDidCatch and a retry handler', () => {
-    expect(appSource).toMatch(/public componentDidCatch\(error: Error, info: ErrorInfo\): void/);
-    expect(appSource).toMatch(/private handleRetry = \(\): void =>/);
+  it('has dark theme overrides via data-theme selector', () => {
+    expect(stylesSource).toMatch(/\[data-theme=["']dark["']\]/);
+  });
+
+  it('hook sets data-theme attribute on documentElement', () => {
+    expect(hookSource).toMatch(/documentElement/);
+    expect(hookSource).toMatch(/setAttribute.*data-theme/);
+  });
+
+  it('component CSS uses var() not hardcoded colors', () => {
+    expect(cardCss).toMatch(/var\(--color-/);
+    expect(cardCss).not.toMatch(/#[0-9a-fA-F]{3,8}/);
   });
 });
