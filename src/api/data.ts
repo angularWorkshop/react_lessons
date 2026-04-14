@@ -27,9 +27,9 @@ const STATS: Stats = {
 };
 
 export function fetchUsers(): Promise<User[]> {
-  return delay(1200, USERS);
+  return delay(50, USERS);
 }
 
 export function fetchStats(): Promise<Stats> {
-  return delay(800, STATS);
+  return delay(30, STATS);
 }

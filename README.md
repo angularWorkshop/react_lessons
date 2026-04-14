@@ -1,6 +1,6 @@
 # Topic 28.1: Suspense-driven Data Loading
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 

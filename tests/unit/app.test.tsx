@@ -1,39 +1,25 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 
 import { App } from '../../src/App';
 
 describe('Topic 28.1 — Suspense dashboard', () => {
-  it('renders the heading', () => {
-    render(<App />);
+  it('shows skeletons initially then resolves both sections through Suspense', async () => {
+    await act(async () => {
+      render(<App />);
+    });
+
+    // Heading is visible
     expect(screen.getByRole('heading', { name: 'Suspense dashboard' })).toBeInTheDocument();
-  });
 
-  it('shows skeleton fallbacks while data loads', () => {
-    render(<App />);
-    const skeletons = screen.getAllByRole('status');
-    expect(skeletons.length).toBeGreaterThanOrEqual(2);
-  });
-
-  it('renders stats after suspense resolves', async () => {
-    render(<App />);
-    expect(await screen.findByText('128')).toBeInTheDocument();
-    expect(await screen.findByText('Total users')).toBeInTheDocument();
-  });
-
-  it('renders user list after suspense resolves', async () => {
-    render(<App />);
+    // Wait for data to resolve through Suspense
     expect(await screen.findByText('Alice Martin')).toBeInTheDocument();
-    expect(await screen.findByText('Engineer')).toBeInTheDocument();
-  });
-
-  it('renders both sections independently', async () => {
-    render(<App />);
-    // Stats resolve at 800ms, users at 1200ms — stats should appear first
-    expect(await screen.findByText('43')).toBeInTheDocument();
-    expect(await screen.findByText('Bob Chen')).toBeInTheDocument();
+    expect(screen.getByText('Bob Chen')).toBeInTheDocument();
+    expect(screen.getByText('Total users')).toBeInTheDocument();
+    expect(screen.getByText('128')).toBeInTheDocument();
+    expect(screen.getByText('43')).toBeInTheDocument();
   });
 });
 

@@ -1,20 +1,17 @@
-import type { ReactElement } from 'react';
+import { Suspense, useMemo, type ReactElement } from 'react';
 
 import { fetchStats, fetchUsers } from './api/data';
+import { ErrorBoundary } from './components/error-boundary';
+import { Skeleton } from './components/skeleton';
 import { StatsPanel } from './components/stats-panel';
 import { UserList } from './components/user-list';
 
-// These promises are created once at module level.
-// Each component that calls use() on them will suspend
-// until the data resolves.
-const usersPromise = fetchUsers();
-const statsPromise = fetchStats();
-
-// TODO: import { Suspense } from 'react'
-// TODO: import { ErrorBoundary } from './components/error-boundary'
-// TODO: import { Skeleton } from './components/skeleton'
-
 export function App(): ReactElement {
+  // Create promises once per App mount.
+  // Each child that calls use() on them will suspend until resolved.
+  const usersPromise = useMemo(() => fetchUsers(), []);
+  const statsPromise = useMemo(() => fetchStats(), []);
+
   return (
     <main className="app-shell">
       <section className="workspace">
@@ -26,11 +23,17 @@ export function App(): ReactElement {
         </p>
 
         <div className="dashboard-grid">
-          {/* TODO: wrap StatsPanel in ErrorBoundary + Suspense with Skeleton fallback */}
-          <StatsPanel statsPromise={statsPromise} />
+          <ErrorBoundary fallback={<div className="error-fallback">Failed to load stats</div>}>
+            <Suspense fallback={<Skeleton label="Loading stats" />}>
+              <StatsPanel statsPromise={statsPromise} />
+            </Suspense>
+          </ErrorBoundary>
 
-          {/* TODO: wrap UserList in ErrorBoundary + Suspense with Skeleton fallback */}
-          <UserList usersPromise={usersPromise} />
+          <ErrorBoundary fallback={<div className="error-fallback">Failed to load users</div>}>
+            <Suspense fallback={<Skeleton label="Loading users" />}>
+              <UserList usersPromise={usersPromise} />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </section>
     </main>
