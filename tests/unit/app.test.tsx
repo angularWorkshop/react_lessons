@@ -2,60 +2,66 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { App } from '../../src/App';
 
-describe('Topic 18.1 runtime', () => {
-  const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+function getDescriptionContent(): string | null {
+  return document.head.querySelector('meta[name="description"]')?.getAttribute('content') ?? null;
+}
 
+describe('Topic 29.1 runtime', () => {
   beforeEach(() => {
-    consoleErrorSpy.mockClear();
+    document.title = '';
+    document.head.querySelector('meta[name="description"]')?.remove();
   });
 
-  it('renders the route shell before any crash', () => {
+  it('renders the workspace shell with the catalog page active', () => {
     render(<App />);
 
-    expect(screen.getByRole('heading', { name: 'Error boundary workspace' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Broken route' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Team health' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'React 19 migration workspace' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Catalog migration board' })).toBeInTheDocument();
   });
 
-  it('shows fallback UI when the broken route throws and recovers after retry', () => {
+  it('focuses the search input through the custom component ref', () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Broken route' }));
+    const searchInput = screen.getByRole('searchbox', { name: 'Command search' });
 
-    expect(screen.getByRole('heading', { name: 'Something went wrong' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Focus search' }));
 
-    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
-
-    expect(screen.getByRole('heading', { name: 'Recovery complete' })).toBeInTheDocument();
+    expect(searchInput).toHaveFocus();
   });
 
-  it('logs the captured error through componentDidCatch', () => {
+  it('switches visible content between migration pages', () => {
     render(<App />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Broken route' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Guides page' }));
 
-    expect(
-      consoleErrorSpy.mock.calls.some(
-        ([firstArg]) => typeof firstArg === 'string' && firstArg.includes('[ErrorBoundary] captured'),
-      ),
-    ).toBe(true);
+    expect(screen.getByRole('heading', { name: 'Guides upgrade checklist' })).toBeInTheDocument();
+  });
+
+  it('updates the page title and description metadata for each screen', () => {
+    render(<App />);
+
+    expect(document.title).toBe('React 19 migration | Catalog');
+    expect(getDescriptionContent()).toBe('Catalog migration preview with ref-as-prop and contextual styling.');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Guides page' }));
+
+    expect(document.title).toBe('React 19 migration | Guides');
+    expect(getDescriptionContent()).toBe('Guides page for replacing legacy provider and forwardRef usage.');
   });
 });
 
-describe('Topic 18.1 source checks', () => {
+describe('Topic 29.1 source checks', () => {
   const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
 
-  it('uses a class-based error boundary with getDerivedStateFromError', () => {
-    expect(appSource).toMatch(/class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState>/);
-    expect(appSource).toMatch(/public static getDerivedStateFromError\(\): ErrorBoundaryState/);
+  it('does not use forwardRef anymore', () => {
+    expect(appSource).not.toMatch(/forwardRef/);
   });
 
-  it('implements componentDidCatch and a retry handler', () => {
-    expect(appSource).toMatch(/public componentDidCatch\(error: Error, info: ErrorInfo\): void/);
-    expect(appSource).toMatch(/private handleRetry = \(\): void =>/);
+  it('does not use Context.Provider anymore', () => {
+    expect(appSource).not.toMatch(/Context\.Provider/);
   });
 });

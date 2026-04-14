@@ -1,24 +1,24 @@
-# Topic 18.1: Global Error Boundary
+# Topic 29.1: React 19 API Migration
 
 Starter code for the EduTec React course exercise.
 
 ## Goal
 
-Wrap the app routes in an error boundary with a fallback UI and a working retry flow.
+Migrate a small workspace from legacy React patterns to the React 19 API surface.
 
 ## Requirements
 
-- catch rendering errors inside a global `ErrorBoundary`
-- show a readable fallback screen instead of a broken tree
-- wire the `Try again` button so the boundary can recover
-- log the captured error to the console as a Sentry-like placeholder
+- remove `forwardRef` and pass `ref` as a regular prop
+- replace `Context.Provider` with the React 19 provider shorthand
+- render page-specific `<title>` and `<meta name="description">` directly from page components
+- keep the search focus shortcut working through the custom input
 - make all tests pass
 
 ## What is incomplete
 
-- the fallback UI appears, but retry does not recover the app
-- the boundary does not log captured errors yet
-- the implementation is missing the full reset flow expected from a reusable boundary
+- the custom input still uses `forwardRef`
+- the workspace still renders the old `Context.Provider` wrapper
+- the pages do not publish their own metadata yet
 
 ## Scripts
 
