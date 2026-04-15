@@ -2,7 +2,7 @@
   "name": "@angular-workshop/react-lessons",
   "version": "0.1.0",
   "private": true,
-  "description": "Base repository for EduTec React lessons",
+  "description": "Capstone 3 — Production-ready Task Board SPA",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,11 +16,17 @@
   },
   "dependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.6.1",
+    "zustand": "^5.0.5",
+    "react-hook-form": "^7.56.4",
+    "@hookform/resolvers": "^5.0.1",
+    "zod": "^3.25.17"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24.3.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
