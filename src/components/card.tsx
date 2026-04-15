@@ -4,17 +4,22 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '../lib/utils';
 
-const cardVariants = cva('rounded-[28px] border p-6 shadow-xl', {
-  variants: {
-    tone: {
-      default: 'border-white/10 bg-white/5',
-      highlight: 'border-cyan-300/30 bg-cyan-400/10',
+const cardVariants = cva(
+  'rounded-[28px] border p-6 shadow-xl transition-colors',
+  {
+    variants: {
+      tone: {
+        default:
+          'border-slate-200 bg-white dark:border-white/10 dark:bg-white/5',
+        highlight:
+          'border-cyan-300/30 bg-cyan-50 dark:bg-cyan-400/10',
+      },
+    },
+    defaultVariants: {
+      tone: 'default',
     },
   },
-  defaultVariants: {
-    tone: 'default',
-  },
-});
+);
 
 type CardProps = HTMLAttributes<HTMLDivElement> &
   VariantProps<typeof cardVariants> & {
@@ -32,8 +37,8 @@ export function Card({
 }: CardProps): ReactElement {
   return (
     <article className={cn(cardVariants({ tone: highlighted ? 'highlight' : tone }), className)} {...props}>
-      <h3 className="text-xl font-bold text-white">{title}</h3>
-      <p className="mt-3 text-sm leading-6 text-slate-300">{children}</p>
+      <h3 className="text-xl font-bold text-slate-900 dark:text-white">{title}</h3>
+      <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{children}</p>
     </article>
   );
 }

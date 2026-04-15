@@ -4,11 +4,13 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '../lib/utils';
 
-const alertVariants = cva('rounded-3xl border px-5 py-4', {
+const alertVariants = cva('rounded-3xl border px-5 py-4 transition-colors', {
   variants: {
     tone: {
-      success: 'border-emerald-400/30 bg-emerald-500/10',
-      danger: 'border-rose-400/30 bg-rose-500/10',
+      success:
+        'border-emerald-300 bg-emerald-50 dark:border-emerald-400/30 dark:bg-emerald-500/10',
+      danger:
+        'border-rose-300 bg-rose-50 dark:border-rose-400/30 dark:bg-rose-500/10',
     },
   },
   defaultVariants: {
@@ -30,8 +32,8 @@ export function Alert({
 }: AlertProps): ReactElement {
   return (
     <div className={cn(alertVariants({ tone }), className)} {...props}>
-      <h3 className="text-base font-bold text-white">{title}</h3>
-      <p className="mt-2 text-sm leading-6 text-slate-200">{children}</p>
+      <h3 className="text-base font-bold text-slate-900 dark:text-white">{title}</h3>
+      <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-200">{children}</p>
     </div>
   );
 }

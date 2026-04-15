@@ -1,18 +1,20 @@
-# Topic 32.2: Tailwind UI Kit with CVA
+# Topic 33.1: Dark Theme with Tailwind
 
-Solution branch for the EduTec React course exercise.
+Lesson branch for the EduTec React course exercise.
 
 ## Goal
 
-Build a small Tailwind UI kit where every component uses `class-variance-authority`.
+Implement full dark mode support using Tailwind's `class` strategy with system preference detection, localStorage persistence, and smooth transitions.
 
 ## Requirements
 
-- connect Tailwind through `@tailwindcss/vite`
-- build `Button`, `Badge`, `Input`, `Card`, and `Alert`
-- each component should use `cva` for variants
-- keep `className` extensibility through `cn()` with `clsx` + `twMerge`
-- assemble a storybook-like showcase page with all component families
+- configure dark mode with `class` strategy via `@custom-variant`
+- build a `ThemeProvider` + `useTheme` hook for theme state management
+- detect `prefers-color-scheme` as initial default
+- persist the user's choice in localStorage
+- add `dark:` variants to the existing UI Kit components
+- smooth transition between themes with `transition-colors`
+- add a toggle button in the header
 
 ## Scripts
 
