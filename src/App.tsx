@@ -1,15 +1,13 @@
-import type { ReactElement } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Home } from './pages/home';
+import { Feedback } from './pages/feedback';
+import { feedbackAction } from './actions/feedback-action';
 
-export function App(): ReactElement {
-  return (
-    <main className="app-shell">
-      <div className="hero-card">
-        <p className="eyebrow">EduTec React Bootcamp</p>
-        <h1>React + TypeScript starter</h1>
-        <p className="description">
-          This repository is the baseline for the React exercises.
-        </p>
-      </div>
-    </main>
-  );
+const router = createBrowserRouter([
+  { path: '/', element: <Home /> },
+  { path: '/feedback', element: <Feedback />, action: feedbackAction },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
