@@ -1,18 +1,19 @@
-# Topic 32.2: Tailwind UI Kit with CVA
+# Topic 34.1: Multi-Page App with React Router
 
-Solution branch for the EduTec React course exercise.
+Lesson branch for the EduTec React course exercise.
 
 ## Goal
 
-Build a small Tailwind UI kit where every component uses `class-variance-authority`.
+Set up client-side routing with React Router v6: multiple pages, NavLink navigation, dynamic segments, and programmatic navigation.
 
 ## Requirements
 
-- connect Tailwind through `@tailwindcss/vite`
-- build `Button`, `Badge`, `Input`, `Card`, and `Alert`
-- each component should use `cva` for variants
-- keep `className` extensibility through `cn()` with `clsx` + `twMerge`
-- assemble a storybook-like showcase page with all component families
+- install and configure `react-router-dom` with `BrowserRouter`
+- define routes: Home, About, Users list, User detail (`/users/:id`), 404
+- build a `Header` with `NavLink` — active link is highlighted
+- user detail page reads `id` via `useParams`
+- "Back" button uses `useNavigate(-1)`
+- unmatched paths show a 404 page
 
 ## Scripts
 
