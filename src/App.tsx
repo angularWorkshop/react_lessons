@@ -9,15 +9,9 @@ import { TodoStats } from './components/todo-stats';
 const STORAGE_KEY = 'capstone-todos';
 
 function loadTodos(): Todo[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed: unknown = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed as Todo[];
-  } catch {
-    return [];
-  }
+  // TODO: read STORAGE_KEY from localStorage, parse JSON, return array of Todo
+  // Handle cases: key missing, invalid JSON, non-array value
+  return [];
 }
 
 const PRIORITY_ORDER: Record<Priority, number> = {
@@ -26,27 +20,19 @@ const PRIORITY_ORDER: Record<Priority, number> = {
   low: 2,
 };
 
-function sortTodos(todos: Todo[], field: SortField, direction: SortDirection): Todo[] {
-  return [...todos].sort((a, b) => {
-    let cmp: number;
-    if (field === 'priority') {
-      cmp = PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
-    } else {
-      cmp = a.createdAt - b.createdAt;
-    }
-    return direction === 'asc' ? cmp : -cmp;
-  });
+function sortTodos(todos: Todo[], _field: SortField, _direction: SortDirection): Todo[] {
+  // TODO: sort a copy of the array by the given field and direction
+  // For 'priority': use PRIORITY_ORDER to compare
+  // For 'createdAt': compare timestamps
+  // Return ascending or descending based on direction
+  return [...todos];
 }
 
-function filterTodos(todos: Todo[], filter: Filter): Todo[] {
-  switch (filter) {
-    case 'active':
-      return todos.filter((t) => !t.completed);
-    case 'completed':
-      return todos.filter((t) => t.completed);
-    default:
-      return todos;
-  }
+function filterTodos(todos: Todo[], _filter: Filter): Todo[] {
+  // TODO: return only active todos when filter is 'active'
+  // return only completed todos when filter is 'completed'
+  // return all todos when filter is 'all'
+  return todos;
 }
 
 export default function App() {
@@ -55,9 +41,8 @@ export default function App() {
   const [sortField, setSortField] = useState<SortField>('createdAt');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-  }, [todos]);
+  // TODO: add useEffect to save todos to localStorage whenever they change
+  // Use STORAGE_KEY as the key and JSON.stringify to serialize
 
   const addTodo = (title: string, priority: Priority) => {
     const newTodo: Todo = {
@@ -70,14 +55,14 @@ export default function App() {
     setTodos((prev) => [newTodo, ...prev]);
   };
 
-  const toggleTodo = (id: string) => {
-    setTodos((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
-    );
+  const toggleTodo = (_id: string) => {
+    // TODO: toggle the completed field of the todo with the given id
+    // Use immutable update: map over todos and flip completed for the matching id
   };
 
-  const deleteTodo = (id: string) => {
-    setTodos((prev) => prev.filter((t) => t.id !== id));
+  const deleteTodo = (_id: string) => {
+    // TODO: remove the todo with the given id
+    // Use immutable update: filter out the matching id
   };
 
   const toggleDirection = () => {

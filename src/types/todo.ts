@@ -1,6 +1,8 @@
-export type Priority = 'low' | 'medium' | 'high';
+// TODO: define Priority as a union of 'low' | 'medium' | 'high'
+export type Priority = string;
 
-export type Filter = 'all' | 'active' | 'completed';
+// TODO: define Filter as a union of 'all' | 'active' | 'completed'
+export type Filter = string;
 
 export type SortField = 'priority' | 'createdAt';
 
