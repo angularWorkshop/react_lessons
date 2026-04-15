@@ -1,6 +1,6 @@
 # Topic 34.1: Multi-Page App with React Router
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 

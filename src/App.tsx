@@ -15,13 +15,11 @@ export function App(): ReactElement {
       <Header />
       <main className="mx-auto max-w-5xl px-4 py-12">
         <Routes>
-          {/* TODO: add Route for "/" → HomePage */}
-          {/* TODO: add Route for "/about" → AboutPage */}
-          {/* TODO: add Route for "/users" → UsersPage */}
-          {/* TODO: add Route for "/users/:id" → UserDetailPage */}
-          {/* TODO: add Route for "*" → NotFoundPage */}
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/users" element={<UsersPage />} />
+          <Route path="/users/:id" element={<UserDetailPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
     </div>
