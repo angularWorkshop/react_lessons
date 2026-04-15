@@ -5,9 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../lib/utils';
 
 const skeletonVariants = cva(
-  // TODO: add 'animate-pulse' to the base classes
-  // TODO: add 'motion-reduce:animate-none' to respect prefers-reduced-motion
-  'rounded-2xl bg-slate-200 dark:bg-slate-700',
+  'animate-pulse motion-reduce:animate-none rounded-2xl bg-slate-200 dark:bg-slate-700',
   {
     variants: {
       shape: {

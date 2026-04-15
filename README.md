@@ -1,6 +1,6 @@
 # Topic 33.2: Skeleton and Loading Animations
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 

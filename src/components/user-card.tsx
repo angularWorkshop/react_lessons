@@ -14,10 +14,9 @@ export function UserCard({ name, role, animated = false, index = 0 }: UserCardPr
     <article
       className={cn(
         'rounded-[28px] border border-slate-200 bg-white p-6 shadow-xl transition-colors dark:border-white/10 dark:bg-white/5',
-        // TODO: when animated is true, add 'animate-fade-slide-in' class
-        // TODO: when animated is true, add 'motion-reduce:animate-none' class
-        // TODO: use animation-delay based on index (e.g., style={{ animationDelay: `${index * 100}ms` }})
+        animated && 'animate-fade-slide-in motion-reduce:animate-none',
       )}
+      style={animated ? { animationDelay: `${index * 100}ms` } : undefined}
       data-testid="user-card"
     >
       <h3 className="text-lg font-bold text-slate-900 dark:text-white">{name}</h3>
