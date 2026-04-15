@@ -20,16 +20,21 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 const STORAGE_KEY = 'edutec-theme';
 
 function getInitialTheme(): Theme {
-  // TODO: read saved theme from localStorage (key: STORAGE_KEY)
-  // TODO: if nothing saved, detect system preference via matchMedia('(prefers-color-scheme: dark)')
-  // TODO: return 'dark' or 'light' accordingly
-  return 'light';
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (saved === 'dark' || saved === 'light') {
+    return saved;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 function applyThemeToDOM(theme: Theme): void {
-  // TODO: add or remove class 'dark' on document.documentElement
-  // TODO: if theme is 'dark', add class 'dark'; otherwise remove it
-  void theme;
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }): ReactElement {
@@ -42,7 +47,7 @@ export function ThemeProvider({ children }: { children: ReactNode }): ReactEleme
   const toggleTheme = useCallback(() => {
     setTheme((prev) => {
       const next = prev === 'light' ? 'dark' : 'light';
-      // TODO: save the new theme to localStorage
+      localStorage.setItem(STORAGE_KEY, next);
       return next;
     });
   }, []);

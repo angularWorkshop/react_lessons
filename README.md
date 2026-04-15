@@ -1,6 +1,6 @@
 # Topic 33.1: Dark Theme with Tailwind
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 
