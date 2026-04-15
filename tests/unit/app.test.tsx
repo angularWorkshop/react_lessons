@@ -15,87 +15,92 @@ function renderAt(path: string) {
   );
 }
 
-describe('Topic 34.1 — Multi-Page Router App', () => {
-  it('renders Home page at /', () => {
-    renderAt('/');
-    expect(screen.getByRole('heading', { name: 'Home' })).toBeInTheDocument();
+describe('Topic 35.1 — Nested Routes & Outlet', () => {
+  it('renders dashboard index inside MainLayout with header and sidebar', () => {
+    renderAt('/dashboard');
+
+    expect(screen.getByTestId('header')).toBeInTheDocument();
+    expect(screen.getByTestId('sidebar')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument();
   });
 
-  it('renders About page at /about', () => {
-    renderAt('/about');
-    expect(screen.getByRole('heading', { name: 'About' })).toBeInTheDocument();
+  it('renders /dashboard/stats inside MainLayout', () => {
+    renderAt('/dashboard/stats');
+
+    expect(screen.getByTestId('header')).toBeInTheDocument();
+    expect(screen.getByTestId('sidebar')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Stats' })).toBeInTheDocument();
+    expect(screen.getByText('Total Users')).toBeInTheDocument();
   });
 
-  it('renders Users list at /users', () => {
-    renderAt('/users');
+  it('renders /dashboard/users inside MainLayout', () => {
+    renderAt('/dashboard/users');
+
+    expect(screen.getByTestId('sidebar')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Users' })).toBeInTheDocument();
     expect(screen.getByText('Alice Chen')).toBeInTheDocument();
-    expect(screen.getByText('Bob Markov')).toBeInTheDocument();
   });
 
-  it('renders User detail at /users/:id with useParams', () => {
-    renderAt('/users/1');
-    expect(screen.getByRole('heading', { name: 'Alice Chen' })).toBeInTheDocument();
-    expect(screen.getByText('Frontend Engineer')).toBeInTheDocument();
+  it('renders /login inside AuthLayout without sidebar', () => {
+    renderAt('/login');
+
+    expect(screen.getByTestId('header')).toBeInTheDocument();
+    expect(screen.queryByTestId('sidebar')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument();
   });
 
-  it('shows "User not found" for invalid id', () => {
-    renderAt('/users/999');
-    expect(screen.getByRole('heading', { name: 'User not found' })).toBeInTheDocument();
+  it('sidebar has NavLinks for dashboard sections', () => {
+    renderAt('/dashboard');
+
+    expect(screen.getByRole('link', { name: 'Overview' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Stats' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Users' })).toBeInTheDocument();
   });
 
-  it('renders 404 page for unknown paths', () => {
+  it('clicking sidebar link navigates within dashboard', async () => {
+    renderAt('/dashboard');
+
+    await userEvent.click(screen.getByRole('link', { name: 'Stats' }));
+
+    expect(screen.getByRole('heading', { name: 'Stats' })).toBeInTheDocument();
+    expect(screen.getByTestId('sidebar')).toBeInTheDocument();
+  });
+
+  it('unknown paths show 404 without any layout', () => {
     renderAt('/nonexistent');
+
     expect(screen.getByRole('heading', { name: '404' })).toBeInTheDocument();
-    expect(screen.getByText('Page not found')).toBeInTheDocument();
-  });
-
-  it('Header has NavLink with active class for current route', () => {
-    renderAt('/about');
-    const aboutLink = screen.getByRole('link', { name: 'About' });
-    expect(aboutLink.className).toContain('text-cyan-300');
-
-    const homeLink = screen.getByRole('link', { name: 'Home' });
-    expect(homeLink.className).not.toContain('text-cyan-300');
-  });
-
-  it('navigates from Users list to user detail via Link', async () => {
-    renderAt('/users');
-
-    const link = screen.getByRole('link', { name: /Alice Chen/i });
-    await userEvent.click(link);
-
-    expect(screen.getByRole('heading', { name: 'Alice Chen' })).toBeInTheDocument();
-  });
-
-  it('user detail has a Back button', () => {
-    renderAt('/users/2');
-    expect(screen.getByRole('button', { name: /back/i })).toBeInTheDocument();
+    expect(screen.queryByTestId('sidebar')).not.toBeInTheDocument();
   });
 });
 
-describe('Topic 34.1 — source checks', () => {
+describe('Topic 35.1 — source checks', () => {
+  const mainLayoutSource = readFileSync(resolve(process.cwd(), 'src/layouts/main-layout.tsx'), 'utf8');
+  const authLayoutSource = readFileSync(resolve(process.cwd(), 'src/layouts/auth-layout.tsx'), 'utf8');
   const appSource = readFileSync(resolve(process.cwd(), 'src/App.tsx'), 'utf8');
-  const mainSource = readFileSync(resolve(process.cwd(), 'src/main.tsx'), 'utf8');
-  const headerSource = readFileSync(resolve(process.cwd(), 'src/components/header.tsx'), 'utf8');
-  const detailSource = readFileSync(resolve(process.cwd(), 'src/pages/user-detail.tsx'), 'utf8');
 
-  it('main.tsx wraps App in BrowserRouter', () => {
-    expect(mainSource).toMatch(/BrowserRouter/);
+  it('MainLayout uses Outlet from react-router-dom', () => {
+    expect(mainLayoutSource).toMatch(/Outlet/);
+    expect(mainLayoutSource).toMatch(/react-router-dom/);
   });
 
-  it('App uses Routes and Route', () => {
-    expect(appSource).toMatch(/Routes/);
-    expect(appSource).toMatch(/Route/);
+  it('AuthLayout uses Outlet from react-router-dom', () => {
+    expect(authLayoutSource).toMatch(/Outlet/);
+    expect(authLayoutSource).toMatch(/react-router-dom/);
   });
 
-  it('Header uses NavLink from react-router-dom', () => {
-    expect(headerSource).toMatch(/NavLink/);
-    expect(headerSource).toMatch(/react-router-dom/);
+  it('MainLayout renders <Outlet /> in JSX', () => {
+    expect(mainLayoutSource).toMatch(/<Outlet\s*\/>/);
   });
 
-  it('UserDetailPage uses useParams and useNavigate', () => {
-    expect(detailSource).toMatch(/useParams/);
-    expect(detailSource).toMatch(/useNavigate/);
+  it('AuthLayout renders <Outlet /> in JSX', () => {
+    expect(authLayoutSource).toMatch(/<Outlet\s*\/>/);
+  });
+
+  it('App uses nested Route structure', () => {
+    expect(appSource).toMatch(/MainLayout/);
+    expect(appSource).toMatch(/AuthLayout/);
+    expect(appSource).toMatch(/dashboard\/stats/);
+    expect(appSource).toMatch(/dashboard\/users/);
   });
 });

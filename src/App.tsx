@@ -2,26 +2,30 @@ import type { ReactElement } from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
-import { Header } from './components/header';
-import { AboutPage } from './pages/about';
-import { HomePage } from './pages/home';
+import { AuthLayout } from './layouts/auth-layout';
+import { MainLayout } from './layouts/main-layout';
+import { DashboardIndexPage } from './pages/dashboard-index';
+import { DashboardStatsPage } from './pages/dashboard-stats';
+import { DashboardUsersPage } from './pages/dashboard-users';
+import { LoginPage } from './pages/login';
 import { NotFoundPage } from './pages/not-found';
-import { UserDetailPage } from './pages/user-detail';
-import { UsersPage } from './pages/users';
 
 export function App(): ReactElement {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
-      <Header />
-      <main className="mx-auto max-w-5xl px-4 py-12">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/users" element={<UsersPage />} />
-          <Route path="/users/:id" element={<UserDetailPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
-    </div>
+    <Routes>
+      {/* Main layout with sidebar — wraps dashboard routes */}
+      <Route element={<MainLayout />}>
+        <Route path="/dashboard" element={<DashboardIndexPage />} />
+        {/* TODO: add nested route for /dashboard/stats → DashboardStatsPage */}
+        {/* TODO: add nested route for /dashboard/users → DashboardUsersPage */}
+      </Route>
+
+      {/* Auth layout without sidebar — wraps login */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }

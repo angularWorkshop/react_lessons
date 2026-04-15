@@ -1,19 +1,19 @@
-# Topic 34.1: Multi-Page App with React Router
+# Topic 35.1: Layout with Outlet and Nested Routes
 
-Solution branch for the EduTec React course exercise.
+Lesson branch for the EduTec React course exercise.
 
 ## Goal
 
-Set up client-side routing with React Router v6: multiple pages, NavLink navigation, dynamic segments, and programmatic navigation.
+Build a layout system using nested routes and `Outlet`. Main layout has Header + Sidebar, auth layout has only Header. Dashboard uses nested routes with an index route.
 
 ## Requirements
 
-- install and configure `react-router-dom` with `BrowserRouter`
-- define routes: Home, About, Users list, User detail (`/users/:id`), 404
-- build a `Header` with `NavLink` — active link is highlighted
-- user detail page reads `id` via `useParams`
-- "Back" button uses `useNavigate(-1)`
-- unmatched paths show a 404 page
+- create `MainLayout` with Header, Sidebar, and `<Outlet />`
+- create `AuthLayout` with Header only and `<Outlet />`
+- nest dashboard routes: `/dashboard`, `/dashboard/stats`, `/dashboard/users`
+- `/dashboard` shows an index route with a welcome message
+- `/login` renders inside `AuthLayout`
+- Header stays mounted across navigation (no remount)
 
 ## Scripts
 
