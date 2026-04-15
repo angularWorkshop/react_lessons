@@ -1,24 +1,21 @@
-import { Form, useNavigation, useActionData } from 'react-router-dom';
+// TODO: Import Form, useNavigation, useActionData from 'react-router-dom'
 import type { ActionResult } from '../types/feedback';
 
 export function Feedback() {
-  const navigation = useNavigation();
-  const actionData = useActionData() as ActionResult | undefined;
-  const isSubmitting = navigation.state === 'submitting';
+  // TODO: Use useNavigation() to get navigation state
+  const isSubmitting = false;
+  // TODO: Use useActionData() to get action result
+  const actionData = undefined as ActionResult | undefined;
 
-  if (actionData?.success) {
-    return (
-      <div className="feedback-form">
-        <p className="feedback-form__success">Thank you for your feedback!</p>
-      </div>
-    );
-  }
+  // TODO: If actionData?.success, show success message:
+  // <p className="feedback-form__success">Thank you for your feedback!</p>
 
   return (
     <div className="feedback-form">
       <h1 className="feedback-form__title">Leave Feedback</h1>
 
-      <Form method="post" className="feedback-form__form">
+      {/* TODO: Replace <form> with React Router's <Form method="post"> */}
+      <form onSubmit={e => e.preventDefault()} className="feedback-form__form">
         <div className="feedback-form__field">
           <label className="feedback-form__label" htmlFor="name">Name</label>
           <input
@@ -28,9 +25,7 @@ export function Feedback() {
             type="text"
             placeholder="Your name"
           />
-          {actionData?.errors?.name && (
-            <span className="feedback-form__error">{actionData.errors.name}</span>
-          )}
+          {/* TODO: Show error from actionData?.errors?.name in <span className="feedback-form__error"> */}
         </div>
 
         <div className="feedback-form__field">
@@ -42,9 +37,7 @@ export function Feedback() {
             type="text"
             placeholder="your@email.com"
           />
-          {actionData?.errors?.email && (
-            <span className="feedback-form__error">{actionData.errors.email}</span>
-          )}
+          {/* TODO: Show error from actionData?.errors?.email in <span className="feedback-form__error"> */}
         </div>
 
         <div className="feedback-form__field">
@@ -56,9 +49,7 @@ export function Feedback() {
             placeholder="Your message (at least 10 characters)"
             rows={5}
           />
-          {actionData?.errors?.message && (
-            <span className="feedback-form__error">{actionData.errors.message}</span>
-          )}
+          {/* TODO: Show error from actionData?.errors?.message in <span className="feedback-form__error"> */}
         </div>
 
         <button
@@ -66,9 +57,10 @@ export function Feedback() {
           type="submit"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Sending...' : 'Send Feedback'}
+          {/* TODO: Show 'Sending...' when isSubmitting, 'Send Feedback' otherwise */}
+          Send Feedback
         </button>
-      </Form>
+      </form>
     </div>
   );
 }
