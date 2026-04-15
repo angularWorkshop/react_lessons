@@ -1,20 +1,19 @@
-# Topic 33.1: Dark Theme with Tailwind
+# Topic 33.2: Skeleton and Loading Animations
 
-Solution branch for the EduTec React course exercise.
+Lesson branch for the EduTec React course exercise.
 
 ## Goal
 
-Implement full dark mode support using Tailwind's `class` strategy with system preference detection, localStorage persistence, and smooth transitions.
+Build a Skeleton loading component with `animate-pulse`, custom keyframe animations for card reveal, and `prefers-reduced-motion` support.
 
 ## Requirements
 
-- configure dark mode with `class` strategy via `@custom-variant`
-- build a `ThemeProvider` + `useTheme` hook for theme state management
-- detect `prefers-color-scheme` as initial default
-- persist the user's choice in localStorage
-- add `dark:` variants to the existing UI Kit components
-- smooth transition between themes with `transition-colors`
-- add a toggle button in the header
+- create a `Skeleton` component with variants matching real content shapes
+- use `animate-pulse` for the loading shimmer effect
+- add custom `fadeSlideIn` keyframes in `tailwind.config.ts` for card appearance
+- apply the custom animation to cards when they finish loading
+- respect `prefers-reduced-motion: reduce` — disable animations when requested
+- build a demo page that simulates loading → loaded transition
 
 ## Scripts
 

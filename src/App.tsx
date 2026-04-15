@@ -1,74 +1,88 @@
-import type { ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 
-import { Alert } from './components/alert';
-import { Badge } from './components/badge';
 import { Button } from './components/button';
-import { Card } from './components/card';
-import { Input } from './components/input';
+import { Skeleton } from './components/skeleton';
 import { ThemeToggle } from './components/theme-toggle';
+import { UserCard } from './components/user-card';
+
+interface User {
+  name: string;
+  role: string;
+}
+
+const MOCK_USERS: User[] = [
+  { name: 'Alice Chen', role: 'Frontend Engineer' },
+  { name: 'Bob Markov', role: 'Product Designer' },
+  { name: 'Clara Ruiz', role: 'Tech Lead' },
+];
 
 export function App(): ReactElement {
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setUsers(MOCK_USERS);
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleReload = () => {
+    setLoading(true);
+    setUsers([]);
+    setTimeout(() => {
+      setUsers(MOCK_USERS);
+      setLoading(false);
+    }, 2000);
+  };
+
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-12 text-slate-900 transition-colors sm:px-6 dark:bg-slate-950 dark:text-slate-50">
-      <section className="mx-auto w-full max-w-6xl">
+      <section className="mx-auto w-full max-w-5xl">
         <header className="flex items-start justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-600 dark:text-cyan-300">
-              Topic 33.1
+              Topic 33.2
             </p>
             <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl dark:text-white">
-              Dark Theme
+              Skeleton &amp; Animations
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">
-              Toggle between light and dark modes with smooth transitions and system preference detection.
+              Loading placeholders that match content shapes, with staggered reveal animations.
             </p>
           </div>
           <ThemeToggle />
         </header>
 
-        <section className="mt-10 space-y-4">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Buttons</h2>
-          <div className="flex flex-wrap gap-4">
-            <Button>Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="danger">Danger</Button>
+        <div className="mt-8 flex gap-4">
+          <Button onClick={handleReload}>Reload</Button>
+        </div>
+
+        <section className="mt-10">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Team</h2>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {loading
+              ? Array.from({ length: 3 }, (_, i) => (
+                  <div key={i} className="space-y-3 rounded-[28px] border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-white/5">
+                    <Skeleton shape="avatar" />
+                    <Skeleton shape="title" />
+                    <Skeleton shape="text" />
+                    <Skeleton shape="text" className="w-2/3" />
+                  </div>
+                ))
+              : users.map((user, i) => (
+                  <UserCard
+                    key={user.name}
+                    name={user.name}
+                    role={user.role}
+                    animated
+                    index={i}
+                  />
+                ))}
           </div>
-        </section>
-
-        <section className="mt-10 space-y-4">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Badges</h2>
-          <div className="flex flex-wrap gap-3">
-            <Badge>Info</Badge>
-            <Badge tone="success">Success</Badge>
-            <Badge tone="warning">Warning</Badge>
-          </div>
-        </section>
-
-        <section className="mt-10 space-y-4">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Inputs</h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Input label="Workspace name" placeholder="Orbit Studio" />
-            <Input label="Contact email" placeholder="team@orbit.dev" invalid />
-          </div>
-        </section>
-
-        <section className="mt-10 grid gap-4 md:grid-cols-2">
-          <Card title="Default card">
-            Light and dark variants adapt the same component contract to both themes.
-          </Card>
-          <Card title="Highlight card" highlighted>
-            Accent styles shift palette without duplicating the whole component.
-          </Card>
-        </section>
-
-        <section className="mt-10 space-y-4">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Alerts</h2>
-          <Alert title="Success alert">
-            Theme-aware alerts keep readability in both modes.
-          </Alert>
-          <Alert title="Danger alert" tone="danger">
-            Error states stay visible regardless of background brightness.
-          </Alert>
         </section>
       </section>
     </main>
