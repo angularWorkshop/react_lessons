@@ -7,6 +7,7 @@ import { AboutPage } from './pages/about';
 import { HomePage } from './pages/home';
 import { NotFoundPage } from './pages/not-found';
 import { UserDetailPage } from './pages/user-detail';
+import { UserProfilePage } from './pages/user-profile';
 import { UsersPage } from './pages/users';
 
 export function App(): ReactElement {
@@ -19,6 +20,7 @@ export function App(): ReactElement {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
+          <Route path="/user-profile" element={<UserProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
