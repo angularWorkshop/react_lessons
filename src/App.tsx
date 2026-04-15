@@ -17,7 +17,9 @@ export function App(): ReactElement {
         <div className="mt-10 flex flex-wrap gap-4">
           <Button>Primary</Button>
           <Button variant="secondary">Secondary</Button>
+          <Button variant="danger">Danger</Button>
           <Button size="sm">Small</Button>
+          <Button size="lg">Large</Button>
           <Button className="bg-white text-slate-950">Custom class</Button>
         </div>
       </section>

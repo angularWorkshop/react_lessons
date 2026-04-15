@@ -11,10 +11,12 @@ const buttonVariants = cva(
       variant: {
         primary: 'bg-cyan-400 text-slate-950 hover:bg-cyan-300',
         secondary: 'border border-white/15 bg-white/5 text-white hover:bg-white/10',
+        danger: 'bg-rose-500 text-white hover:bg-rose-400',
       },
       size: {
         sm: 'px-3 py-2 text-sm',
         md: 'px-4 py-3 text-sm',
+        lg: 'px-6 py-3.5 text-base',
       },
     },
     defaultVariants: {

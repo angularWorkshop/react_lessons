@@ -1,6 +1,6 @@
 # Topic 32.1: Button with CVA
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 
