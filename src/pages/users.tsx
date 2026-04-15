@@ -15,9 +15,7 @@ export function UsersPage(): ReactElement {
           <li key={user.id}>
             <button
               onClick={() => {
-                // TODO: navigate to '/user-profile' and pass { user } as state
-                // Hint: navigate('/user-profile', { state: { user } })
-                navigate('/user-profile');
+                navigate('/user-profile', { state: { user } });
               }}
               className="w-full text-left rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10"
             >

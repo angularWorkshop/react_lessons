@@ -1,6 +1,6 @@
 # Topic 34.2: Passing State Through Navigate
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 
