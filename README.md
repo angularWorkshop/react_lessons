@@ -1,24 +1,25 @@
-# react_lessons
+# Topic 31.1: First Tailwind Page
 
-Base repository for EduTec React + TypeScript course exercises.
+Lesson branch for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Install Tailwind CSS in a Vite + React project and build a responsive user card grid.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- connect Tailwind through `@tailwindcss/vite`
+- import Tailwind in `src/styles.css`
+- build a user card grid with avatar, name, role, and tags
+- keep the layout responsive: `1` column on mobile, `3` columns from desktop breakpoint
+- use `group` and `group-hover:` for hover-driven child styling
+- avoid custom CSS rules for the page UI
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
