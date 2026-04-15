@@ -1,6 +1,6 @@
 # Topic 31.1: First Tailwind Page
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 

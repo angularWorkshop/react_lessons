@@ -40,29 +40,31 @@ export function App(): ReactElement {
           Install Tailwind in a Vite project and build a profile grid without writing page-level CSS rules.
         </p>
 
-        <div data-testid="profiles-grid" className="mt-10 grid grid-cols-1 gap-6">
+        <div data-testid="profiles-grid" className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           {users.map((user) => (
             <article
               key={user.name}
-              className="rounded-[28px] border border-white/10 bg-white/5 p-6 transition-transform duration-300 hover:-translate-y-1"
+              className="group rounded-[28px] border border-white/10 bg-white/5 p-6 transition-transform duration-300 hover:-translate-y-1 hover:border-cyan-300/50"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400/10 text-xl font-bold text-cyan-200">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-400/10 text-xl font-bold text-cyan-200 transition-colors duration-300 group-hover:bg-cyan-300/20 group-hover:text-cyan-50">
                   {user.initials}
                 </div>
-                <span className="rounded-full border border-cyan-400/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200">
+                <span className="rounded-full border border-cyan-400/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200 transition-colors duration-300 group-hover:border-cyan-200/40 group-hover:text-cyan-50">
                   Active
                 </span>
               </div>
 
-              <h2 className="mt-6 text-2xl font-bold text-white">{user.name}</h2>
+              <h2 className="mt-6 text-2xl font-bold text-white transition-colors duration-300 group-hover:text-cyan-100">
+                {user.name}
+              </h2>
               <p className="mt-2 text-sm leading-6 text-slate-300">{user.role}</p>
 
               <div className="mt-6 flex flex-wrap gap-2">
                 {user.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-200"
+                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-200 transition-colors duration-300 group-hover:border-cyan-200/20 group-hover:bg-cyan-400/10 group-hover:text-cyan-50"
                   >
                     {tag}
                   </span>
