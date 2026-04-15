@@ -1,15 +1,17 @@
-import type { ReactElement } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Catalog } from './pages/catalog';
 
-export function App(): ReactElement {
+export default function App() {
   return (
-    <main className="app-shell">
-      <div className="hero-card">
-        <p className="eyebrow">EduTec React Bootcamp</p>
-        <h1>React + TypeScript starter</h1>
-        <p className="description">
-          This repository is the baseline for the React exercises.
-        </p>
+    <BrowserRouter>
+      <div className="app">
+        <header className="app__header">
+          <h1>Product Catalog</h1>
+        </header>
+        <Routes>
+          <Route path="/" element={<Catalog />} />
+        </Routes>
       </div>
-    </main>
+    </BrowserRouter>
   );
 }
