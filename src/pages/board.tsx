@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTaskStore } from '../store/task-store';
 import { TaskCard } from '../components/task-card';
 import type { TaskStatus } from '../types/task';
@@ -13,13 +13,9 @@ export default function BoardPage() {
   const tasks = useTaskStore((s) => s.tasks);
   const [search, setSearch] = useState('');
 
-  const filtered = useMemo(() => {
-    if (!search) return tasks;
-    const q = search.toLowerCase();
-    return tasks.filter(
-      (t) => t.title.toLowerCase().includes(q) || t.assignee.toLowerCase().includes(q),
-    );
-  }, [tasks, search]);
+  // TODO: use useMemo to filter tasks by search query (match title or assignee)
+  // If search is empty, return all tasks
+  const filtered = tasks;
 
   return (
     <div className="board">

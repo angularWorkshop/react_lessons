@@ -1,13 +1,15 @@
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Header } from './components/header';
 import { RequireAuth } from './components/require-auth';
 import { ErrorBoundary } from './components/error-boundary';
 
-const BoardPage = lazy(() => import('./pages/board'));
-const CreateTaskPage = lazy(() => import('./pages/create-task'));
-const LoginPage = lazy(() => import('./pages/login'));
-const NotFoundPage = lazy(() => import('./pages/not-found'));
+// TODO: use lazy() to code-split each page
+// Example: const BoardPage = lazy(() => import('./pages/board'));
+import BoardPage from './pages/board';
+import CreateTaskPage from './pages/create-task';
+import LoginPage from './pages/login';
+import NotFoundPage from './pages/not-found';
 
 export default function App() {
   return (

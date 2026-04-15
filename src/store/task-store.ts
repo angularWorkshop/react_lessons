@@ -14,28 +14,19 @@ export const useTaskStore = create<TaskState>()(
     (set) => ({
       tasks: [],
 
-      addTask: (data) =>
-        set((state) => ({
-          tasks: [
-            {
-              id: crypto.randomUUID(),
-              ...data,
-              status: 'todo' as const,
-              createdAt: Date.now(),
-            },
-            ...state.tasks,
-          ],
-        })),
+      addTask: (_data) => {
+        // TODO: create a new Task object with crypto.randomUUID(), status 'todo',
+        // createdAt Date.now(), and spread _data fields.
+        // Prepend it to state.tasks using set()
+      },
 
-      updateStatus: (id, status) =>
-        set((state) => ({
-          tasks: state.tasks.map((t) => (t.id === id ? { ...t, status } : t)),
-        })),
+      updateStatus: (_id, _status) => {
+        // TODO: map over state.tasks, update the status of the task with matching id
+      },
 
-      deleteTask: (id) =>
-        set((state) => ({
-          tasks: state.tasks.filter((t) => t.id !== id),
-        })),
+      deleteTask: (_id) => {
+        // TODO: filter out the task with matching id from state.tasks
+      },
     }),
     { name: 'task-board-storage' },
   ),
