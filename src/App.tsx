@@ -1,15 +1,48 @@
 import type { ReactElement } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { Header } from './components/header';
+import { RequireAuth } from './components/require-auth';
+import { RequireRole } from './components/require-role';
+import { AuthProvider } from './context/auth-context';
+import { AdminPage } from './pages/admin';
+import { DashboardPage } from './pages/dashboard';
+import { LoginPage } from './pages/login';
+import { PublicPage } from './pages/public';
 
 export function App(): ReactElement {
   return (
-    <main className="app-shell">
-      <div className="hero-card">
-        <p className="eyebrow">EduTec React Bootcamp</p>
-        <h1>React + TypeScript starter</h1>
-        <p className="description">
-          This repository is the baseline for the React exercises.
-        </p>
-      </div>
-    </main>
+    <BrowserRouter>
+      <AuthProvider>
+        <Header />
+
+        <main className="app-shell">
+          <Routes>
+            <Route path="/" element={<PublicPage />} />
+            <Route path="/login" element={<LoginPage />} />
+
+            <Route
+              path="/dashboard"
+              element={
+                <RequireAuth>
+                  <DashboardPage />
+                </RequireAuth>
+              }
+            />
+
+            <Route
+              path="/admin"
+              element={
+                <RequireAuth>
+                  <RequireRole role="admin">
+                    <AdminPage />
+                  </RequireRole>
+                </RequireAuth>
+              }
+            />
+          </Routes>
+        </main>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
