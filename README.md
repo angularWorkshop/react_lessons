@@ -1,6 +1,6 @@
 # Topic 31.2: Custom Tailwind Theme
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 
