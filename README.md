@@ -1,6 +1,6 @@
 # Topic 35.1: Layout with Outlet and Nested Routes
 
-Lesson branch for the EduTec React course exercise.
+Solution branch for the EduTec React course exercise.
 
 ## Goal
 

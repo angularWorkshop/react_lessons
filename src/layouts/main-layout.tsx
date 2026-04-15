@@ -12,7 +12,7 @@ export function MainLayout(): ReactElement {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 px-8 py-12">
-          {/* TODO: render the matched child route here using <Outlet /> */}
+          <Outlet />
         </main>
       </div>
     </div>

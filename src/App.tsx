@@ -16,8 +16,8 @@ export function App(): ReactElement {
       {/* Main layout with sidebar — wraps dashboard routes */}
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<DashboardIndexPage />} />
-        {/* TODO: add nested route for /dashboard/stats → DashboardStatsPage */}
-        {/* TODO: add nested route for /dashboard/users → DashboardUsersPage */}
+        <Route path="/dashboard/stats" element={<DashboardStatsPage />} />
+        <Route path="/dashboard/users" element={<DashboardUsersPage />} />
       </Route>
 
       {/* Auth layout without sidebar — wraps login */}

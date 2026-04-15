@@ -9,7 +9,7 @@ export function AuthLayout(): ReactElement {
     <div className="flex min-h-screen flex-col bg-slate-950 text-slate-50">
       <Header />
       <main className="mx-auto w-full max-w-md px-4 py-20">
-        {/* TODO: render the matched child route here using <Outlet /> */}
+        <Outlet />
       </main>
     </div>
   );
