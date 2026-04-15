@@ -30,13 +30,12 @@ export function App(): ReactElement {
               }
             />
 
+            {/* TODO: Wrap AdminPage with RequireAuth and RequireRole (role="admin") */}
             <Route
               path="/admin"
               element={
                 <RequireAuth>
-                  <RequireRole role="admin">
-                    <AdminPage />
-                  </RequireRole>
+                  <AdminPage />
                 </RequireAuth>
               }
             />

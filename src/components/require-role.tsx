@@ -11,14 +11,10 @@ interface RequireRoleProps {
 export function RequireRole({ role, children }: RequireRoleProps): ReactElement {
   const { user } = useAuth();
 
-  if (!user || user.role !== role) {
-    return (
-      <div className="access-denied" role="alert">
-        <h2>Access Denied</h2>
-        <p>You need the <strong>{role}</strong> role to view this page.</p>
-      </div>
-    );
-  }
+  // TODO: Check if the user exists AND has the required role.
+  // If not, render an Access Denied message inside a <div> with
+  // className="access-denied" and role="alert".
+  // Otherwise, render {children}.
 
   return <>{children}</>;
 }

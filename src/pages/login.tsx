@@ -14,13 +14,11 @@ export function LoginPage(): ReactElement {
   const [name, setName] = useState('');
   const [role, setRole] = useState<Role>('viewer');
 
-  const from = searchParams.get('from') ?? '/dashboard';
+  // TODO: Read the `from` search parameter. If it is not present,
+  // default to '/dashboard'.
 
-  // If the user is already authenticated before interacting with the form,
-  // redirect them away from the login page.
-  if (user) {
-    return <Navigate to={from} replace />;
-  }
+  // TODO: If the user is already authenticated, redirect them away
+  // from the login page using <Navigate to={...} replace />.
 
   function handleSubmit(e: FormEvent): void {
     e.preventDefault();
@@ -28,7 +26,8 @@ export function LoginPage(): ReactElement {
     if (!name.trim()) return;
 
     login(name.trim(), role);
-    navigate(from, { replace: true });
+    // TODO: After login, navigate to the `from` path so the user
+    // returns to the page they originally requested.
   }
 
   return (

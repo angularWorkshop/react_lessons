@@ -11,9 +11,10 @@ export function RequireAuth({ children }: RequireAuthProps): ReactElement {
   const { user } = useAuth();
   const location = useLocation();
 
-  if (!user) {
-    return <Navigate to={`/login?from=${encodeURIComponent(location.pathname)}`} replace />;
-  }
+  // TODO: If user is not authenticated, redirect to /login
+  // Include the current path as a `from` query parameter so the user
+  // can be sent back after logging in.
+  // Hint: use <Navigate to={...} replace /> and encodeURIComponent.
 
   return <>{children}</>;
 }
