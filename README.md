@@ -1,24 +1,24 @@
-# react_lessons
+# Topic 31.2: Custom Tailwind Theme
 
-Base repository for EduTec React + TypeScript course exercises.
+Lesson branch for the EduTec React course exercise.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Extend the Tailwind theme with brand colors, custom typography, custom shadows, and custom radius tokens.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- keep Tailwind connected through `@tailwindcss/vite`
+- define theme extensions in `tailwind.config.ts`
+- add brand colors, a display font family, custom `xs` breakpoint, custom panel shadow, and custom radius token
+- use those tokens through Tailwind utility classes in the UI
+- avoid hardcoding the final visual language with only default utility tokens
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
