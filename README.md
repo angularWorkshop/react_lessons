@@ -1,24 +1,25 @@
-# react_lessons
+# Capstone 1: Typed Todo App
 
-Base repository for EduTec React + TypeScript course exercises.
+Solution branch for the EduTec React course capstone project.
 
-Each exercise should branch from `main` into:
+## Goal
 
-- `lesson-topic-XX-exercise-YY-slug`
-- `answer-topic-XX-exercise-YY-slug`
+Build a fully-typed Todo application using React + TypeScript. Covers components, props, useState, useEffect, lists, conditional rendering, and localStorage persistence.
 
-This repository provides a clean Vite + React + TypeScript baseline with:
+## Requirements
 
-- strict-enough TypeScript for React work
-- Vitest + React Testing Library
-- a minimal component structure
-- scripts for local development, build, typecheck, and tests
+- full typing: `Todo`, `Filter`, `Priority` — all via TypeScript, no `any`
+- CRUD operations with immutable state
+- filtering: all / active / completed
+- sorting by priority and creation date
+- localStorage persistence via `useEffect`
+- component decomposition: minimum 6 components
 
 ## Scripts
 
-- `npm run dev` — start Vite dev server
-- `npm run build` — build production bundle
-- `npm run preview` — preview production build locally
-- `npm run typecheck` — run TypeScript checks
-- `npm run test` — run Vitest once
-- `npm run check` — run typecheck and tests
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test`
+- `npm run check`
