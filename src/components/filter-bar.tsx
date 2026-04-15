@@ -7,28 +7,18 @@ export function FilterBar() {
   const category = (searchParams.get('category') as Category) ?? 'all';
   const query = searchParams.get('q') ?? '';
 
-  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const value = e.target.value;
-    setSearchParams((prev) => {
-      if (value === 'all') {
-        prev.delete('category');
-      } else {
-        prev.set('category', value);
-      }
-      return prev;
-    });
+  function handleCategoryChange(_e: React.ChangeEvent<HTMLSelectElement>) {
+    // TODO: Read the selected value from the event.
+    // Use setSearchParams to update the 'category' param.
+    // If the value is 'all', delete the 'category' param instead.
+    void setSearchParams;
   }
 
-  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    setSearchParams((prev) => {
-      if (value === '') {
-        prev.delete('q');
-      } else {
-        prev.set('q', value);
-      }
-      return prev;
-    });
+  function handleSearchChange(_e: React.ChangeEvent<HTMLInputElement>) {
+    // TODO: Read the input value from the event.
+    // Use setSearchParams to update the 'q' param.
+    // If the value is empty, delete the 'q' param instead.
+    void setSearchParams;
   }
 
   return (
